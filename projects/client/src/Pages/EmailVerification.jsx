@@ -1,12 +1,11 @@
-import { Center, Heading } from '@chakra-ui/react';
 import {
   Button,
   FormControl,
   Flex,
   Input,
   Stack,
-  useColorModeValue,
-  HStack,
+  Center,
+  Heading,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
@@ -46,7 +45,6 @@ export default function VerifyEmailForm() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-
       handleRedirect();
     } catch (error) {
       toast.error(error, {

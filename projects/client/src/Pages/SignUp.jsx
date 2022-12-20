@@ -37,6 +37,7 @@ export default function SignupCard() {
     e.preventDefault();
     try {
       const res = axios.post('/api/register', inputs);
+
       await toast.promise(
         res,
         {
@@ -74,20 +75,17 @@ export default function SignupCard() {
           backdropBlur='20px'
           rounded='xl'
         >
-          <Stack align={'center'}>
-            <Heading fontSize={'5xl'} textAlign={'center'}>
-              Sign up
-            </Heading>
-            {/* <Text fontSize={'lg'} color={'gray.600'}>
-              to book a room around the world 🗺
-            </Text> */}
-          </Stack>
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
             p={8}
           >
+            <Stack align={'center'} margin={2}>
+              <Heading fontSize={'5xl'} textAlign={'center'}>
+                Sign up
+              </Heading>
+            </Stack>
             <Stack spacing={2}>
               <FormControl id='fullName' isRequired>
                 <FormLabel>Full Name</FormLabel>
