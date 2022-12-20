@@ -4,17 +4,22 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('../helpers/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
+const { OTP_generator } = require('../helpers/otp_service');
 
 const user = database.user;
 
 module.exports = {
   register: async (req, res) => {
     try {
-      const { email, password, fullName } = req.body;
+      const { email, password, fullName, repeatPassword } = req.body;
+
+      if (password !== repeatPassword) throw 'Password does not match';
+      if (password.length < 8) throw 'Password is less than 8 characters';
 
       const salt = await bcrypt.genSalt(10);
 
       const hashPass = await bcrypt.hash(password, salt);
+      const otp = OTP_generator().toString();
 
       await user.create({
         email,
@@ -22,18 +27,20 @@ module.exports = {
         fullName,
       });
 
-      const token = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY, {
+      const token = jwt.sign({ email: email }, otp, {
         expiresIn: '10m',
       });
 
       const tempEmail = fs.readFileSync(
-        './emailTemplates/verificationEmail.html',
+        './src/emailTemplates/verificationEmail.html',
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);
+
       const tempResult = tempCompile({
         fullName,
-        link: `http://localhost:2000/api/verification/${token}`,
+        otp,
+        link: `http://localhost:3000/verification/${token}`,
       });
 
       await nodemailer.sendMail({
@@ -44,6 +51,7 @@ module.exports = {
       });
 
       res
+        .cookie('otp', otp, { maxAge: 50000 })
         .status(200)
         .send(
           'Register Success. Please check your email for verification link'
@@ -55,10 +63,11 @@ module.exports = {
   },
 
   verification: async (req, res) => {
-    const { token } = req.params;
+    const { token } = req.query;
+    const { otp } = req.body;
 
     try {
-      const verify = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const verify = jwt.verify(token, otp);
 
       await user.update(
         {
@@ -80,7 +89,7 @@ module.exports = {
       const { email, fullName } = verifiedUser.dataValues;
 
       const tempEmail = fs.readFileSync(
-        './emailtemplates/successVerificationEmail.html',
+        './src/emailTemplates/successVerificationEmail.html',
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);
@@ -95,10 +104,52 @@ module.exports = {
         subject: 'Verification Success',
         html: tempResult,
       });
-      res.redirect('http://localhost:2000/api/');
+      res.status(200).send('Verification Sucess!');
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      const emailExist = await user.findOne({
+        where: {
+          email,
+        },
+        raw: true,
+      });
+
+      if (emailExist === null) throw 'user not found';
+
+      const isValid = await bcrypt.compare(password, emailExist.password);
+
+      if (!isValid) throw 'email or password is incorrect';
+
+      if (userExist.verified == false)
+        throw 'user is not verified yet. Please check your email';
+
+      const token = jwt.sign({ email: emailExist.email }, emailExist.otp);
+
+      res.status(200).send({
+        user: {
+          email: emailExist.email,
+        },
+        token,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+
+  resend_OTP: async (req, res) => {
+    try {
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
     }
   },
 };

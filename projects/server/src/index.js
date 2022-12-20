@@ -3,22 +3,25 @@ const express = require('express');
 const cors = require('cors');
 const bearerToken = require('express-bearer-token');
 const { join } = require('path');
-const database = require('../models');
-const { userRouters } = require('../routers');
+const database = require('./models');
+const { userRouters } = require('./routers');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
 app.use(
-  cors({
-    origin: [
-      process.env.WHITELISTED_DOMAIN &&
-        process.env.WHITELISTED_DOMAIN.split(','),
-    ],
-  })
+  cors()
+  // {
+  //   origin: [
+  //     process.env.WHITELISTED_DOMAIN &&
+  //       process.env.WHITELISTED_DOMAIN.split(','),
+  //   ],
+  // }
 );
 
 app.use(express.json());
 app.use(bearerToken());
+app.use(cookieParser());
 app.use(userRouters);
 //#region API ROUTES
 
@@ -77,6 +80,6 @@ app.listen(PORT, (err) => {
   }
 });
 
-const user = database.user;
+// const user = database.user;
 
 // user.sync({ alter: true });
