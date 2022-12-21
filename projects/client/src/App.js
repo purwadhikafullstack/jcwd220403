@@ -1,10 +1,10 @@
-import Home from './Pages/Home';
+import Home from "./Pages/Home";
 
 function App() {
   return (
-  <div>
-    <Home/>
-  </div>
+    <div>
+      <Home />
+    </div>
   );
 }
 
