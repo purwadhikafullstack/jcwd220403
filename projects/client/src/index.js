@@ -8,11 +8,13 @@ import VerifyEmailForm from './Pages/EmailVerification';
 import LoginCard from './Pages/Login';
 import Home from './Pages/Home';
 import SignupPortal from './Pages/SignupPortal';
+import ErrorPage from './Pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/app',

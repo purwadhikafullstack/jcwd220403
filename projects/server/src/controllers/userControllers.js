@@ -51,7 +51,7 @@ module.exports = {
       });
 
       res
-        .cookie('otp', otp, { maxAge: 50000 })
+        .cookie('otp', otp, { maxAge: 50000, httpOnly: false, path: '/api' })
         .status(200)
         .send(
           'Register Success. Please check your email for verification link'

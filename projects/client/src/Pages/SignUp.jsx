@@ -18,6 +18,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { Field, ErrorMessage, Formik, Form } from 'formik';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -94,6 +96,7 @@ export default function SignupCard() {
               <FormControl id='email' isRequired>
                 <FormLabel>Email address</FormLabel>
                 <Input type='email' name='email' onChange={handleChange} />
+                {}
               </FormControl>
               <FormControl id='password' isRequired>
                 <FormLabel>Password</FormLabel>
