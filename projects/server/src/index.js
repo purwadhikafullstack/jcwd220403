@@ -1,17 +1,22 @@
 require("dotenv/config");
 const express = require("express");
 const cors = require("cors");
+const bearerToken = require("express-bearer-token");
 const { join } = require("path");
+const database = require("./models");
+const { userRouters } = require("./routers");
+const cookieParser = require("cookie-parser");
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
 app.use(
-  cors({
-    origin: [
-      process.env.WHITELISTED_DOMAIN &&
-        process.env.WHITELISTED_DOMAIN.split(","),
-    ],
-  })
+  cors()
+  // {
+  //   origin: [
+  //     process.env.WHITELISTED_DOMAIN &&
+  //       process.env.WHITELISTED_DOMAIN.split(','),
+  //   ],
+  // }
 );
 
 app.use(express.json());
@@ -22,7 +27,13 @@ app.use(express.json());
 // NOTE : Add your routes here
 
 app.get("/api", (req, res) => {
-  res.send(`Hello, this is my API`);
+  res
+    .cookie("cookie", "api", {
+      maxAge: 50000,
+      httpOnly: false,
+      path: "/api",
+    })
+    .send(`Hello, this is my API`);
 });
 
 app.get("/api/greetings", (req, res, next) => {
@@ -72,3 +83,7 @@ app.listen(PORT, (err) => {
     console.log(`APP RUNNING at ${PORT} ✅`);
   }
 });
+
+// const user = database.user;
+
+// user.sync({ alter: true });
