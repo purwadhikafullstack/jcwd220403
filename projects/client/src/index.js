@@ -7,6 +7,7 @@ import SignupCard from './Pages/SignUp';
 import VerifyEmailForm from './Pages/EmailVerification';
 import LoginCard from './Pages/Login';
 import Home from './Pages/Home';
+import SignupPortal from './Pages/SignupPortal';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginCard />,
+  },
+  {
+    path: '/test',
+    element: <SignupPortal />,
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));

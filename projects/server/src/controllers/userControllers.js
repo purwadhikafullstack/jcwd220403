@@ -19,7 +19,7 @@ module.exports = {
       const salt = await bcrypt.genSalt(10);
 
       const hashPass = await bcrypt.hash(password, salt);
-      const otp = OTP_generator().toString();
+      const otp = OTP_generator();
 
       await user.create({
         email,
@@ -128,10 +128,10 @@ module.exports = {
 
       if (!isValid) throw 'email or password is incorrect';
 
-      if (userExist.verified == false)
+      if (emailExist.verified == false)
         throw 'user is not verified yet. Please check your email';
 
-      const token = jwt.sign({ email: emailExist.email }, emailExist.otp);
+      const token = jwt.sign({ email: emailExist.email }, 'holistay');
 
       res.status(200).send({
         user: {
@@ -146,6 +146,23 @@ module.exports = {
   },
 
   resend_OTP: async (req, res) => {
+    try {
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+
+  users: async (req, res) => {
+    try {
+      res.status(200).send('test');
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+
+  rememberLogin: async (req, res) => {
     try {
     } catch (error) {
       console.log(error);

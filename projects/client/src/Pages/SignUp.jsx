@@ -11,13 +11,13 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -81,9 +81,9 @@ export default function SignupCard() {
             boxShadow={'lg'}
             p={8}
           >
-            <Stack align={'center'} margin={2}>
+            <Stack align={'center'} marginBottom={5}>
               <Heading fontSize={'5xl'} textAlign={'center'}>
-                Sign up
+                Register
               </Heading>
             </Stack>
             <Stack spacing={2}>
@@ -152,8 +152,8 @@ export default function SignupCard() {
                 </Button>
               </Stack>
               <Stack pt={6}>
-                <Text align={'center'}>
-                  Already a user? <Link color={'blue.400'}>Login</Link>
+                <Text align={'center'} color={'blue.400'}>
+                  <Link to={'/login'}> Already a user? Login</Link>
                 </Text>
               </Stack>
             </Stack>
