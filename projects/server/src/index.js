@@ -29,7 +29,13 @@ app.use(userRouters);
 // NOTE : Add your routes here
 
 app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API`);
+  res
+    .cookie('cookie', 'api', {
+      maxAge: 50000,
+      httpOnly: false,
+      path: '/api',
+    })
+    .send(`Hello, this is my API`);
 });
 
 app.get('/api/greetings', (req, res, next) => {

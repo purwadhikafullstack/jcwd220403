@@ -11,13 +11,15 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { Field, ErrorMessage, Formik, Form } from 'formik';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +39,7 @@ export default function SignupCard() {
     e.preventDefault();
     try {
       const res = axios.post('/api/register', inputs);
+
       await toast.promise(
         res,
         {
@@ -74,20 +77,17 @@ export default function SignupCard() {
           backdropBlur='20px'
           rounded='xl'
         >
-          <Stack align={'center'}>
-            <Heading fontSize={'5xl'} textAlign={'center'}>
-              Sign up
-            </Heading>
-            {/* <Text fontSize={'lg'} color={'gray.600'}>
-              to book a room around the world 🗺
-            </Text> */}
-          </Stack>
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
             p={8}
           >
+            <Stack align={'center'} marginBottom={5}>
+              <Heading fontSize={'5xl'} textAlign={'center'}>
+                Register
+              </Heading>
+            </Stack>
             <Stack spacing={2}>
               <FormControl id='fullName' isRequired>
                 <FormLabel>Full Name</FormLabel>
@@ -96,6 +96,7 @@ export default function SignupCard() {
               <FormControl id='email' isRequired>
                 <FormLabel>Email address</FormLabel>
                 <Input type='email' name='email' onChange={handleChange} />
+                {}
               </FormControl>
               <FormControl id='password' isRequired>
                 <FormLabel>Password</FormLabel>
@@ -154,8 +155,8 @@ export default function SignupCard() {
                 </Button>
               </Stack>
               <Stack pt={6}>
-                <Text align={'center'}>
-                  Already a user? <Link color={'blue.400'}>Login</Link>
+                <Text align={'center'} color={'blue.400'}>
+                  <Link to={'/login'}> Already a user? Login</Link>
                 </Text>
               </Stack>
             </Stack>

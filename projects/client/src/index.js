@@ -1,16 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import App from './App';
 import SignupCard from './Pages/SignUp';
 import VerifyEmailForm from './Pages/EmailVerification';
 import LoginCard from './Pages/Login';
+import Home from './Pages/Home';
+import SignupPortal from './Pages/SignupPortal';
+import ErrorPage from './Pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Home />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/app',
     element: <App />,
   },
   {
@@ -24,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginCard />,
+  },
+  {
+    path: '/test',
+    element: <SignupPortal />,
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
