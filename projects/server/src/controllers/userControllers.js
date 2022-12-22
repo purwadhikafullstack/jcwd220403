@@ -138,12 +138,19 @@ module.exports = {
         process.env.JWT_SECRET_KEY
       );
 
-      res.status(200).send({
-        user: {
-          email: emailExist.email,
-        },
-        token,
-      });
+      res
+        .status(200)
+        .cookie('token', token, {
+          expires: new Date(Date.now() + 900000),
+          httpOnly: false,
+          path: '/api',
+        })
+        .send({
+          user: {
+            email: emailExist.email,
+          },
+          token,
+        });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
