@@ -37,7 +37,9 @@ export default function LoginCard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post('/api/login', inputs);
+      const res = axios.post('http://localhost:2000/api/login', inputs, {
+        withCredentials: true,
+      });
 
       await toast.promise(
         res,

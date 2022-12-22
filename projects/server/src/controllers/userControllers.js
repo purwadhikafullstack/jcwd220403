@@ -139,11 +139,11 @@ module.exports = {
       );
 
       res
-        .status(200)
+        .header('Access-Control-Allow-Credentials', true)
         .cookie('token', token, {
           expires: new Date(Date.now() + 900000),
           httpOnly: false,
-          path: '/api',
+          path: '/',
         })
         .send({
           user: {

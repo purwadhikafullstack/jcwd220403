@@ -22,38 +22,27 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 
-export default function SignupCopy() {
+export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [inputs, setInputs] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    repeatPassword: '',
-  });
 
   const registerSchema = Yup.object().shape({
     fullName: Yup.string()
       .required('Please enter your name')
       .min(3, 'Full Name should be at least three characters'),
-    email: Yup.string().email().required('Email is a required field'),
+    email: Yup.string().email().required('Please enter your email address'),
     password: Yup.string()
-      .required('Password is a required field')
+      .required('Please enter your password')
       .min(8, 'Password should be at least eight characters'),
-    password_confirmation: Yup.string().oneOf(
+    repeatPassword: Yup.string().oneOf(
       [Yup.ref('password'), null],
       'Password does not matched'
     ),
   });
 
-  const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
   const handleSubmit = async (data) => {
-    data.preventDefault();
     try {
-      const res = axios.post('/api/register', inputs);
+      const res = axios.post('http://localhost:2000/api/register', data);
 
       await toast.promise(
         res,
@@ -109,15 +98,15 @@ export default function SignupCopy() {
                 name: '',
                 email: '',
                 password: '',
-                password_confirmation: '',
+                repeatPassword: '',
               }}
               validationSchema={registerSchema}
               onSubmit={(values, action) => {
-                handleSubmit();
+                handleSubmit(values);
                 action.setFieldValue('fullName', '');
                 action.setFieldValue('email', '');
                 action.setFieldValue('password', '');
-                action.setFieldValue('password_confirmation', '');
+                action.setFieldValue('repeatPassword', '');
               }}
             >
               {(props) => {
@@ -183,14 +172,14 @@ export default function SignupCopy() {
                           />
                         </FormControl>
                         <FormControl isRequired>
-                          <FormLabel htmlFor='password_confirmation'>
+                          <FormLabel htmlFor='repeatPassword'>
                             Confirm Password
                           </FormLabel>
                           <InputGroup>
                             <Field
                               as={Input}
                               type={showRepeatPassword ? 'text' : 'password'}
-                              name='password_confirmation'
+                              name='repeatPassword'
                               variant='filled'
                             />
                             <InputRightElement h={'full'}>
@@ -212,7 +201,7 @@ export default function SignupCopy() {
                           </InputGroup>
                           <ErrorMessage
                             component='div'
-                            name='password_confirmation'
+                            name='repeatPassword'
                             style={{ color: 'red' }}
                           />
                         </FormControl>
@@ -227,6 +216,11 @@ export default function SignupCopy() {
                         >
                           Register
                         </Button>
+                        <Stack pt={6}>
+                          <Text align={'center'} color={'blue.400'}>
+                            <Link to={'/login'}> Already a user? Login</Link>
+                          </Text>
+                        </Stack>
                       </VStack>
                     </Form>
                   </>

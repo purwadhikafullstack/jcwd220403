@@ -36,7 +36,7 @@ export default function SignupCard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post('/api/register', inputs);
+      const res = axios.post('http://localhost:2000/api/register', inputs);
 
       await toast.promise(
         res,
