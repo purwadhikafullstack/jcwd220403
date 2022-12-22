@@ -17,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate } from 'react-router-dom';
 
+
 export default function LoginCard() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [inputs, setInputs] = useState({

@@ -18,8 +18,10 @@ app.use(
   //   ],
   // }
 );
-
 app.use(express.json());
+app.use(bearerToken())
+app.use(cookieParser())
+app.use(userRouters)
 
 //#region API ROUTES
 

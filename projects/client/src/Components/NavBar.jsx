@@ -27,10 +27,12 @@ import LogoOnly from '../Asset/Logo_only.png';
 
 //import component
 import Category from './Category';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const NavBar = () => {
   const [isMobile] = useMediaQuery('(max-width: 481px)');
+  const location = useLocation()
+  const OnlyHome = location.pathname === "/"
 
   const display = useBreakpointValue({
     base: 'none',
@@ -171,7 +173,7 @@ const NavBar = () => {
           </Box>
         </Container>
       </Center>
-      <Category />
+      {OnlyHome? <Category/> : null}
     </Box>
   );
 };
