@@ -32,7 +32,7 @@ export default function VerifyEmailForm() {
     e.preventDefault();
     try {
       const res = axios.post(
-        `/api/verification?token=${getTokenFromParams.token}`,
+        `http://localhost:2000/api/verification?token=${getTokenFromParams.token}`,
         { otp: OTP }
       );
 

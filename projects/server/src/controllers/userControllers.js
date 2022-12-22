@@ -53,9 +53,11 @@ module.exports = {
       res
         .cookie('otp', otp, { maxAge: 50000, httpOnly: false, path: '/api' })
         .status(200)
-        .send(
-          'Register Success. Please check your email for verification link'
-        );
+        .send({
+          message:
+            'Register Success. Please check your email for verification link',
+          token,
+        });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
@@ -131,14 +133,24 @@ module.exports = {
       if (emailExist.verified == false)
         throw 'user is not verified yet. Please check your email';
 
-      const token = jwt.sign({ email: emailExist.email }, 'holistay');
+      const token = jwt.sign(
+        { email: emailExist.email },
+        process.env.JWT_SECRET_KEY
+      );
 
-      res.status(200).send({
-        user: {
-          email: emailExist.email,
-        },
-        token,
-      });
+      res
+        .header('Access-Control-Allow-Credentials', true)
+        .cookie('token', token, {
+          expires: new Date(Date.now() + 900000),
+          httpOnly: false,
+          path: '/',
+        })
+        .send({
+          user: {
+            email: emailExist.email,
+          },
+          token,
+        });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
