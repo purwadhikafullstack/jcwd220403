@@ -18,8 +18,6 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Field, ErrorMessage, Formik, Form } from 'formik';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
