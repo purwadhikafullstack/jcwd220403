@@ -22,8 +22,8 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
-import Logo from '../Asset/Logo.png';
-import LogoOnly from '../Asset/Logo_only.png';
+import Logo from '../Assets/Logo.png';
+import LogoOnly from '../Assets/Logo_only.png';
 
 //import component
 import Category from './Category';

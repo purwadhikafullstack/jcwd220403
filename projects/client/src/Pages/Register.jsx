@@ -212,11 +212,6 @@ export default function Register() {
                           Register
                         </Button>
                         <Divider />
-                        <Stack>
-                          <Text align={'center'} color={'gray.600'}>
-                            Register with social media
-                          </Text>
-                        </Stack>
                         <HStack>
                           <Button colorScheme='red' leftIcon={<FaGoogle />}>
                             Google

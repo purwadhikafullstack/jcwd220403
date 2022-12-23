@@ -78,12 +78,12 @@ export default function LoginCard() {
         <Stack
           spacing={8}
           mx={'auto'}
-          maxW={'lg'}
+          maxW={'xl'}
           py={5}
           px={6}
-          backdropFilter='auto'
-          backdropBlur='20px'
-          rounded='xl'
+          // backdropFilter='auto'
+          // backdropBlur='20px'
+          // rounded='xl'
         >
           <Box rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
             <Stack align={'center'} marginBottom={10}>
@@ -126,11 +126,6 @@ export default function LoginCard() {
                 </Button>
               </Stack>
               <Divider />
-              <Stack>
-                <Text align={'center'} color={'gray.600'}>
-                  Login with social media
-                </Text>
-              </Stack>
               <HStack>
                 <Button colorScheme='red' leftIcon={<FaGoogle />}>
                   Google

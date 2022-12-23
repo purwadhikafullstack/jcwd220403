@@ -6,11 +6,10 @@ import {
   Stack,
   Center,
   Heading,
-  Text,
-  Link,
+  Spacer,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams, Navigate } from 'react-router-dom';
@@ -18,6 +17,8 @@ import { useParams, Navigate } from 'react-router-dom';
 export default function VerifyEmailForm() {
   const [verified, setVerified] = useState(false);
   const [OTP, setOTP] = useState('');
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(5);
   const getTokenFromParams = useParams();
 
   function handleRedirect() {
@@ -29,6 +30,11 @@ export default function VerifyEmailForm() {
   const handleOTP = (e) => {
     setOTP(e.target.value);
     console.log(OTP);
+  };
+
+  const resendOTP = () => {
+    setMinutes(0);
+    setSeconds(5);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +60,28 @@ export default function VerifyEmailForm() {
       });
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
   return verified ? (
     <Navigate to='/login' />
   ) : (
@@ -107,11 +135,40 @@ export default function VerifyEmailForm() {
               Verify
             </Button>
           </Stack>
-          <Stack>
-            <Text align={'center'}>
-              <Link color={'blue.400'}> Resend OTP</Link>
-            </Text>
-          </Stack>
+          <Flex align={'center'}>
+            {seconds > 0 || minutes > 0 ? (
+              <p>
+                Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
+                {seconds < 10 ? `0${seconds}` : seconds}
+              </p>
+            ) : (
+              <p>Didn't recieve code?</p>
+            )}
+            <Spacer />
+            <button
+              disabled={seconds > 0 || minutes > 0}
+              style={
+                seconds > 0 || minutes > 0
+                  ? {
+                      border: '1px solid grey',
+                      background: 'grey',
+                      padding: '4px',
+                      borderRadius: '5px',
+                      color: 'darkgrey',
+                    }
+                  : {
+                      border: '1px solid orange',
+                      background: 'orange',
+                      padding: '4px',
+                      borderRadius: '5px',
+                      color: 'white',
+                    }
+              }
+              onClick={resendOTP}
+            >
+              Resend OTP
+            </button>
+          </Flex>
         </Stack>
       </Flex>
     </section>
