@@ -12,15 +12,19 @@ import {
   Text,
   useColorModeValue,
   VStack,
+  HStack,
+  Link,
+  Divider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import axios from 'axios';
+import axios from '../api/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Field, ErrorMessage, Formik, Form } from 'formik';
+import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,12 +46,12 @@ export default function Register() {
 
   const handleSubmit = async (data) => {
     try {
-      const res = axios.post('http://localhost:2000/api/register', data);
+      const res = axios.post('/register', data);
 
       await toast.promise(
         res,
         {
-          pending: 'registration on progress...',
+          pending: 'Registration on progress...',
           success:
             'registration Success! please check your email for verification link 💌',
           error: 'registration fail 😢',
@@ -61,7 +65,7 @@ export default function Register() {
     }
   };
   return (
-    <div>
+    <section>
       <ToastContainer />
       <Flex
         minH={'100vh'}
@@ -71,24 +75,15 @@ export default function Register() {
           'url(https://source.unsplash.com/random/1920x1080/?house) center/cover no-repeat'
         }
       >
-        <Stack
-          spacing={4}
-          mx={'auto'}
-          minW={'xl'}
-          py={5}
-          px={6}
-          backdropFilter='auto'
-          backdropBlur='20px'
-          rounded='xl'
-        >
+        <Stack spacing={4} mx={'auto'} maxW={'xl'} py={2} px={2} rounded='xl'>
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
-            p={8}
+            p={5}
           >
             <Stack align={'center'} marginBottom={5}>
-              <Heading fontSize={'5xl'} textAlign={'center'}>
+              <Heading fontSize={'3xl'} textAlign={'center'}>
                 Register
               </Heading>
             </Stack>
@@ -103,17 +98,17 @@ export default function Register() {
               validationSchema={registerSchema}
               onSubmit={(values, action) => {
                 handleSubmit(values);
-                action.setFieldValue('fullName', '');
-                action.setFieldValue('email', '');
-                action.setFieldValue('password', '');
-                action.setFieldValue('repeatPassword', '');
+                // action.setFieldValue('fullName', '');
+                // action.setFieldValue('email', '');
+                // action.setFieldValue('password', '');
+                // action.setFieldValue('repeatPassword', '');
               }}
             >
               {(props) => {
                 return (
                   <>
                     <Form>
-                      <VStack spacing={4} align='flex-start'>
+                      <VStack spacing={4} align='center'>
                         <FormControl isRequired>
                           <FormLabel htmlFor='name'>Full Name</FormLabel>
                           <Field
@@ -216,9 +211,36 @@ export default function Register() {
                         >
                           Register
                         </Button>
-                        <Stack pt={6}>
-                          <Text align={'center'} color={'blue.400'}>
-                            <Link to={'/login'}> Already a user? Login</Link>
+                        <Divider />
+                        <Stack>
+                          <Text align={'center'} color={'gray.600'}>
+                            Register with social media
+                          </Text>
+                        </Stack>
+                        <HStack>
+                          <Button colorScheme='red' leftIcon={<FaGoogle />}>
+                            Google
+                          </Button>
+                          <Button
+                            colorScheme='facebook'
+                            leftIcon={<FaFacebook />}
+                          >
+                            Facebook
+                          </Button>
+                          <Button
+                            colorScheme='twitter'
+                            leftIcon={<FaTwitter />}
+                          >
+                            Twitter
+                          </Button>
+                        </HStack>
+                        <Divider />
+                        <Stack>
+                          <Text align={'center'}>
+                            Already a user?
+                            <RouterLink to={'/login'}>
+                              <Link color={'blue.400'}> Login here</Link>
+                            </RouterLink>
                           </Text>
                         </Stack>
                       </VStack>
@@ -230,6 +252,6 @@ export default function Register() {
           </Box>
         </Stack>
       </Flex>
-    </div>
+    </section>
   );
 }

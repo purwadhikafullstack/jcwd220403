@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Button,
   FormControl,
@@ -6,59 +7,44 @@ import {
   Stack,
   Center,
   Heading,
-  Text,
-  Link,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams, Navigate } from 'react-router-dom';
 
-export default function VerifyEmailForm() {
-  const [verified, setVerified] = useState(false);
-  const [OTP, setOTP] = useState('');
-  const getTokenFromParams = useParams();
+function ResetPasswordRequest() {
+  const [email, setEmail] = useState('');
 
-  function handleRedirect() {
-    setInterval(() => {
-      setVerified(true);
-    }, 3000);
-  }
-
-  const handleOTP = (e) => {
-    setOTP(e.target.value);
-    console.log(OTP);
+  const handleInput = (e) => {
+    setEmail(e.target.value);
+    console.log(email);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post(
-        `/verification?token=${getTokenFromParams.token}`,
-        { otp: OTP }
-      );
+      const res = axios.post(`/forgotPassword`, { email: email });
 
       await toast.promise(
         res,
         {
-          pending: 'verification on progress...',
-          success: 'Verification Success!',
-          error: 'Verification fail 😢',
+          pending: 'submitting on progress...',
+          success: 'Email Success!',
+          error: 'Submitting fail 😢',
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      handleRedirect();
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_CENTER,
       });
     }
   };
-  return verified ? (
-    <Navigate to='/login' />
-  ) : (
+
+  return (
     <section>
-      <ToastContainer theme='colored' />
+      <ToastContainer />
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -79,19 +65,20 @@ export default function VerifyEmailForm() {
         >
           <Center>
             <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
-              Verify your Email
+              Forgot your password?
             </Heading>
           </Center>
           <Center fontSize={{ base: 'sm', sm: 'md' }} color={'black'}>
-            Enter your OTP code here
+            No worries! Enter your email address and we'll send you the
+            instructions to reset your password.
           </Center>
           <FormControl>
             <Center>
               <Input
-                type='number'
-                name='otp'
+                type='email'
+                name='email'
                 textAlign={'center'}
-                onChange={handleOTP}
+                onChange={handleInput}
               />
             </Center>
           </FormControl>
@@ -104,16 +91,13 @@ export default function VerifyEmailForm() {
                 bg: 'blue.500',
               }}
             >
-              Verify
+              Submit
             </Button>
-          </Stack>
-          <Stack>
-            <Text align={'center'}>
-              <Link color={'blue.400'}> Resend OTP</Link>
-            </Text>
           </Stack>
         </Stack>
       </Flex>
     </section>
   );
 }
+
+export default ResetPasswordRequest;
