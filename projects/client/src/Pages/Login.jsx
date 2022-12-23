@@ -9,13 +9,17 @@ import {
   Link,
   Button,
   Heading,
+  Divider,
+  Text,
+  HStack,
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
+import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 
 export default function LoginCard() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -37,7 +41,7 @@ export default function LoginCard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post('http://localhost:2000/api/login', inputs, {
+      const res = axios.post('/login', inputs, {
         withCredentials: true,
       });
 
@@ -61,7 +65,7 @@ export default function LoginCard() {
   return loginSuccess ? (
     <Navigate to='/' />
   ) : (
-    <div>
+    <section>
       <ToastContainer />
       <Flex
         minH={'100vh'}
@@ -75,7 +79,7 @@ export default function LoginCard() {
           spacing={8}
           mx={'auto'}
           maxW={'lg'}
-          py={12}
+          py={5}
           px={6}
           backdropFilter='auto'
           backdropBlur='20px'
@@ -106,7 +110,9 @@ export default function LoginCard() {
                   gap={10}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <Link color={'blue.400'}>Forgot password?</Link>
+                  <RouterLink to='/forgotPassword'>
+                    <Link color={'blue.400'}>Forgot password?</Link>
+                  </RouterLink>
                 </Stack>
                 <Button
                   bg={'blue.400'}
@@ -116,13 +122,32 @@ export default function LoginCard() {
                   }}
                   onClick={handleSubmit}
                 >
-                  Sign in
+                  Login
                 </Button>
               </Stack>
+              <Divider />
+              <Stack>
+                <Text align={'center'} color={'gray.600'}>
+                  Login with social media
+                </Text>
+              </Stack>
+              <HStack>
+                <Button colorScheme='red' leftIcon={<FaGoogle />}>
+                  Google
+                </Button>
+                <Button colorScheme='facebook' leftIcon={<FaFacebook />}>
+                  Facebook
+                </Button>
+                <Button colorScheme='twitter' leftIcon={<FaTwitter />}>
+                  Twitter
+                </Button>
+              </HStack>
+              <Divider />
+              <Stack></Stack>
             </Stack>
           </Box>
         </Stack>
       </Flex>
-    </div>
+    </section>
   );
 }

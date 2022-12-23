@@ -181,4 +181,30 @@ module.exports = {
       res.status(400).send(error);
     }
   },
+
+  forgotPassword: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const emailExist = await user.findOne({
+        where: {
+          email,
+        },
+        raw: true,
+      });
+
+      if (emailExist === null) throw 'user not found';
+      if (emailExist.verified == false)
+        throw 'user is not verified yet. Please check your email';
+
+      const token = jwt.sign({ email }, 'reset', {
+           expiresIn: '10m',
+         });
+
+    
+      res.status(200).send('Success');
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
 };

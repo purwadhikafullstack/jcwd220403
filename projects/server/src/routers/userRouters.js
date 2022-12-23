@@ -9,5 +9,6 @@ router.get('/api/users', userControllers.users);
 router.post('/api/register', userControllers.register);
 router.post('/api/login', userControllers.login);
 router.post('/api/verification/', userControllers.verification);
+router.post('/api/forgotPassword/', userControllers.forgotPassword);
 
 module.exports = router;
