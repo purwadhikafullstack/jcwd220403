@@ -4,7 +4,7 @@ const cors = require('cors');
 const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
-const { userRouters } = require('./routers');
+const { authRouters } = require('./routers');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
@@ -19,6 +19,7 @@ const corsOptions = {
 };
 app.use(
   cors(corsOptions)
+  // cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
@@ -30,7 +31,7 @@ app.use(
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
-app.use(userRouters);
+app.use(authRouters);
 
 //#region API ROUTES
 
