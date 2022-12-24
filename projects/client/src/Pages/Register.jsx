@@ -13,7 +13,6 @@ import {
   useColorModeValue,
   VStack,
   HStack,
-  Link,
   Divider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -46,7 +45,9 @@ export default function Register() {
 
   const handleSubmit = async (data) => {
     try {
-      const res = axios.post('/register', data);
+      const res = axios.post('/register', data, {
+        withCredentials: true,
+      });
 
       await toast.promise(
         res,
@@ -230,12 +231,12 @@ export default function Register() {
                           </Button>
                         </HStack>
                         <Divider />
-                        <Stack>
-                          <Text align={'center'}>
+                        <Stack direction={'horizontal'}>
+                          <Text align={'center'} marginRight={2}>
                             Already a user?
-                            <RouterLink to={'/login'}>
-                              <Link color={'blue.400'}> Login here</Link>
-                            </RouterLink>
+                          </Text>
+                          <Text color={'blue.400'} fontWeight={'bold'}>
+                            <RouterLink to={'/login'}>Login here</RouterLink>
                           </Text>
                         </Stack>
                       </VStack>

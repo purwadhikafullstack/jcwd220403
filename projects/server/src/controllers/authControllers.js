@@ -28,7 +28,7 @@ module.exports = {
       });
 
       const token = jwt.sign({ email: email }, otp, {
-        expiresIn: '10m',
+        expiresIn: '5m',
       });
 
       const tempEmail = fs.readFileSync(
@@ -51,7 +51,12 @@ module.exports = {
       });
 
       res
-        .cookie('otp', otp, { maxAge: 50000, httpOnly: false, path: '/api' })
+        .header('Access-Control-Allow-Credentials', true)
+        .cookie('email', email, {
+          maxAge: 60 * 5000,
+          httpOnly: false,
+          path: '/',
+        })
         .status(200)
         .send({
           message:
@@ -158,8 +163,47 @@ module.exports = {
     }
   },
 
-  resend_OTP: async (req, res) => {
+  resendOTP: async (req, res) => {
     try {
+      const email = req.body;
+
+      const otp = OTP_generator();
+
+      const token = jwt.sign({ email: email }, otp, {
+        expiresIn: '5m',
+      });
+
+      const tempEmail = fs.readFileSync(
+        './src/emailTemplates/verificationEmail.html',
+        'utf-8'
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+
+      const tempResult = tempCompile({
+        fullName,
+        otp,
+        link: `http://localhost:3000/verification/${token}`,
+      });
+
+      await nodemailer.sendMail({
+        from: 'Admin',
+        to: email,
+        subject: 'User verification',
+        html: tempResult,
+      });
+
+      res
+        .header('Access-Control-Allow-Credentials', true)
+        .cookie('email', email, {
+          maxAge: 60 * 2000,
+          httpOnly: false,
+          path: '/',
+        })
+        .status(200)
+        .send({
+          message: 'Resent OTP Success',
+          token,
+        });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);

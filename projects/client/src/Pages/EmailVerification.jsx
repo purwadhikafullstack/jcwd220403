@@ -32,9 +32,27 @@ export default function VerifyEmailForm() {
     console.log(OTP);
   };
 
-  const resendOTP = () => {
+  const resendOTP = async () => {
     setMinutes(0);
     setSeconds(5);
+    try {
+      const cookie = document.cookie;
+      const emailFromCookie = cookie.split('=')[1];
+      const res = axios.post(`/resendOTP`, { email: emailFromCookie });
+      await toast.promise(
+        res,
+        {
+          pending: 'Resending OTP...',
+          success: 'Resend OTP Success! Please check your email',
+          error: 'Resend OTP Fail fail 😢',
+        },
+        { position: toast.POSITION.TOP_CENTER }
+      );
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

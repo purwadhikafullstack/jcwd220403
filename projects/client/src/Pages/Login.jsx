@@ -110,9 +110,11 @@ export default function LoginCard() {
                   gap={10}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <RouterLink to='/forgotPassword'>
-                    <Link color={'blue.400'}>Forgot password?</Link>
-                  </RouterLink>
+                  <Text color={'blue.400'}>
+                    <RouterLink to='/forgotPassword'>
+                      Forgot password?
+                    </RouterLink>
+                  </Text>
                 </Stack>
                 <Button
                   bg={'blue.400'}
@@ -137,8 +139,6 @@ export default function LoginCard() {
                   Twitter
                 </Button>
               </HStack>
-              <Divider />
-              <Stack></Stack>
             </Stack>
           </Box>
         </Stack>
