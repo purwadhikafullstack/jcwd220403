@@ -17,8 +17,8 @@ import { useParams, Navigate } from 'react-router-dom';
 export default function VerifyEmailForm() {
   const [verified, setVerified] = useState(false);
   const [OTP, setOTP] = useState('');
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(5);
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(0);
   const getTokenFromParams = useParams();
 
   function handleRedirect() {
@@ -33,12 +33,13 @@ export default function VerifyEmailForm() {
   };
 
   const resendOTP = async () => {
-    setMinutes(0);
-    setSeconds(5);
+    setMinutes(1);
+    setSeconds(0);
     try {
       const cookie = document.cookie;
       const emailFromCookie = cookie.split('=')[1];
-      const res = axios.post(`/resendOTP`, { email: emailFromCookie });
+      const decodeEmailFromCookie = decodeURIComponent(emailFromCookie);
+      const res = axios.post(`/resendOTP`, { email: decodeEmailFromCookie });
       await toast.promise(
         res,
         {

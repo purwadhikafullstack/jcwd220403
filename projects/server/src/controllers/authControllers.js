@@ -165,7 +165,16 @@ module.exports = {
 
   resendOTP: async (req, res) => {
     try {
-      const email = req.body;
+      const { email } = req.body;
+
+      const emailExist = await user.findOne({
+        where: {
+          email,
+        },
+        raw: true,
+      });
+
+      if (emailExist === null) throw 'user not found';
 
       const otp = OTP_generator();
 
@@ -180,7 +189,7 @@ module.exports = {
       const tempCompile = handlebars.compile(tempEmail);
 
       const tempResult = tempCompile({
-        fullName,
+        fullName: emailExist.fullName,
         otp,
         link: `http://localhost:3000/verification/${token}`,
       });
@@ -195,7 +204,7 @@ module.exports = {
       res
         .header('Access-Control-Allow-Credentials', true)
         .cookie('email', email, {
-          maxAge: 60 * 2000,
+          maxAge: 60 * 5000,
           httpOnly: false,
           path: '/',
         })
