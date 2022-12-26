@@ -48,7 +48,7 @@ export default function LoginCard() {
         headers: { 'content-Type': 'application/json' },
       });
 
-      await toast.promise(
+      const toastify = await toast.promise(
         res,
         {
           pending: 'Login on progress...',
@@ -57,7 +57,10 @@ export default function LoginCard() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      handleRedirect();
+      console.log(toastify.data?.user);
+      const { userToken, userRole, userEmail } = toastify.data.user;
+      setAuth({ userToken, userRole, userEmail });
+      // handleRedirect();
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_CENTER,

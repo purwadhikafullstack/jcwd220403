@@ -1,10 +1,11 @@
+require('dotenv').config();
 const database = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('../helpers/nodemailer');
+const nodemailer = require('../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
-const { OTP_generator } = require('../helpers/otp_service');
+const { OTP_generator } = require('../middlewares/otp_service');
 
 const user = database.user;
 
@@ -153,22 +154,36 @@ module.exports = {
 
       const token = jwt.sign(
         { email: emailExist.email },
-        process.env.JWT_LOGIN_SECRET_KEY
+        process.env.JWT_LOGIN_SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+      const refreshToken = jwt.sign(
+        { email: emailExist.email },
+        process.env.JWT_LOGIN_SECRET_KEY,
+        { expiresIn: '1d' }
+      );
+
+      await user.update(
+        { refreshToken },
+        {
+          where: {
+            email: emailExist.email,
+          },
+        }
       );
 
       res
         .header('Access-Control-Allow-Credentials', true)
-        .cookie('token', token, {
-          expires: new Date(Date.now() + 900000),
-          httpOnly: false,
-          path: '/',
+        .cookie('refreshToken', refreshToken, {
+          maxAge: 28 * 60 * 60 * 1000,
+          httpOnly: true,
         })
         .send({
           message: 'Login success',
           user: {
-            email: emailExist.email,
-            role: 'user',
-            token,
+            userEmail: emailExist.email,
+            userRole: 'user',
+            userToken: token,
           },
         });
     } catch (error) {
