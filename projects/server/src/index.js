@@ -5,7 +5,7 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const verifyJWT = require('./middlewares/verifyJWT');
-const { authRouters, userRouters } = require('./routers');
+const { authRouters, userRouters, refresh } = require('./routers');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
@@ -38,6 +38,7 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
+app.use(refresh);
 app.use(authRouters);
 
 //routes that need token

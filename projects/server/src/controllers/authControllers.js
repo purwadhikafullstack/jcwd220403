@@ -173,18 +173,13 @@ module.exports = {
       );
 
       res
-        // .header('Access-Control-Allow-Credentials', true)
+        .header('Access-Control-Allow-Credentials', true)
         .cookie('refreshToken', refreshToken, {
           maxAge: 28 * 60 * 60 * 1000,
           httpOnly: true,
         })
         .json({
           token,
-          // user: {
-          //   userEmail: emailExist.email,
-          //   userRole: 'user',
-          //   userToken: token,
-          // },
         });
     } catch (error) {
       console.log(error);
