@@ -173,18 +173,18 @@ module.exports = {
       );
 
       res
-        .header('Access-Control-Allow-Credentials', true)
+        // .header('Access-Control-Allow-Credentials', true)
         .cookie('refreshToken', refreshToken, {
           maxAge: 28 * 60 * 60 * 1000,
           httpOnly: true,
         })
-        .send({
-          message: 'Login success',
-          user: {
-            userEmail: emailExist.email,
-            userRole: 'user',
-            userToken: token,
-          },
+        .json({
+          token,
+          // user: {
+          //   userEmail: emailExist.email,
+          //   userRole: 'user',
+          //   userToken: token,
+          // },
         });
     } catch (error) {
       console.log(error);
@@ -276,6 +276,15 @@ module.exports = {
       //TODO: finish forgot password
 
       res.status(200).send('Success');
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+
+  test: async (req, res) => {
+    try {
+      res.send('test auth controller');
     } catch (error) {
       console.log(error);
       res.status(400).send(error);

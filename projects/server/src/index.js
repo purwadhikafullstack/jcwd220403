@@ -4,7 +4,8 @@ const cors = require('cors');
 const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
-const { authRouters } = require('./routers');
+const verifyJWT = require('./middlewares/verifyJWT');
+const { authRouters, userRouters } = require('./routers');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
@@ -27,16 +28,21 @@ app.use(
   //   ],
   // }
 );
-
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
-app.use(authRouters);
 
 //#region API ROUTES
 
 // ===========================
 // NOTE : Add your routes here
+
+app.use(authRouters);
+
+//routes that need token
+app.use(verifyJWT);
+app.use(userRouters);
 
 app.get('/api', (req, res) => {
   res
