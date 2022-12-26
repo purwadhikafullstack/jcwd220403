@@ -154,12 +154,12 @@ module.exports = {
 
       const token = jwt.sign(
         { email: emailExist.email },
-        process.env.JWT_LOGIN_SECRET_KEY,
+        process.env.ACCESS_TOKEN_SECRET_KEY,
         { expiresIn: '1h' }
       );
       const refreshToken = jwt.sign(
         { email: emailExist.email },
-        process.env.JWT_LOGIN_SECRET_KEY,
+        process.env.REFRESH_TOKEN_SECRET_KEY,
         { expiresIn: '1d' }
       );
 
@@ -269,13 +269,9 @@ module.exports = {
         });
       }
 
-      const token = jwt.sign(
-        { email },
-        process.env.JWT_RESET_PASSWORD_SECRET_KEY,
-        {
-          expiresIn: '10m',
-        }
-      );
+      const token = jwt.sign({ email }, process.env.RESET_PASSWORD_SECRET_KEY, {
+        expiresIn: '10m',
+      });
 
       //TODO: finish forgot password
 
