@@ -13,8 +13,13 @@ module.exports = {
     try {
       const { email, password, fullName, repeatPassword } = req.body;
 
-      if (password !== repeatPassword) throw 'Password does not match';
-      if (password.length < 8) throw 'Password is less than 8 characters';
+      if (password !== repeatPassword) {
+        res.status(400).send({ message: 'Password does not match' });
+      }
+
+      if (password.length < 8) {
+        res.status(400).send({ message: 'Password is less than 8 characters' });
+      }
 
       const salt = await bcrypt.genSalt(10);
 
@@ -112,7 +117,7 @@ module.exports = {
         html: tempResult,
       });
 
-      res.status(200).send('Verification Sucess!');
+      res.status(200).send({ message: 'Verification Sucess!' });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
@@ -130,18 +135,25 @@ module.exports = {
         raw: true,
       });
 
-      if (emailExist === null) throw 'user not found';
+      if (emailExist === null) {
+        res.status(400).send({ message: 'email is not registered yet' });
+      }
 
       const isValid = await bcrypt.compare(password, emailExist.password);
 
-      if (!isValid) throw 'email or password is incorrect';
+      if (!isValid) {
+        res.status(400).send({ message: 'Incorrect password' });
+      }
 
-      if (emailExist.verified == false)
-        throw 'user is not verified yet. Please check your email';
+      if (emailExist.verified == false) {
+        res.status(400).send({
+          message: 'user is not verified yet. Please check your email',
+        });
+      }
 
       const token = jwt.sign(
         { email: emailExist.email },
-        process.env.JWT_SECRET_KEY
+        process.env.JWT_LOGIN_SECRET_KEY
       );
 
       res
@@ -152,10 +164,12 @@ module.exports = {
           path: '/',
         })
         .send({
+          message: 'Login success',
           user: {
             email: emailExist.email,
+            role: 'user',
+            token,
           },
-          token,
         });
     } catch (error) {
       console.log(error);
@@ -174,7 +188,9 @@ module.exports = {
         raw: true,
       });
 
-      if (emailExist === null) throw 'user not found';
+      if (emailExist === null) {
+        res.status(400).send({ message: 'email is not registered yet' });
+      }
 
       const otp = OTP_generator();
 
@@ -219,14 +235,6 @@ module.exports = {
     }
   },
 
-  rememberLogin: async (req, res) => {
-    try {
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
-    }
-  },
-
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
@@ -237,13 +245,24 @@ module.exports = {
         raw: true,
       });
 
-      if (emailExist === null) throw 'user not found';
-      if (emailExist.verified == false)
-        throw 'user is not verified yet. Please check your email';
+      if (emailExist === null) {
+        res.status(400).send({ message: 'email is not registered yet' });
+      }
+      if (emailExist.verified == false) {
+        res.status(400).send({
+          message: 'user is not verified yet. Please check your email',
+        });
+      }
 
-      const token = jwt.sign({ email }, 'reset', {
-        expiresIn: '10m',
-      });
+      const token = jwt.sign(
+        { email },
+        process.env.JWT_RESET_PASSWORD_SECRET_KEY,
+        {
+          expiresIn: '10m',
+        }
+      );
+
+      //TODO: finish forgot password
 
       res.status(200).send('Success');
     } catch (error) {

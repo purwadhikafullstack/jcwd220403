@@ -14,14 +14,16 @@ import {
   HStack,
 } from '@chakra-ui/react';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from '../api/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import AuthContext from '../context/AuthProvider';
 
 export default function LoginCard() {
+  const { setAuth } = useContext(AuthContext);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [inputs, setInputs] = useState({
     email: '',
@@ -43,6 +45,7 @@ export default function LoginCard() {
     try {
       const res = axios.post('/login', inputs, {
         withCredentials: true,
+        headers: { 'content-Type': 'application/json' },
       });
 
       await toast.promise(
