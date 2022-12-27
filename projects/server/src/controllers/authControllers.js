@@ -1,13 +1,12 @@
 require('dotenv').config();
 const database = require('../models');
+const user = database.user;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const { OTP_generator } = require('../middlewares/otp_service');
-
-const user = database.user;
 
 module.exports = {
   register: async (req, res) => {
@@ -155,7 +154,7 @@ module.exports = {
       const token = jwt.sign(
         { email: emailExist.email },
         process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: '1h' }
+        { expiresIn: '15s' }
       );
       const refreshToken = jwt.sign(
         { email: emailExist.email },
@@ -177,6 +176,8 @@ module.exports = {
         .cookie('refreshToken', refreshToken, {
           maxAge: 28 * 60 * 60 * 1000,
           httpOnly: true,
+          sameSite: 'None',
+          secure: 'true',
         })
         .json({
           token,

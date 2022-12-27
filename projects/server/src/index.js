@@ -5,15 +5,15 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const verifyJWT = require('./middlewares/verifyJWT');
-const { authRouters, userRouters, refresh } = require('./routers');
+const { authRouters, userRouters, refresh, logout } = require('./routers');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
-const whitelist = ['http://localhost:3000'];
+const allowOrigins = ['http://localhost:3000'];
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) return callback(null, true);
+    if (allowOrigins.includes(origin)) return callback(null, true);
 
     callback(new Error('Not allowed by CORS'));
   },
@@ -38,8 +38,9 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
-app.use(refresh);
 app.use(authRouters);
+app.use(refresh);
+app.use(logout);
 
 //routes that need token
 app.use(verifyJWT);
