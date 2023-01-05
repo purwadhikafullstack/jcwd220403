@@ -6,6 +6,7 @@ const { join } = require('path');
 const database = require('./models');
 const verifyJWT = require('./middlewares/verifyJWT');
 const { authRouters, userRouters, refresh, logout } = require('./routers');
+const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
@@ -38,9 +39,11 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
-app.use(authRouters);
 app.use(refresh);
 app.use(logout);
+
+app.use(middlewareDetect);
+app.use(authRouters);
 
 //routes that need token
 app.use(verifyJWT);
@@ -48,11 +51,11 @@ app.use(userRouters);
 
 app.get('/api', (req, res) => {
   res
-    .cookie('cookie', 'api', {
-      maxAge: 50000,
-      httpOnly: false,
-      path: '/api',
-    })
+    //   .cookie('cookie', 'api', {
+    //     maxAge: 50000,
+    //     httpOnly: false,
+    //     path: '/api',
+    //   })
     .send(`Hello, this is my API`);
 });
 
@@ -105,5 +108,7 @@ app.listen(PORT, (err) => {
 });
 
 // const user = database.user;
+// const login = database.login;
 
 // user.sync({ alter: true });
+// login.sync({ alter: true });

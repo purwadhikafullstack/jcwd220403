@@ -6,7 +6,6 @@ import {
   Input,
   Checkbox,
   Stack,
-  Link,
   Button,
   Heading,
   Divider,
@@ -52,15 +51,23 @@ export default function LoginCard() {
         res,
         {
           pending: 'Login on progress...',
-          success: 'Login success, welcome!',
-          error: 'Login fail 😢',
+          success: {
+            render({ data }) {
+              return `Login success, welcome ${data.data.userName}`;
+            },
+          },
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      console.log(toastify.data?.user);
-      const { userToken, userRole, userEmail } = toastify.data.user;
-      setAuth({ userToken, userRole, userEmail });
-      // handleRedirect();
+
+      const { userToken, userEmail } = toastify.data;
+      setAuth({ userToken, userEmail });
+      handleRedirect();
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_CENTER,

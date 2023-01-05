@@ -1,6 +1,7 @@
 require('dotenv').config();
 const database = require('../models');
 const user = database.user;
+const userLogin = database.login;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('../middlewares/nodemailer');
@@ -62,7 +63,7 @@ module.exports = {
           httpOnly: false,
           path: '/',
         })
-        .status(200)
+        .status(201)
         .send({
           message:
             'Register Success. Please check your email for verification link',
@@ -125,69 +126,75 @@ module.exports = {
   },
 
   login: async (req, res) => {
-    try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
+    let browser = req.device.client.name;
+    let device = req.device.device.type;
 
-      const emailExist = await user.findOne({
-        where: {
-          email,
-        },
-        raw: true,
-      });
+    const emailExist = await user.findOne({
+      where: {
+        email,
+      },
+      raw: true,
+    });
 
-      if (emailExist === null) {
-        res.status(400).send({ message: 'email is not registered yet' });
-      }
+    const isValidPassword = await bcrypt.compare(password, emailExist.password);
+    if (isValidPassword) {
+      if (emailExist.verified == true) {
+        let payload = { email: emailExist.email, userId: emailExist.id };
 
-      const isValid = await bcrypt.compare(password, emailExist.password);
+        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: '30s',
+        });
 
-      if (!isValid) {
-        res.status(400).send({ message: 'Incorrect password' });
-      }
+        const refreshToken = jwt.sign(
+          payload,
+          process.env.REFRESH_TOKEN_SECRET_KEY,
+          { expiresIn: '1d' }
+        );
 
-      if (emailExist.verified == false) {
-        res.status(400).send({
+        const [loginFound, created] = await userLogin.findOrCreate({
+          where: {
+            userId: emailExist.id,
+            device,
+            browser,
+          },
+          defaults: { refreshToken },
+        });
+
+        if (!created) {
+          await userLogin.update(
+            { refreshToken },
+            {
+              where: {
+                userId: emailExist.id,
+                device,
+                browser,
+              },
+            }
+          );
+        }
+
+        res.header('Access-Control-Allow-Credentials', true);
+        res.cookie('refreshToken', refreshToken, {
+          maxAge: 28 * 60 * 60 * 1000,
+          httpOnly: false,
+          sameSite: 'None',
+          // secure: 'true',
+        });
+        res.send({
+          userToken: token,
+          userEmail: emailExist.email,
+          userName: emailExist.fullName,
+        });
+      } else {
+        res.status(403).send({
           message: 'user is not verified yet. Please check your email',
         });
       }
-
-      const token = jwt.sign(
-        { email: emailExist.email },
-        process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: '15s' }
-      );
-      const refreshToken = jwt.sign(
-        { email: emailExist.email },
-        process.env.REFRESH_TOKEN_SECRET_KEY,
-        { expiresIn: '1d' }
-      );
-
-      await user.update(
-        { refreshToken },
-        {
-          where: {
-            email: emailExist.email,
-          },
-        }
-      );
-
-      res
-        .header('Access-Control-Allow-Credentials', true)
-        .cookie('refreshToken', refreshToken, {
-          maxAge: 28 * 60 * 60 * 1000,
-          httpOnly: true,
-          sameSite: 'None',
-          secure: 'true',
-        })
-        .json({
-          token,
-        });
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
+    } else {
+      res.status(401).send({ message: 'Invalid email or password' });
     }
   },
-
   resendOTP: async (req, res) => {
     try {
       const { email } = req.body;
@@ -248,6 +255,9 @@ module.exports = {
 
   forgotPassword: async (req, res) => {
     try {
+      const os = req.device.os.name;
+      const browser = req.device.client.name;
+      const device = req.device.device.type;
       const { email } = req.body;
       const emailExist = await user.findOne({
         where: {

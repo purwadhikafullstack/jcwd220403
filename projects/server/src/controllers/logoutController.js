@@ -1,39 +1,49 @@
 const database = require('../models');
 const user = database.user;
+const userLogin = database.login;
 
 const handleLogout = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.refreshToken) return res.sendStatus(204);
   const refreshToken = cookies.refreshToken;
 
-  const foundUser = await user.findOne({
+  const foundUser = await userLogin.findOne({
     where: {
       refreshToken: refreshToken,
     },
-    raw: true,
   });
+
   if (!foundUser) {
     res.clearCookie('refreshToken', {
       httpOnly: true,
       sameSite: 'None',
-      secure: true,
+      // secure: true,
     });
     return res.sendStatus(204);
   }
 
-  await user.update(
-    { refreshToken: '' },
+  // await user.update(
+  //   { refreshToken: null },
+  //   {
+  //     where: {
+  //       refreshToken: refreshToken,
+  //     },
+  //   }
+  // );
+
+  await userLogin.destroy(
+    { refreshToken: null },
     {
       where: {
         refreshToken: refreshToken,
       },
-      raw: true,
     }
   );
+
   res.clearCookie('refreshToken', {
     httpOnly: true,
     sameSite: 'None',
-    secure: 'true',
+    // secure: 'true',
   });
   res.sendStatus(204);
 };
