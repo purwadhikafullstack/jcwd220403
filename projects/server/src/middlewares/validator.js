@@ -23,7 +23,6 @@ exports.loginValidation = [
         where: {
           email: value,
         },
-        raw: true,
       })
       .then((user) => {
         if (!user) {
@@ -40,6 +39,19 @@ exports.loginValidation = [
 exports.registerValidation = [
   check('email', 'Please input your email').notEmpty(),
   check('email', 'Please input a valid email').isEmail(),
+  body('email').custom((value) => {
+    return user
+      .findOne({
+        where: {
+          email: value,
+        },
+      })
+      .then((user) => {
+        if (user) {
+          return Promise.reject('email is already taken');
+        }
+      });
+  }),
   check('password', 'Please input your password').notEmpty(),
   check('password', 'Password should be at least 8 characters')
     .isStrongPassword({
@@ -49,6 +61,16 @@ exports.registerValidation = [
       minNumbers: 1,
     })
     .withMessage(
-      'Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, and one number'
+      'Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
+  body('repeatPassword').custom(async (repeatPassword, { req }) => {
+    const password = req.body.password;
+
+    if (password !== repeatPassword) {
+      throw new Error('Passwords must be same');
+    }
+  }),
+  check('fullName', 'Full Name should be at least three characters').isLength({
+    min: 3,
+  }),
 ];

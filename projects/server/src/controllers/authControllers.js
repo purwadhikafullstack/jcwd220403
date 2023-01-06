@@ -12,15 +12,7 @@ const { OTP_generator } = require('../middlewares/otp_service');
 module.exports = {
   register: async (req, res) => {
     try {
-      const { email, password, fullName, repeatPassword } = req.body;
-
-      if (password !== repeatPassword) {
-        res.status(400).send({ message: 'Password does not match' });
-      }
-
-      if (password.length < 8) {
-        res.status(400).send({ message: 'Password is less than 8 characters' });
-      }
+      const { email, password, fullName } = req.body;
 
       const salt = await bcrypt.genSalt(10);
 
@@ -34,7 +26,7 @@ module.exports = {
       });
 
       const token = jwt.sign({ email: email }, otp, {
-        expiresIn: '5m',
+        expiresIn: '10m',
       });
 
       const tempEmail = fs.readFileSync(
@@ -70,7 +62,6 @@ module.exports = {
           token,
         });
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -120,7 +111,6 @@ module.exports = {
 
       res.status(200).send({ message: 'Verification Sucess!' });
     } catch (err) {
-      console.log(err);
       res.status(400).send(err);
     }
   },

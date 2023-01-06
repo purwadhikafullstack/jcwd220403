@@ -1,9 +1,19 @@
 const router = require('express').Router();
 
 const { authControllers } = require('../controllers');
-const { runValidation, loginValidation } = require('../middlewares/validator');
 
-router.post('/api/register', authControllers.register);
+const {
+  runValidation,
+  loginValidation,
+  registerValidation,
+} = require('../middlewares/validator');
+
+router.post(
+  '/api/register',
+  registerValidation,
+  runValidation,
+  authControllers.register
+);
 router.post(
   '/api/login',
   loginValidation,

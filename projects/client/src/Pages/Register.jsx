@@ -36,7 +36,10 @@ export default function Register() {
     email: Yup.string().email().required('Please enter your email address'),
     password: Yup.string()
       .required('Please enter your password')
-      .min(8, 'Password should be at least eight characters'),
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*.,])(?=.{8,})/,
+        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number, and One Special Character'
+      ),
     repeatPassword: Yup.string().oneOf(
       [Yup.ref('password'), null],
       'Password does not matched'
@@ -53,9 +56,16 @@ export default function Register() {
         res,
         {
           pending: 'Registration on progress...',
-          success:
-            'registration Success! please check your email for verification link 💌',
-          error: 'registration fail 😢',
+          success: {
+            render({ data }) {
+              return `${data.data.message}`;
+            },
+          },
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );
@@ -91,7 +101,7 @@ export default function Register() {
 
             <Formik
               initialValues={{
-                name: '',
+                FullName: '',
                 email: '',
                 password: '',
                 repeatPassword: '',
@@ -99,10 +109,7 @@ export default function Register() {
               validationSchema={registerSchema}
               onSubmit={(values, action) => {
                 handleSubmit(values);
-                // action.setFieldValue('fullName', '');
-                // action.setFieldValue('email', '');
-                // action.setFieldValue('password', '');
-                // action.setFieldValue('repeatPassword', '');
+                action.resetForm();
               }}
             >
               {(props) => {
