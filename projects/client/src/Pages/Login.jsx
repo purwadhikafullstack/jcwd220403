@@ -108,12 +108,16 @@ export default function LoginCard() {
                 </Stack>
                 <Stack spacing={4}>
                   <TextField
+                    require={true}
+                    label='Email'
                     name='email'
                     placeholder='enter email'
                     type='email'
                   />
 
                   <TextField
+                    require={true}
+                    label='Password'
                     name='password'
                     type='password'
                     placeholder='enter password'
