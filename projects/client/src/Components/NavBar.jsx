@@ -111,13 +111,7 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                Jadikan Rumah Anda{' '}
-                <Text display='flex'>
-                  Holistay{' '}
-                  <Center marginLeft='2px'>
-                    <HiOutlineHomeModern size='14px' />
-                  </Center>
-                </Text>
+                Sewakan hunian anda
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>
@@ -171,7 +165,6 @@ const NavBar = () => {
           </Box>
         </Container>
       </Center>
-      <Category />
     </Box>
   );
 };
