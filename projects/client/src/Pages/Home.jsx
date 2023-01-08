@@ -10,8 +10,6 @@ const Home = () => {
     <div>
       <NavBar />
       <Outlet />
-      {/* <HomeCard /> */}
-      {/* <Footer /> */}
       <NavBot />
     </div>
   );
