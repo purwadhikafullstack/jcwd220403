@@ -18,19 +18,18 @@ function ResetPasswordRequest() {
 
   const handleInput = (e) => {
     setEmail(e.target.value);
-    console.log(email);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post(`/forgotPassword`, { email: email });
+      const res = axios.post(`/forgotPassword`, { email });
 
       await toast.promise(
         res,
         {
           pending: 'submitting on progress...',
-          success: 'Email Success!',
+          success: 'Request success, please check your email',
           error: 'Submitting fail 😢',
         },
         { position: toast.POSITION.TOP_CENTER }
@@ -72,7 +71,7 @@ function ResetPasswordRequest() {
             No worries! Enter your email address and we'll send you the
             instructions to reset your password.
           </Center>
-          <FormControl>
+          <FormControl isRequired>
             <Center>
               <Input
                 type='email'

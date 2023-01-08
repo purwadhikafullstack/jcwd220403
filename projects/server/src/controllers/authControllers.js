@@ -244,37 +244,74 @@ module.exports = {
   },
 
   forgotPassword: async (req, res) => {
+    const browser = req.device.client.name;
+    const device = req.device.device.type;
+    const { email } = req.body;
+    const emailExist = await user.findOne({
+      where: {
+        email,
+      },
+      raw: true,
+    });
+
+    if (emailExist === null) {
+      res.status(400).send({ message: 'email is not registered yet' });
+    }
+    if (emailExist.verified == false) {
+      res.status(400).send({
+        message: 'user is not verified yet. Please check your email',
+      });
+    }
+
+    const token = jwt.sign({ email }, process.env.RESET_PASSWORD_SECRET_KEY, {
+      expiresIn: '15m',
+    });
+
+    const tempEmail = fs.readFileSync(
+      './src/emailTemplates/forgotPassword.html',
+      'utf-8'
+    );
+    const tempCompile = handlebars.compile(tempEmail);
+
+    const tempResult = tempCompile({
+      email,
+      browser,
+      device,
+      link: `http://localhost:3000/resetpassword/${emailExist.id}/${token}`,
+    });
+
+    await nodemailer.sendMail({
+      from: 'Admin',
+      to: email,
+      subject: 'Reset Password Request',
+      html: tempResult,
+    });
+
+    res.status(200).send({ message: 'Success', email });
+  },
+
+  resetPassword: async (req, res) => {
+    const { password, id, token } = req.body;
+
     try {
-      const os = req.device.os.name;
-      const browser = req.device.client.name;
-      const device = req.device.device.type;
-      const { email } = req.body;
-      const emailExist = await user.findOne({
-        where: {
-          email,
+      jwt.verify(token, process.env.RESET_PASSWORD_SECRET_KEY);
+      const salt = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(password, salt);
+
+      await user.update(
+        {
+          password: hashPass,
         },
-        raw: true,
-      });
+        {
+          where: {
+            id,
+          },
+        }
+      );
 
-      if (emailExist === null) {
-        res.status(400).send({ message: 'email is not registered yet' });
-      }
-      if (emailExist.verified == false) {
-        res.status(400).send({
-          message: 'user is not verified yet. Please check your email',
-        });
-      }
-
-      const token = jwt.sign({ email }, process.env.RESET_PASSWORD_SECRET_KEY, {
-        expiresIn: '10m',
-      });
-
-      //TODO: finish forgot password
-
-      res.status(200).send('Success');
+      res.status(200).send({ message: 'Reset Password Success' });
     } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
+      res.status(401).send(error.message);
     }
   },
 

@@ -9,6 +9,7 @@ import HomeCard from './Components/Card';
 import Footer from './Components/Footer';
 import Category from './Components/Category';
 import RequireAuth from './Components/RequireAuth';
+import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: '/forgotpassword',
         element: <ResetPasswordRequest />,
+      },
+      {
+        path: '/resetpassword/:id/:token',
+        element: <ResetPassword />,
       },
       //protected routes
       {
