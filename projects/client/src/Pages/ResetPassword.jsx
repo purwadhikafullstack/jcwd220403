@@ -37,8 +37,12 @@ function ResetPassword() {
         res,
         {
           pending: 'submitting on progress...',
-          success: 'Resetting password success',
-          error: 'Resetting fail 😢',
+          success: 'Reset password success',
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );

@@ -6,6 +6,7 @@ const {
   runValidation,
   loginValidation,
   registerValidation,
+  resetPasswordValidation,
 } = require('../middlewares/validator');
 
 router.post(
@@ -23,7 +24,12 @@ router.post(
 router.post('/api/verification/', authControllers.verification);
 router.post('/api/resendOTP/', authControllers.resendOTP);
 router.post('/api/forgotPassword/', authControllers.forgotPassword);
-router.post('/api/resetPassword/', authControllers.resetPassword);
+router.post(
+  '/api/resetPassword/',
+  resetPasswordValidation,
+  runValidation,
+  authControllers.resetPassword
+);
 router.get('/api/test/', authControllers.test);
 
 module.exports = router;

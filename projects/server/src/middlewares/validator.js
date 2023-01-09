@@ -74,3 +74,24 @@ exports.registerValidation = [
     min: 3,
   }),
 ];
+
+exports.resetPasswordValidation = [
+  check('password', 'Please input your password').notEmpty(),
+  check('password', 'Password should be at least 8 characters')
+    .isStrongPassword({
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+    })
+    .withMessage(
+      'Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    ),
+  body('repeatPassword').custom(async (repeatPassword, { req }) => {
+    const password = req.body.password;
+
+    if (password !== repeatPassword) {
+      throw new Error('Passwords must be same');
+    }
+  }),
+];
