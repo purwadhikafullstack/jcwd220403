@@ -132,9 +132,13 @@ module.exports = {
       if (emailExist.verified == true) {
         let payload = { email: emailExist.email, userId: emailExist.id };
 
-        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, {
-          expiresIn: '15s',
-        });
+        const accessToken = jwt.sign(
+          payload,
+          process.env.ACCESS_TOKEN_SECRET_KEY,
+          {
+            expiresIn: '15s',
+          }
+        );
 
         const refreshToken = jwt.sign(
           payload,
@@ -169,10 +173,10 @@ module.exports = {
           maxAge: 28 * 60 * 60 * 1000,
           httpOnly: false,
           sameSite: 'None',
-          // secure: 'true',
+          secure: 'true',
         });
         res.send({
-          userToken: token,
+          accessToken,
           userEmail: emailExist.email,
           userName: emailExist.fullName,
         });

@@ -11,6 +11,7 @@ import Category from './Components/Category';
 import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
+import Users from './Pages/Users';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
           {
             path: '/user',
             element: <User />,
+          },
+          {
+            path: '/users',
+            element: <Users />,
           },
         ],
       },

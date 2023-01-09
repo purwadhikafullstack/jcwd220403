@@ -57,8 +57,8 @@ export default function LoginCard() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      const { userToken } = toastify.data;
-      setAuth({ loginData, userToken });
+      const { accessToken } = toastify.data;
+      setAuth({ loginData: loginData.email, accessToken });
       handleRedirect();
     } catch (error) {
       toast.error(error, {

@@ -135,6 +135,9 @@ const NavBar = () => {
                       <Link to={'/user'}>Profile</Link>
                     </MenuItem>
                     <MenuItem>
+                      <Link to={'/users'}>Profiles</Link>
+                    </MenuItem>
+                    <MenuItem>
                       <Link to={'/trip'}>Trips</Link>
                     </MenuItem>
                     <MenuItem>
