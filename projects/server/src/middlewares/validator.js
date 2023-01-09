@@ -87,11 +87,11 @@ exports.resetPasswordValidation = [
     .withMessage(
       'Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
-  body('repeatPassword').custom(async (repeatPassword, { req }) => {
-    const password = req.body.password;
+  // body('repeatPassword').custom(async (repeatPassword, { req }) => {
+  //   const password = req.body.password;
 
-    if (password !== repeatPassword) {
-      throw new Error('Passwords must be same');
-    }
-  }),
+  //   if (password !== repeatPassword) {
+  //     throw new Error('Passwords must be same');
+  //   }
+  // }),
 ];
