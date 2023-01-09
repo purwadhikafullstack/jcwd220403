@@ -19,10 +19,10 @@ import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '../Components/TextField';
-import UseAuth from '../hooks/UseAuth';
+import useAuth from '../hooks/useAuth';
 
 export default function LoginCard() {
-  const { setAuth } = UseAuth();
+  const { setAuth } = useAuth();
   const [loginSuccess, setLoginSuccess] = useState(false);
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';

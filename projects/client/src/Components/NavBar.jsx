@@ -26,10 +26,10 @@ import LogoOnly from '../Assets/Logo_only.png';
 
 //import component
 import { Link } from 'react-router-dom';
-import UseAuth from '../hooks/UseAuth';
+import useAuth from '../hooks/useAuth';
 
 const NavBar = () => {
-  const { auth } = UseAuth();
+  const { auth } = useAuth();
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const display = useBreakpointValue({
     base: 'none',
