@@ -133,7 +133,7 @@ module.exports = {
         let payload = { email: emailExist.email, userId: emailExist.id };
 
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, {
-          expiresIn: '30s',
+          expiresIn: '15s',
         });
 
         const refreshToken = jwt.sign(
