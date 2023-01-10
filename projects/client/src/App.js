@@ -11,7 +11,7 @@ import Category from './Components/Category';
 import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
-import Users from './Pages/Users';
+import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
 
 const router = createBrowserRouter([

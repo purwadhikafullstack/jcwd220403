@@ -9,7 +9,6 @@ const Users = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let isMounted = true;
     const controller = new AbortController();
 
     const getUsers = async () => {
@@ -18,7 +17,7 @@ const Users = () => {
           signal: controller.signal,
         });
         console.log(response.data.users);
-        isMounted && setUsers(response.data.users);
+        setUsers(response.data.users);
       } catch (err) {
         console.error(err);
         // navigate('/login', { state: { from: location }, replace: true });
@@ -28,7 +27,6 @@ const Users = () => {
     getUsers();
 
     return () => {
-      isMounted = false;
       controller.abort();
     };
   }, []);
