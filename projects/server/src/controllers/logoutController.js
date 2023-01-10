@@ -22,28 +22,16 @@ const handleLogout = async (req, res) => {
     return res.sendStatus(204);
   }
 
-  // await user.update(
-  //   { refreshToken: null },
-  //   {
-  //     where: {
-  //       refreshToken: refreshToken,
-  //     },
-  //   }
-  // );
-
-  await userLogin.destroy(
-    { refreshToken: null },
-    {
-      where: {
-        refreshToken: refreshToken,
-      },
-    }
-  );
+  await userLogin.destroy({
+    where: {
+      refreshToken: refreshToken,
+    },
+  });
 
   res.clearCookie('refreshToken', {
     httpOnly: true,
     sameSite: 'None',
-    secure: 'true',
+    secure: true,
   });
   res.sendStatus(204);
 };
