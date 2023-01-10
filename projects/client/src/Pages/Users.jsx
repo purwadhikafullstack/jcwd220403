@@ -38,8 +38,8 @@ const Users = () => {
       <h2>Users List</h2>
       {users?.length ? (
         <ul>
-          {users.map((user) => (
-            <li>{user?.fullName}</li>
+          {users.map((user, i) => (
+            <li key={i}>{user?.fullName}</li>
           ))}
         </ul>
       ) : (

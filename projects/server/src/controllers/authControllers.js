@@ -171,9 +171,9 @@ module.exports = {
         res.header('Access-Control-Allow-Credentials', true);
         res.cookie('refreshToken', refreshToken, {
           maxAge: 28 * 60 * 60 * 1000,
-          httpOnly: false,
+          httpOnly: true,
           sameSite: 'None',
-          secure: 'true',
+          secure: true,
         });
         res.send({
           accessToken,

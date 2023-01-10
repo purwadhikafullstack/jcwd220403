@@ -12,6 +12,7 @@ import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
 import Users from './Pages/Users';
+import PersistLogin from './Components/PersistLogin';
 
 const router = createBrowserRouter([
   {
@@ -46,15 +47,20 @@ const router = createBrowserRouter([
       },
       //protected routes
       {
-        element: <RequireAuth />,
+        element: <PersistLogin />,
         children: [
           {
-            path: '/user',
-            element: <User />,
-          },
-          {
-            path: '/users',
-            element: <Users />,
+            element: <RequireAuth />,
+            children: [
+              {
+                path: '/user',
+                element: <User />,
+              },
+              {
+                path: '/users',
+                element: <Users />,
+              },
+            ],
           },
         ],
       },
