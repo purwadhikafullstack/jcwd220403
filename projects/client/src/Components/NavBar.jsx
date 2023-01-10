@@ -129,7 +129,7 @@ const NavBar = () => {
                     <Avatar size='sm' name='Devofathurisqi' bgColor='#FE9900' />
                   </Tag>
                 </MenuButton>
-                {auth?.loginData ? (
+                {auth?.accessToken ? (
                   <MenuList zIndex='3' fontFamily='poppins' color='black'>
                     <MenuItem>
                       <Link to={'/user'}>Profile</Link>
