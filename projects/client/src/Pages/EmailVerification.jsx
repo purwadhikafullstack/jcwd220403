@@ -6,9 +6,10 @@ import {
   Stack,
   Center,
   Heading,
+  Spacer,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
+import axios from '../api/axios';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams, Navigate } from 'react-router-dom';
@@ -16,6 +17,8 @@ import { useParams, Navigate } from 'react-router-dom';
 export default function VerifyEmailForm() {
   const [verified, setVerified] = useState(false);
   const [OTP, setOTP] = useState('');
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(0);
   const getTokenFromParams = useParams();
 
   function handleRedirect() {
@@ -28,11 +31,35 @@ export default function VerifyEmailForm() {
     setOTP(e.target.value);
     console.log(OTP);
   };
+
+  const resendOTP = async () => {
+    setMinutes(1);
+    setSeconds(0);
+    try {
+      const cookie = document.cookie;
+      const emailFromCookie = cookie.split('=')[1];
+      const decodeEmailFromCookie = decodeURIComponent(emailFromCookie);
+      const res = axios.post(`/resendOTP`, { email: decodeEmailFromCookie });
+      await toast.promise(
+        res,
+        {
+          pending: 'Resending OTP...',
+          success: 'Resend OTP Success! Please check your email',
+          error: 'Resend OTP Fail fail 😢',
+        },
+        { position: toast.POSITION.TOP_CENTER }
+      );
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = axios.post(
-        `/api/verification?token=${getTokenFromParams.token}`,
+        `/verification?token=${getTokenFromParams.token}`,
         { otp: OTP }
       );
 
@@ -52,10 +79,32 @@ export default function VerifyEmailForm() {
       });
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
   return verified ? (
     <Navigate to='/login' />
   ) : (
-    <div>
+    <section>
       <ToastContainer theme='colored' />
       <Flex
         minH={'100vh'}
@@ -105,8 +154,42 @@ export default function VerifyEmailForm() {
               Verify
             </Button>
           </Stack>
+          <Flex align={'center'}>
+            {seconds > 0 || minutes > 0 ? (
+              <p>
+                Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
+                {seconds < 10 ? `0${seconds}` : seconds}
+              </p>
+            ) : (
+              <p>Didn't recieve code?</p>
+            )}
+            <Spacer />
+            <button
+              disabled={seconds > 0 || minutes > 0}
+              style={
+                seconds > 0 || minutes > 0
+                  ? {
+                      border: '1px solid grey',
+                      background: 'grey',
+                      padding: '4px',
+                      borderRadius: '5px',
+                      color: 'darkgrey',
+                    }
+                  : {
+                      border: '1px solid orange',
+                      background: 'orange',
+                      padding: '4px',
+                      borderRadius: '5px',
+                      color: 'white',
+                    }
+              }
+              onClick={resendOTP}
+            >
+              Resend OTP
+            </button>
+          </Flex>
         </Stack>
       </Flex>
-    </div>
+    </section>
   );
 }

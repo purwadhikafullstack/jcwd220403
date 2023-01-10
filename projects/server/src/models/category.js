@@ -14,10 +14,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   category.init(
     {
-      country: DataTypes.STRING,
-      province: DataTypes.STRING,
-      city: DataTypes.STRING,
-      locationDetail: DataTypes.GEOMETRY('POINT'),
+      country: {
+        type: DataTypes.STRING,
+        allowNull:false
+      },
+      province: {
+        type: DataTypes.STRING,
+        allowNull:false
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull:false
+      },
+      locationDetail: {
+        type: DataTypes.GEOMETRY('POINT'),
+      }
     },
     {
       sequelize,
