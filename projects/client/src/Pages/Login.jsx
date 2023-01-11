@@ -179,3 +179,67 @@ export default function LoginCard() {
     </Formik>
   );
 }
+
+                  <TextField
+                    require={true}
+                    label='Password'
+                    name='password'
+                    type='password'
+                    placeholder='enter password'
+                  />
+                  <Stack spacing={5}>
+                    <Stack
+                      direction={{ base: 'column', sm: 'row' }}
+                      align={'start'}
+                      justify={'space-between'}
+                      gap={10}
+                    >
+                      <Checkbox>Remember me</Checkbox>
+                      <Text color={'blue.400'}>
+                        <RouterLink to='/forgotPassword'>
+                          Forgot password?
+                        </RouterLink>
+                      </Text>
+                    </Stack>
+                    <Button
+                      bg={'blue.400'}
+                      color={'white'}
+                      _hover={{
+                        bg: 'blue.500',
+                      }}
+                      type='submit'
+                      variant='outline'
+                      colorScheme='teal'
+                    >
+                      Login
+                    </Button>
+                    <Divider />
+                    <HStack>
+                      <Button colorScheme='red' leftIcon={<FaGoogle />}>
+                        Google
+                      </Button>
+                      <Button colorScheme='facebook' leftIcon={<FaFacebook />}>
+                        Facebook
+                      </Button>
+                      <Button colorScheme='twitter' leftIcon={<FaTwitter />}>
+                        Twitter
+                      </Button>
+                    </HStack>
+                    <Stack direction={'horizontal'}>
+                      <Text align={'center'} marginRight={2}>
+                        Need an account?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/register'}>Register here</RouterLink>
+                      </Text>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Stack>
+          </Flex>
+        </section>
+      )}
+    </Formik>
+  );
+}

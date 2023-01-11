@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Container,
@@ -25,11 +26,18 @@ import Logo from '../Assets/Logo.png';
 import LogoOnly from '../Assets/Logo_only.png';
 
 //import component
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import Category from './Category';
+import { useSelector } from "react-redux"
 
 const NavBar = () => {
+  const location = useLocation()
+  const OnlyHome = location.pathname === "/"
+  const isDoneCreateData = useSelector((state) => state.DoneCreatePropertiesSlice.isDone)
   const { auth } = useAuth();
+
+
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const display = useBreakpointValue({
     base: 'none',
@@ -110,7 +118,9 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                List your property
+                <Link to={isDoneCreateData ? "/dashboard" : "/tenant"}>
+                  {isDoneCreateData ? "Your Dashboard" : "List your Property"}
+                </Link>
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>
@@ -176,17 +186,20 @@ const NavBar = () => {
                   boxShadow='md'
                   color='black'
                 />
-                <MenuList color='black' zIndex='3'>
-                  <MenuItem>New Tab</MenuItem>
-                  <MenuItem>New Window</MenuItem>
-                  <MenuItem>Open Closed Tab</MenuItem>
-                  <MenuItem>Open File...</MenuItem>
+                <MenuList color='black' zIndex='3' fontFamily="poppins">
+                  <MenuItem>Register</MenuItem>
+                  <MenuItem>Login</MenuItem>
+                  <MenuDivider />
+                  <MenuItem>List Your Property</MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Help</MenuItem>
                 </MenuList>
               </Menu>
             </Box>
           </Box>
         </Container>
       </Center>
+      {OnlyHome ? <Category /> : null}
     </Box>
   );
 };

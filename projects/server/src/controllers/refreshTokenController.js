@@ -1,6 +1,6 @@
-require('dotenv').config();
-const database = require('../models');
-const jwt = require('jsonwebtoken');
+require("dotenv").config();
+const database = require("../models");
+const jwt = require("jsonwebtoken");
 
 const userLogin = database.login;
 
@@ -45,11 +45,13 @@ const handleRefreshToken = async (req, res) => {
       const accessToken = jwt.sign(
         { email: decoded.email, userId: jwt.decode.userId },
         process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: '15m' }
+        { expiresIn: "15m" }
       );
       res.json({ accessToken });
     }
   );
 };
+
+module.exports = { handleRefreshToken };
 
 module.exports = { handleRefreshToken };

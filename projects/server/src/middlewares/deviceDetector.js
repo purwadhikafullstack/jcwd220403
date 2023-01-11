@@ -1,5 +1,5 @@
-const DeviceDetector = require('node-device-detector');
-const ClientHints = require('node-device-detector/client-hints');
+const DeviceDetector = require("node-device-detector");
+const ClientHints = require("node-device-detector/client-hints");
 
 const deviceDetector = new DeviceDetector({
   clientIndexes: true,
@@ -9,7 +9,7 @@ const deviceDetector = new DeviceDetector({
 const clientHints = new ClientHints();
 
 const middlewareDetect = (req, res, next) => {
-  const useragent = req.headers['user-agent'];
+  const useragent = req.headers["user-agent"];
   const clientHintsData = clientHints.parse(res.headers);
 
   req.useragent = useragent;
@@ -17,5 +17,7 @@ const middlewareDetect = (req, res, next) => {
 
   next();
 };
+
+module.exports = middlewareDetect;
 
 module.exports = middlewareDetect;

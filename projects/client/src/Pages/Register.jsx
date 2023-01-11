@@ -258,3 +258,107 @@ export default function Register() {
     </section>
   );
 }
+
+                                                        <InputRightElement h={'full'}>
+                                                            <Button
+                                                                variant={'ghost'}
+                                                                onClick={() =>
+                                                                    setShowPassword(
+                                                                        (showPassword) => !showPassword
+                                                                    )
+                                                                }
+                                                            >
+                                                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                                            </Button>
+                                                        </InputRightElement>
+                                                    </InputGroup>
+                                                    <ErrorMessage
+                                                        component='div'
+                                                        name='password'
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                </FormControl>
+                                                <FormControl isRequired>
+                                                    <FormLabel htmlFor='repeatPassword'>
+                                                        Confirm Password
+                                                    </FormLabel>
+                                                    <InputGroup>
+                                                        <Field
+                                                            as={Input}
+                                                            type={showRepeatPassword ? 'text' : 'password'}
+                                                            name='repeatPassword'
+                                                            variant='filled'
+                                                        />
+                                                        <InputRightElement h={'full'}>
+                                                            <Button
+                                                                variant={'ghost'}
+                                                                onClick={() =>
+                                                                    setShowRepeatPassword(
+                                                                        (showRepeatPassword) => !showRepeatPassword
+                                                                    )
+                                                                }
+                                                            >
+                                                                {showRepeatPassword ? (
+                                                                    <ViewIcon />
+                                                                ) : (
+                                                                    <ViewOffIcon />
+                                                                )}
+                                                            </Button>
+                                                        </InputRightElement>
+                                                    </InputGroup>
+                                                    <ErrorMessage
+                                                        component='div'
+                                                        name='repeatPassword'
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    type='submit'
+                                                    width='100%'
+                                                    bg={'blue.400'}
+                                                    color={'white'}
+                                                    _hover={{
+                                                        bg: 'blue.500',
+                                                    }}
+                                                >
+                                                    Register
+                                                </Button>
+                                                <Divider />
+                                                <HStack>
+                                                    <Button colorScheme='red' leftIcon={<FaGoogle />}>
+                                                        Google
+                                                    </Button>
+                                                    <Button
+                                                        colorScheme='facebook'
+                                                        leftIcon={<FaFacebook />}
+                                                    >
+                                                        Facebook
+                                                    </Button>
+                                                    <Button
+                                                        colorScheme='twitter'
+                                                        leftIcon={<FaTwitter />}
+                                                    >
+                                                        Twitter
+                                                    </Button>
+                                                </HStack>
+                                                <Divider />
+                                                <Stack direction={'horizontal'}>
+                                                    <Text align={'center'} marginRight={2}>
+                                                        Already a user?
+                                                    </Text>
+                                                    <Text color={'blue.400'} fontWeight={'bold'}>
+                                                        <RouterLink to={'/login'}>Login here</RouterLink>
+                                                    </Text>
+                                                </Stack>
+                                            </VStack>
+                                        </Form>
+                                    </>
+                                );
+                            }}
+                        </Formik>
+                    </Box>
+                </Stack>
+            </Flex>
+        </section>
+    );
+}

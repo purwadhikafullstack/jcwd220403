@@ -1,35 +1,37 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const { authControllers } = require('../controllers');
+const { authControllers } = require("../controllers");
 
 const {
   runValidation,
   loginValidation,
   registerValidation,
   resetPasswordValidation,
-} = require('../middlewares/validator');
+} = require("../middlewares/validator");
 
 router.post(
-  '/api/register',
+  "/api/register",
   registerValidation,
   runValidation,
   authControllers.register
 );
 router.post(
-  '/api/login',
+  "/api/login",
   loginValidation,
   runValidation,
   authControllers.login
 );
-router.post('/api/verification/', authControllers.verification);
-router.post('/api/resendOTP/', authControllers.resendOTP);
-router.post('/api/forgotPassword/', authControllers.forgotPassword);
+router.post("/api/verification/", authControllers.verification);
+router.post("/api/resendOTP/", authControllers.resendOTP);
+router.post("/api/forgotPassword/", authControllers.forgotPassword);
 router.post(
-  '/api/resetPassword/',
+  "/api/resetPassword/",
   resetPasswordValidation,
   runValidation,
   authControllers.resetPassword
 );
-router.get('/api/test/', authControllers.test);
+router.get("/api/test/", authControllers.test);
+
+module.exports = router;
 
 module.exports = router;

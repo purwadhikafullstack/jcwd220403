@@ -95,3 +95,9 @@ exports.resetPasswordValidation = [
   //   }
   // }),
 ];
+
+    //   if (password !== repeatPassword) {
+    //     throw new Error('Passwords must be same');
+    //   }
+    // }),
+];

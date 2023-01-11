@@ -42,3 +42,5 @@ const useAxiosPrivate = () => {
 };
 
 export default useAxiosPrivate;
+
+export default useAxiosPrivate;

@@ -5,11 +5,20 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const verifyJWT = require('./middlewares/verifyJWT');
-const { authRouters, userRouters, refresh, logout } = require('./routers');
+const { authRouters, userRouters, refresh, logout, tenantRouters } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
 const app = express();
+const allowOrigins = ['http://localhost:3000'];
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    if (allowOrigins.includes(origin)) return callback(null, true);
+
+    callback(new Error('Not allowed by CORS'));
+  },
+};
 const allowOrigins = ['http://localhost:3000'];
 const corsOptions = {
   credentials: true,
@@ -28,9 +37,20 @@ app.use(
   //       process.env.WHITELISTED_DOMAIN.split(','),
   //   ],
   // }
+  cors(corsOptions)
+  // cors()
+  // {
+  //   origin: [
+  //     process.env.WHITELISTED_DOMAIN &&
+  //       process.env.WHITELISTED_DOMAIN.split(','),
+  //   ],
+  // }
 );
 app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(bearerToken());
+app.use(cookieParser());
 app.use(bearerToken());
 app.use(cookieParser());
 
@@ -41,6 +61,10 @@ app.use(cookieParser());
 
 app.use(refresh);
 app.use(logout);
+
+app.use(tenantRouters)
+// app.use(express.static("./public/propertyPicture"))
+// app.use(express.static(join(__dirname, "../public/propertyPicture")));
 
 app.use(middlewareDetect);
 app.use(authRouters);
@@ -60,6 +84,7 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/greetings', (req, res, next) => {
+app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
     message: 'Hello, Student !',
   });
@@ -71,6 +96,8 @@ app.get('/api/greetings', (req, res, next) => {
 app.use((req, res, next) => {
   if (req.path.includes('/api/')) {
     res.status(404).send('Not found !');
+  if (req.path.includes('/api/')) {
+    res.status(404).send('Not found !');
   } else {
     next();
   }
@@ -78,6 +105,9 @@ app.use((req, res, next) => {
 
 // error
 app.use((err, req, res, next) => {
+  if (req.path.includes('/api/')) {
+    console.error('Error : ', err.stack);
+    res.status(500).send('Error !');
   if (req.path.includes('/api/')) {
     console.error('Error : ', err.stack);
     res.status(500).send('Error !');
@@ -112,3 +142,16 @@ app.listen(PORT, (err) => {
 
 // user.sync({ alter: true });
 // login.sync({ alter: true });
+
+// const user = database.user;
+// const login = database.login;
+
+// user.sync({ alter: true });
+// login.sync({ alter: true });
+
+// const user = database.user;
+// const login = database.login;
+
+// user.sync({ alter: true });
+// login.sync({ alter: true });
+// database.sequelize.sync({ alter: true });

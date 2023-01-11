@@ -5,3 +5,5 @@ function User() {
 }
 
 export default User;
+
+export default User;

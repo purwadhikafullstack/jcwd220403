@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class category extends Model {
     /**
@@ -14,14 +14,25 @@ module.exports = (sequelize, DataTypes) => {
   }
   category.init(
     {
-      country: DataTypes.STRING,
-      province: DataTypes.STRING,
-      city: DataTypes.STRING,
-      locationDetail: DataTypes.GEOMETRY('POINT'),
+      country: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      province: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      locationDetail: {
+        type: DataTypes.GEOMETRY("POINT"),
+      },
     },
     {
       sequelize,
-      modelName: 'category',
+      modelName: "category",
     }
   );
   return category;

@@ -19,3 +19,5 @@ const useRefreshToken = () => {
 };
 
 export default useRefreshToken;
+
+export default useRefreshToken;
