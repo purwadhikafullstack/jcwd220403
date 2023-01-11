@@ -33,6 +33,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
+app.use(authRouters);
+app.use(userRouters);
 
 //#region API ROUTES
 
@@ -89,7 +91,7 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = '../../client/build';
+const clientPath = '../public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page

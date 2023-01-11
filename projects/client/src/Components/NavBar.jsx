@@ -24,7 +24,6 @@ import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Logo from '../Assets/Logo.png';
 import LogoOnly from '../Assets/Logo_only.png';
 
-//import component
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 

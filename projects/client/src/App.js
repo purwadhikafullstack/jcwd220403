@@ -13,6 +13,8 @@ import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
 import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
+import Profile from './Pages/Profile';
+import "./Styles/swall.css"
 
 const router = createBrowserRouter([
   {

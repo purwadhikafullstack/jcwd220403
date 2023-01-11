@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       photo: {
         type: DataTypes.STRING,
-        defaultValue: '/public/profilePicture/default_profile_picture.jpg',
+        defaultValue: 'default_profile_picture.jpg',
       },
       location: {
         type: DataTypes.GEOMETRY('POINT'),
