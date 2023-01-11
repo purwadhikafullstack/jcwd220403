@@ -26,6 +26,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "../api/axios";
 import { ChangeEmail } from "./ChangeEmail";
 import { ChangePass } from "./ChangePass";
+import Swal from "sweetalert2";
 
 function ProfileSetting() {
     const [open, setOpen] = useState(false)
@@ -77,7 +78,14 @@ function ProfileSetting() {
                 id
             };
             const result = await axios.patch("/user/profile", user);
-            alert(result.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Succes...',
+                text: `${result.data}`,
+                customClass: {
+                    container: 'my-swal'
+                }
+            })
             window.location.reload()
         } catch (err) {
             console.log(err)
@@ -107,6 +115,11 @@ function ProfileSetting() {
         setImage({ images: "" });
     };
 
+    function ClosePP() {
+        onClose()
+        setImage("")
+    }
+
     useEffect(() => {
         getData()
     }, [image])
@@ -128,10 +141,8 @@ function ProfileSetting() {
                             <Avatar size='md' name={user.fullName} src={'http://localhost:2000/profilePicture/' +user.photo}/>
                             <Text _hover={{ cursor: "pointer" }} as="u" fontWeight="bold" onClick={onOpen} fontSize="sm">Perbarui Foto</Text>
                             <Modal
-                                initialFocusRef={initialRef}
-                                finalFocusRef={finalRef}
                                 isOpen={isOpen}
-                                onClose={onClose}
+                                onClose={ClosePP}
                             >
                                 <ModalOverlay />
                                 <ModalBody p={6}>  
@@ -144,7 +155,7 @@ function ProfileSetting() {
                                         </Box>
                                     </Flex>
                                     <Flex  p="6"  bg='white' maxW='40rem' justifyContent="right" borderBottomRadius="2xl">
-                                        <Button width="32" disabled={image} colorScheme="teal" onClick={() => {handleUpload(); onClose()}}> Ubah</Button>
+                                        <Button width="32" disabled={!image} colorScheme="teal" onClick={() => {handleUpload(); onClose()}}> Ubah</Button>
                                     </Flex>
                                 </ModalContent>
                                 </ModalBody>
@@ -203,7 +214,7 @@ function ProfileSetting() {
                                 initialFocusRef={initialRef}
                                 finalFocusRef={finalRef}
                                 isOpen={isOpen}
-                                onClose={onClose}
+                                onClose={ClosePP}
                             >
                                 <ModalOverlay />
                                 <ModalBody p={6}>  
@@ -216,7 +227,7 @@ function ProfileSetting() {
                                         </Box>
                                     </Flex>
                                     <Flex  p="6"  bg='white' maxW='40rem' justifyContent="right" borderBottomRadius="2xl">
-                                        <Button width="32" colorScheme="teal" onClick={() => {handleUpload(); onClose()}}> Ubah</Button>
+                                        <Button width="32" disabled={!image} colorScheme="teal" onClick={() => {handleUpload(); onClose()}}> Ubah</Button>
                                     </Flex>
                                 </ModalContent>
                                 </ModalBody>
