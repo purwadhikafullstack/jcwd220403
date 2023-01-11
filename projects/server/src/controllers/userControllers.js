@@ -1,12 +1,11 @@
 const database = require("../models");
 const user = database.user;
-const database = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('../helpers/nodemailer');
+const nodemailer = require('../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
-const { OTP_generator } = require('../helpers/otp_service');
+const { OTP_generator } = require('../middlewares/otp_service');
 
 module.exports = {
     users: async (req, res) => {
@@ -20,23 +19,22 @@ module.exports = {
             console.log(error);
             res.status(400).send(error);
             }
-        },
-        
-        userById: async (req, res) => {
-            try {
-            const { id } = req.params;
-            const userById = await user.findOne({
-                where: {
-                id,
-                },
-            });
-        
-            res.json({ userById });
-            } catch (error) {
-            console.log(error);
-            res.status(400).send(error);
-            }
-        },
+    },
+    userById: async (req, res) => {
+        try {
+        const { id } = req.params;
+        const userById = await user.findOne({
+            where: {
+            id,
+            },
+        });
+    
+        res.json({ userById });
+        } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+        }
+    },
     getUser: async (req, res) => {
         try {
             const isAccountExist = await user.findOne({
@@ -150,6 +148,8 @@ module.exports = {
             const token = jwt.sign({ email: email }, otp, {
                 expiresIn: '5m',
             });
+            console.log(email)
+            console.log(token)
         
             const tempEmail = fs.readFileSync(
                 './src/emailTemplates/otpEmail.html',
@@ -180,9 +180,9 @@ module.exports = {
         }
     },
     verification: async (req, res) => {
-        const { otp, token } = req.body;
+        const { otp, email } = req.body;
         try {
-            const verify = jwt.verify(token, otp);
+            const verify = jwt.verify(email, otp);
             if(!verify) throw "Wrong Code OTP"
 
             await user.update({ email: verify.email, }, {
@@ -193,10 +193,10 @@ module.exports = {
             
             const token2 = jwt.sign(
                 { email: verify.email },
-                process.env.JWT_SECRET_KEY
+                process.env.ACCESS_TOKEN_SECRET_KEY
             );
 
-            res.status(200).send({message : 'Verification Sucess!', token : token2});
+            res.status(200).send({message : 'Verification Sucess!', token : token2, email: verify.email});
         } catch (err) {
             console.log(err);
             res.status(400).send(err);

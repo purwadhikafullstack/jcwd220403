@@ -24,11 +24,20 @@ import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Logo from '../Assets/Logo.png';
 import LogoOnly from '../Assets/Logo_only.png';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLogout';
 
 const NavBar = () => {
   const { auth } = useAuth();
+  const logout = useLogout();
+  const navigate = useNavigate()
+
+  const signOut = async () => {
+    await logout();
+    navigate('/');
+  };
+  
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const display = useBreakpointValue({
     base: 'none',
@@ -146,7 +155,7 @@ const NavBar = () => {
                     <MenuItem>List Your Property</MenuItem>
                     <MenuDivider />
                     <MenuItem>Help</MenuItem>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={signOut}>Logout</MenuItem>
                   </MenuList>
                 ) : (
                   <MenuList zIndex='3' fontFamily='poppins' color='black'>

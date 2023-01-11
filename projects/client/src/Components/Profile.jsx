@@ -27,6 +27,7 @@ import axios from "../api/axios";
 import { ChangeEmail } from "./ChangeEmail";
 import { ChangePass } from "./ChangePass";
 import Swal from "sweetalert2";
+import useAuth from '../hooks/useAuth';
 
 function ProfileSetting() {
     const [open, setOpen] = useState(false)
@@ -39,28 +40,13 @@ function ProfileSetting() {
     const fullName = useRef("");
     const gender = useRef("");
     const birthdate = useRef("");
-
-    function getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-            }
-            return "";
-        }
+    const { auth } = useAuth();
 
     const getData = async () => {
         try {
             const res = await axios.get("/user", {
                 headers: {
-                    Authorization: `Bearer ${getCookie("token")}`,
+                    Authorization: `Bearer ${auth.accessToken}`,
                 },
             });
             setUser(res.data)
@@ -86,7 +72,7 @@ function ProfileSetting() {
                     container: 'my-swal'
                 }
             })
-            window.location.reload()
+            // window.location.reload()
         } catch (err) {
             console.log(err)
             console.log(err.response.data);
@@ -108,7 +94,7 @@ function ProfileSetting() {
         {
             headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${getCookie("token")}`,
+            Authorization: `Bearer ${auth.accessToken}`,
             },
         }
         );
