@@ -7,29 +7,12 @@ import * as Yup from "yup";
 import { Field, ErrorMessage, Formik, Form } from "formik";
 import Swal from 'sweetalert2'
 import { useState } from "react";
-
-
+import useAuth from '../hooks/useAuth';
 
 export const ChangePass = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [open, setOpen] = useState(false)
-
-    function getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-            }
-            return "";
-        }
-
+    const { auth } = useAuth();
 
     const registerSchema = Yup.object().shape({
         password: Yup.string().required('Please enter your password').min(8, "Password should be at least eight characters"),
@@ -44,7 +27,7 @@ export const ChangePass = () => {
                 data,
                 {
                     headers: {
-                        Authorization: `Bearer ${getCookie("token")}`,
+                        Authorization: `Bearer ${auth.accessToken}`,
                     },
                 }
             );
@@ -78,7 +61,7 @@ export const ChangePass = () => {
                 { oldPassword },
                 {
                     headers: {
-                        Authorization: `Bearer ${getCookie("token")}`,
+                        Authorization: `Bearer ${auth.accessToken}`,
                     },
                 }
             );

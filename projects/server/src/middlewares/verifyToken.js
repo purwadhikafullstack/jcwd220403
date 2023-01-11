@@ -11,7 +11,7 @@ module.exports = {
 
             if (token === null) throw "unauthorized request";
 
-            let verifiedUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+            let verifiedUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
             if (!verifiedUser) throw "Verify token failed";
 

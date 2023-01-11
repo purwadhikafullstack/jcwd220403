@@ -7,6 +7,9 @@ import * as Yup from "yup";
 import { Field, ErrorMessage, Formik, Form } from "formik";
 import Swal from 'sweetalert2'
 import { useState, useRef } from "react";
+import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLogout';
+import { useNavigate } from 'react-router-dom';
 
 export const ChangeEmail = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -19,29 +22,9 @@ export const ChangeEmail = () => {
     const otp5 = useRef("")
     const otp6 = useRef("")
     const email = localStorage.getItem("email")
-
-    function setCookie(cname, cvalue, exdays) {
-        const d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        let expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    function getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-            }
-            return "";
-        }
+    const logout = useLogout();
+    const { auth } = useAuth();
+    const navigate = useNavigate()
 
     const registerSchema = Yup.object().shape({
         email: Yup.string().email().required('Please enter your email address')
@@ -61,6 +44,11 @@ export const ChangeEmail = () => {
         }
     )
     });
+
+    const signOut = async () => {
+        await logout();
+        navigate('/login');
+      };
 
     const onChangeEmail = async (data) => {
         try {
@@ -101,7 +89,7 @@ export const ChangeEmail = () => {
                 { oldPassword },
                 {
                     headers: {
-                        Authorization: `Bearer ${getCookie("token")}`,
+                        Authorization: `Bearer ${auth.accessToken}`,
                     },
                 }
             );
@@ -125,11 +113,9 @@ export const ChangeEmail = () => {
     
             const res = await axios.post("user/verification", { otp, email },
                 {   headers: {
-                        Authorization: `Bearer ${getCookie("token")}`,}
+                        Authorization: `Bearer ${auth.accessToken}`,}
                 },
             );
-
-            setCookie("token", res.data.token, 1)
 
             Swal.fire({
                 icon: 'success',
@@ -139,7 +125,8 @@ export const ChangeEmail = () => {
                     container: 'my-swal'
                 }
             })
-            localStorage.removeItem("token")
+            localStorage.removeItem("email")
+            signOut()
 
         } catch (err) {
             Swal.fire({
@@ -200,7 +187,7 @@ export const ChangeEmail = () => {
             </Center>
         </FormControl>
             <Flex justify="space-between">
-                <Button onClick={() => {localStorage.removeItem("token"); onClose()}}>Cancel</Button>
+                <Button onClick={() => {localStorage.removeItem("email"); onClose()}}>Cancel</Button>
                 <Button onClick={onVerification} bg={'teal.400'} color={'white'} _hover={{ bg: 'teal.500', }}> Verify </Button>
             </Flex>
         </Stack>

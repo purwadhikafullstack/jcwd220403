@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { userControllers } = require('../controllers');
-const { verifyToken } = require('../helpers/verifyToken');
-const { multerUpload } = require("../helpers/multer");
+const { verifyToken } = require('../middlewares/verifyToken');
+const { multerUpload } = require("../middlewares/multer");
 
 router.get('/', (req, res) => {
   res.status(200).send('home');

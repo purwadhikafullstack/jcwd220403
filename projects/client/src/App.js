@@ -9,7 +9,7 @@ import HomeCard from "./Components/Card";
 import Footer from "./Components/Footer";
 import RequireAuth from "./Components/RequireAuth";
 import ResetPassword from "./Pages/ResetPassword";
-import User from "./Pages/User";
+import Profile from "./Pages/Profile";
 import Users from "./Pages/TestingUsers";
 import PersistLogin from "./Components/PersistLogin";
 import BeTenant from "./Pages/BeTenant";
@@ -55,8 +55,8 @@ const router = createBrowserRouter([
             element: <RequireAuth />,
             children: [
               {
-                path: "/user",
-                element: <User />,
+                path: '/user',
+                element: <Profile />,
               },
               {
                 path: "/users",
