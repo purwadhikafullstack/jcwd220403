@@ -119,16 +119,4 @@ app.listen(PORT, (err) => {
 
 // user.sync({ alter: true });
 // login.sync({ alter: true });
-
-// const user = database.user;
-// const login = database.login;
-
-// user.sync({ alter: true });
-// login.sync({ alter: true });
-
-// const user = database.user;
-// const login = database.login;
-
-// user.sync({ alter: true });
-// login.sync({ alter: true });
 // database.sequelize.sync({ alter: true });
