@@ -1,20 +1,22 @@
-const multer = require("multer")
-// const test = require("../public/propertyPicture")
+
+const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/propertyPicture');
+    cb(null, "Public/profilePicture");
   },
   filename: (req, file, cb) => {
     cb(
       null,
-      "L-IMG" +
+
+      "PIMG" +
         "-" +
         Date.now() +
-        Math.round(Math.random() * 1000) +
+        Math.round(Math.random() * 100000) +
         "." +
         file.mimetype.split("/")[1]
     );
+    // console.log(file);
   },
 });
 

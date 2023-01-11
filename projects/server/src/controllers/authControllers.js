@@ -15,7 +15,6 @@ module.exports = {
       const { email, password, fullName } = req.body;
 
       const salt = await bcrypt.genSalt(10);
-
       const hashPass = await bcrypt.hash(password, salt);
       const otp = OTP_generator();
 

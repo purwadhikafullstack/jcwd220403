@@ -7,7 +7,6 @@ import Register from "./Pages/Register";
 import ResetPasswordRequest from "./Pages/ResetPasswordRequest";
 import HomeCard from "./Components/Card";
 import Footer from "./Components/Footer";
-import Category from "./Components/Category";
 import RequireAuth from "./Components/RequireAuth";
 import ResetPassword from "./Pages/ResetPassword";
 import User from "./Pages/User";
@@ -15,8 +14,8 @@ import Users from "./Pages/TestingUsers";
 import PersistLogin from "./Components/PersistLogin";
 import BeTenant from "./Pages/BeTenant";
 import Dashboard from "./Pages/Dashboard";
-import NavBar from "./Components/NavBar";
 import BasicUsage from "./Components/AlertSuccess";
+import "./Styles/swall.css"
 
 const router = createBrowserRouter([
   {

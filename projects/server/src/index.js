@@ -19,15 +19,6 @@ const corsOptions = {
     callback(new Error('Not allowed by CORS'));
   },
 };
-const allowOrigins = ['http://localhost:3000'];
-const corsOptions = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (allowOrigins.includes(origin)) return callback(null, true);
-
-    callback(new Error('Not allowed by CORS'));
-  },
-};
 app.use(
   cors(corsOptions)
   // cors()
@@ -37,22 +28,14 @@ app.use(
   //       process.env.WHITELISTED_DOMAIN.split(','),
   //   ],
   // }
-  cors(corsOptions)
-  // cors()
-  // {
-  //   origin: [
-  //     process.env.WHITELISTED_DOMAIN &&
-  //       process.env.WHITELISTED_DOMAIN.split(','),
-  //   ],
-  // }
 );
-app.use(express.urlencoded({ extended: false }));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
-app.use(bearerToken());
-app.use(cookieParser());
+app.use(authRouters);
+app.use(userRouters);
 
 //#region API ROUTES
 
@@ -84,7 +67,6 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/greetings', (req, res, next) => {
-app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
     message: 'Hello, Student !',
   });
@@ -94,8 +76,6 @@ app.get('/api/greetings', (req, res, next) => {
 
 // not found
 app.use((req, res, next) => {
-  if (req.path.includes('/api/')) {
-    res.status(404).send('Not found !');
   if (req.path.includes('/api/')) {
     res.status(404).send('Not found !');
   } else {
@@ -108,9 +88,6 @@ app.use((err, req, res, next) => {
   if (req.path.includes('/api/')) {
     console.error('Error : ', err.stack);
     res.status(500).send('Error !');
-  if (req.path.includes('/api/')) {
-    console.error('Error : ', err.stack);
-    res.status(500).send('Error !');
   } else {
     next();
   }
@@ -119,7 +96,7 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = '../../client/build';
+const clientPath = '../public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page
