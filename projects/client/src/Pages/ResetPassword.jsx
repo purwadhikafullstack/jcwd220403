@@ -120,5 +120,3 @@ function ResetPassword() {
 }
 
 export default ResetPassword;
-
-export default ResetPassword;
