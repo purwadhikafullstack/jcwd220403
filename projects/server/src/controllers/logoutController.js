@@ -1,5 +1,4 @@
 const database = require('../models');
-const user = database.user;
 const userLogin = database.login;
 
 const handleLogout = async (req, res) => {

@@ -25,7 +25,7 @@ import Logo from '../Assets/Logo.png';
 import LogoOnly from '../Assets/Logo_only.png';
 
 //import component
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
 

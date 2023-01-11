@@ -42,6 +42,7 @@ app.use(cookieParser());
 app.use(refresh);
 app.use(logout);
 
+//device detection
 app.use(middlewareDetect);
 app.use(authRouters);
 

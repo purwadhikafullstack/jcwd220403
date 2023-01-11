@@ -18,10 +18,15 @@ import { useParams } from 'react-router-dom';
 
 function ResetPassword() {
   const [password, setPassword] = useState('');
+  // const [inputs, setInputs] = useState({
+  //   password: '',
+  //   repeatPassword: ''
+  // })
   const getParams = useParams();
 
   const handleInput = (e) => {
     setPassword(e.target.value);
+    // setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -98,6 +103,7 @@ function ResetPassword() {
                 type='password'
                 name='confirmPassword'
                 textAlign={'center'}
+                // onChange={handleInput}
               />
             </FormControl>
           </VStack>
