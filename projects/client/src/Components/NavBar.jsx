@@ -21,17 +21,16 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { HiOutlineHomeModern } from 'react-icons/hi2';
-import Logo from '../Asset/Logo.png';
-import LogoOnly from '../Asset/Logo_only.png';
+import Logo from '../Assets/Logo.png';
+import LogoOnly from '../Assets/Logo_only.png';
 
 //import component
-import Category from './Category';
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const NavBar = () => {
+  const { auth } = useAuth();
   const [isMobile] = useMediaQuery('(max-width: 481px)');
-
   const display = useBreakpointValue({
     base: 'none',
     md: 'none',
@@ -70,21 +69,21 @@ const NavBar = () => {
           }}
         >
           <Box display='flex' alignItems='center'>
-            <Box>
+            <Link to={'/'}>
+              <Box>
+                <Image
+                  src={Logo}
+                  width={logoTabletAndDesktop}
+                  display={displayTablet}
+                />
+              </Box>
               <Image
-                src={Logo}
-                width={logoTabletAndDesktop}
-                cursor='pointer'
-                display={displayTablet}
+                src={LogoOnly}
+                width='30px'
+                display={displayLogoOnly}
+                marginRight='5px'
               />
-            </Box>
-            <Image
-              src={LogoOnly}
-              width='30px'
-              cursor='pointer'
-              display={displayLogoOnly}
-              marginRight='5px'
-            />
+            </Link>
             <Box width='auto'>
               <InputGroup>
                 <InputLeftElement children={<SearchIcon color='#fea012' />} />
@@ -111,13 +110,7 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                Jadikan Rumah Anda{' '}
-                <Text display='flex'>
-                  Holistay{' '}
-                  <Center marginLeft='2px'>
-                    <HiOutlineHomeModern size='14px' />
-                  </Center>
-                </Text>
+                List your property
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>
@@ -136,17 +129,40 @@ const NavBar = () => {
                     <Avatar size='sm' name='Devofathurisqi' bgColor='#FE9900' />
                   </Tag>
                 </MenuButton>
-                <MenuList zIndex='3' fontFamily='poppins' color='black'>
-                  <MenuItem>
-                    <Link to={'/register'}>Register</Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to={'/login'}>Login</Link>
-                  </MenuItem>
-                  <MenuDivider />
-                  <MenuItem>Make Your Home Holistay</MenuItem>
-                  <MenuItem>Heko</MenuItem>
-                </MenuList>
+                {auth?.accessToken ? (
+                  <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                    <MenuItem>
+                      <Link to={'/user'}>Profile</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={'/users'}>Profiles</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={'/trip'}>Trips</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={'/review'}>Reviews</Link>
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem>List Your Property</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Help</MenuItem>
+                    <MenuItem>Logout</MenuItem>
+                  </MenuList>
+                ) : (
+                  <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                    <MenuItem>
+                      <Link to={'/register'}>Register</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={'/login'}>Login</Link>
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem>List Your Property</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Help</MenuItem>
+                  </MenuList>
+                )}
               </Menu>
             </Box>
             <Box marginLeft='auto' display={displayLogoOnly}>
@@ -171,7 +187,6 @@ const NavBar = () => {
           </Box>
         </Container>
       </Center>
-      <Category />
     </Box>
   );
 };

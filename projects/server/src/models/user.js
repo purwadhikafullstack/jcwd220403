@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       user.hasOne(models.tenant);
       user.hasMany(models.transaction);
+      user.hasMany(models.login);
     }
   }
   user.init(
@@ -69,9 +70,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      otp: {
-        type: DataTypes.STRING,
       },
     },
     {
