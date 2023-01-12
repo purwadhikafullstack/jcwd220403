@@ -13,6 +13,10 @@ import ResetPassword from './Pages/ResetPassword';
 import User from './Pages/User';
 import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
+//host
+import HostHome from './Pages/admin/HostHome';
+import RegisterWelcome from './Components/Admin/RegisterWelcome';
+import VerifyForm from './Pages/admin/VerifyForm';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +49,7 @@ const router = createBrowserRouter([
         path: '/resetpassword/:id/:token',
         element: <ResetPassword />,
       },
+
       //protected routes
       {
         element: <PersistLogin />,
@@ -67,8 +72,18 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/app',
-    element: <App />,
+    path: '/registerTenant',
+    element: <HostHome />,
+    children: [
+      {
+        path: '/registerTenant',
+        element: <RegisterWelcome />,
+      },
+      // {
+      //   path: '/verifyHost',
+      //   element: <VerifyForm />,
+      // },
+    ],
   },
 ]);
 

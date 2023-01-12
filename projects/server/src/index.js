@@ -4,8 +4,15 @@ const cors = require('cors');
 const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
+const fileUpload = require('express-fileupload');
 const verifyJWT = require('./middlewares/verifyJWT');
-const { authRouters, userRouters, refresh, logout } = require('./routers');
+const {
+  authRouters,
+  userRouters,
+  refresh,
+  logout,
+  RegisterAsTenant,
+} = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8000;
@@ -45,7 +52,16 @@ app.use(logout);
 //device detection
 app.use(middlewareDetect);
 app.use(authRouters);
-
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 1024 * 1024, // 1 MB
+    },
+    abortOnLimit: true,
+  })
+);
+app.use(RegisterAsTenant);
 //routes that need token
 app.use(verifyJWT);
 app.use(userRouters);
