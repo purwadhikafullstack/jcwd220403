@@ -15,7 +15,6 @@ module.exports = {
       const { email, password, fullName } = req.body;
 
       const salt = await bcrypt.genSalt(10);
-
       const hashPass = await bcrypt.hash(password, salt);
       const otp = OTP_generator();
 
@@ -117,8 +116,9 @@ module.exports = {
 
   login: async (req, res) => {
     const { email, password } = req.body;
-    let browser = req.device.client.name;
-    let device = req.device.device.type;
+    console.log(req.device)
+    // let browser = req.device.client.name;
+    // let device = req.device.device.type;
 
     const emailExist = await user.findOne({
       where: {
@@ -149,8 +149,8 @@ module.exports = {
         const [loginFound, created] = await userLogin.findOrCreate({
           where: {
             userId: emailExist.id,
-            device,
-            browser,
+            // device,
+            // browser,
           },
           defaults: { refreshToken },
         });
@@ -161,8 +161,8 @@ module.exports = {
             {
               where: {
                 userId: emailExist.id,
-                device,
-                browser,
+                // device,
+                // browser,
               },
             }
           );
@@ -318,16 +318,6 @@ module.exports = {
       res.status(401).send(error.message);
     }
   },
-
-  test: async (req, res) => {
-    try {
-      res.send('test auth controller');
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
-    }
-  },
-};
 
   test: async (req, res) => {
     try {

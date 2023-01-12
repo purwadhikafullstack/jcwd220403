@@ -11,11 +11,3 @@ module.exports = {
   refreshTokenController,
   logoutController,
 };
-
-module.exports = {
-  authControllers,
-  userControllers,
-  tenantControllers,
-  refreshTokenController,
-  logoutController,
-};
