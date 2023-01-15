@@ -119,7 +119,11 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                <Link to={'/register-tenant'}>List your property</Link>
+                {auth?.isTenant === true ? (
+                  <Link to={'/tenant'}>Switch to hosting</Link>
+                ) : (
+                  <Link to={'/register-tenant'}>List your property</Link>
+                )}
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>

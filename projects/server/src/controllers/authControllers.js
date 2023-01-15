@@ -139,14 +139,14 @@ module.exports = {
           payload,
           process.env.ACCESS_TOKEN_SECRET_KEY,
           {
-            expiresIn: '15s',
+            expiresIn: '10m',
           }
         );
 
         const refreshToken = jwt.sign(
           payload,
           process.env.REFRESH_TOKEN_SECRET_KEY,
-          { expiresIn: '1d' }
+          { expiresIn: '30d' }
         );
 
         const [loginFound, created] = await userLogin.findOrCreate({
@@ -181,7 +181,9 @@ module.exports = {
         res.send({
           accessToken,
           userEmail: emailExist.email,
-          userName: emailExist.fullName,
+          name: emailExist.fullName,
+          userId: emailExist.id,
+          isTenant: emailExist.isTenant,
         });
       } else {
         res.status(403).send({

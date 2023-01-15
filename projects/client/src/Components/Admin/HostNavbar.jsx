@@ -50,12 +50,8 @@ export default function WithSubnavigation() {
             color={useColorModeValue('gray.800', 'white')}
             fontWeight={'bold'}
           >
-            <Link to={'/'}>Holistay Host</Link>
+            <Link to={'/tenant'}>Holistay Host</Link>
           </Text>
-
-          {/* <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
-          </Flex> */}
         </Flex>
 
         <Stack

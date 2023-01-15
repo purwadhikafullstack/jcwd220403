@@ -17,18 +17,20 @@ import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
-export default function RegisterWelcome() {
+export default function VerifyForm() {
   const [KTPNumber, setKTPNumber] = useState('');
   const [errorMessage, setErrorMEssage] = useState('');
   const [selectedFile, setSelectedFile] = useState();
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
 
   function handleRedirect() {
     setInterval(() => {
-      navigate('/tenant/dashboard');
+      navigate('/tenant');
     }, 3000);
   }
   const handleFileInput = (e) => {
@@ -46,6 +48,8 @@ export default function RegisterWelcome() {
     setDisableSubmitBtn(true);
     try {
       const data = new FormData();
+      const userId = auth.userId;
+      data.append('userId', userId);
       data.append('KTPNumber', KTPNumber);
       data.append('KTPPhoto', selectedFile);
       const res = axiosPrivate.post('/registerAsTenant', data);
@@ -100,6 +104,7 @@ export default function RegisterWelcome() {
                 <FormLabel>Indonesia ID Card Number</FormLabel>
                 <Input
                   placeholder='Your ID Number'
+                  type={'number'}
                   value={KTPNumber}
                   onChange={(e) => setKTPNumber(e.target.value)}
                 ></Input>
@@ -108,6 +113,7 @@ export default function RegisterWelcome() {
                 <FormLabel>ID Picture</FormLabel>
                 <Input
                   type={'file'}
+                  accept={'image/*'}
                   sx={{
                     '::file-selector-button': {
                       height: 10,

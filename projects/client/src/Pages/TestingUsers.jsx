@@ -13,11 +13,9 @@ const Users = () => {
         const response = await axiosPrivate.get('/users', {
           signal: controller.signal,
         });
-        console.log(response.data.users);
         setUsers(response.data.users);
       } catch (err) {
         console.error(err);
-        // navigate('/login', { state: { from: location }, replace: true });
       }
     };
 

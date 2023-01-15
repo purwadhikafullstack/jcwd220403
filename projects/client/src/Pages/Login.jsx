@@ -48,7 +48,7 @@ export default function LoginCard() {
           pending: 'Login on progress...',
           success: {
             render({ data }) {
-              return `Login success, welcome ${data.data.userName}`;
+              return `Login success, welcome ${data.data.name}`;
             },
           },
           error: {
@@ -59,8 +59,14 @@ export default function LoginCard() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      const { accessToken } = toastify.data;
-      setAuth({ loginData: loginData.email, accessToken });
+      const { accessToken, userId, isTenant, name } = toastify.data;
+      setAuth({
+        email: loginData.email,
+        userId,
+        isTenant,
+        name,
+        accessToken,
+      });
       handleRedirect();
     } catch (error) {
       toast.error(error, {

@@ -15,9 +15,10 @@ import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
 //host
 import HostHome from './Pages/admin/HostHome';
-import RegisterWelcome from './Components/Admin/RegisterWelcome';
+import RegisterWelcome from './Pages/admin/RegisterWelcome';
 import VerifyForm from './Pages/admin/VerifyForm';
 import HostDashboard from './Pages/admin/HostDashboard';
+import RequireTenantRole from './Components/RequireTenantRole';
 
 const router = createBrowserRouter([
   {
@@ -25,11 +26,6 @@ const router = createBrowserRouter([
     element: <Home />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: '/',
-        element: [<Category />, <HomeCard />, <Footer />],
-      },
-
       {
         path: '/register',
         element: <Register />,
@@ -50,11 +46,13 @@ const router = createBrowserRouter([
         path: '/resetpassword/:id/:token',
         element: <ResetPassword />,
       },
-
-      //protected routes
       {
         element: <PersistLogin />,
         children: [
+          {
+            path: '/',
+            element: [<Category />, <HomeCard />, <Footer />],
+          },
           {
             element: <RequireAuth />,
             children: [
@@ -72,6 +70,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  //tenant
   {
     element: <PersistLogin />,
     children: [
@@ -79,20 +78,24 @@ const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           {
-            path: '/tenant',
             element: <HostHome />,
             children: [
               {
-                path: 'register-tenant',
+                path: '/register-tenant',
                 element: <RegisterWelcome />,
               },
               {
-                path: 'verify',
+                path: '/verify-tenant',
                 element: <VerifyForm />,
               },
               {
-                path: 'dashboard',
-                element: <HostDashboard />,
+                element: <RequireTenantRole />,
+                children: [
+                  {
+                    path: '/tenant',
+                    element: <HostDashboard />,
+                  },
+                ],
               },
             ],
           },

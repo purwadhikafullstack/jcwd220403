@@ -63,7 +63,7 @@ export default function RegisterWelcome() {
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}
             >
-              <Link to={'verify'}>Get started</Link>
+              <Link to={'/verify-tenant'}>Get started</Link>
             </Button>
           </Stack>
         </Stack>

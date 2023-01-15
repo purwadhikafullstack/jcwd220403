@@ -2,27 +2,15 @@ require('dotenv').config();
 const path = require('path');
 const database = require('../models');
 const tenant = database.tenant;
+const user = database.tenant;
 const jwt = require('jsonwebtoken');
 
 const RegisterAsTenant = async (req, res) => {
-  const { KTPNumber } = req.body;
+  const { KTPNumber, userId } = req.body;
   const ktp = req.files.KTPPhoto;
-  let userIdFromToken;
-  const cookies = req.cookies;
-  if (!cookies?.refreshToken) return res.sendStatus(401);
 
-  const refreshToken = cookies.refreshToken;
-
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET_KEY,
-    (err, decode) => {
-      if (err) return res.sendStatus(403);
-      return (userIdFromToken = decode.userId);
-    }
-  );
   const findTenant = await tenant.findOne({
-    where: { userId: userIdFromToken },
+    where: { userId },
   });
 
   if (findTenant) {
@@ -50,19 +38,19 @@ const RegisterAsTenant = async (req, res) => {
       });
     }
 
-    const filename = `user${userIdFromToken}${extensionName}`;
+    const filename = `user${userId}${extensionName}`;
 
     await tenant.create({
       KTPPhoto: filename,
       KTPNumber,
-      userId: userIdFromToken,
+      userId,
     });
 
     ktp.mv('./public/ktp/' + filename);
     res.status(200);
     res.send({
       status: true,
-      message: 'File is uploaded',
+      message: 'file is uploaded',
       data: {
         KTPNumber,
         name: ktp.name,
