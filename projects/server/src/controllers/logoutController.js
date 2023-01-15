@@ -1,5 +1,4 @@
-const database = require("../models");
-const user = database.user;
+const database = require('../models');
 const userLogin = database.login;
 
 const handleLogout = async (req, res) => {
@@ -14,9 +13,9 @@ const handleLogout = async (req, res) => {
   });
 
   if (!foundUser) {
-    res.clearCookie("refreshToken", {
+    res.clearCookie('refreshToken', {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: 'None',
       secure: true,
     });
     return res.sendStatus(204);
@@ -28,9 +27,9 @@ const handleLogout = async (req, res) => {
     },
   });
 
-  res.clearCookie("refreshToken", {
+  res.clearCookie('refreshToken', {
     httpOnly: true,
-    sameSite: "None",
+    sameSite: 'None',
     secure: true,
   });
   res.sendStatus(204);

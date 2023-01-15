@@ -1,8 +1,9 @@
-require("dotenv").config();
-const database = require("../models");
-const jwt = require("jsonwebtoken");
+require('dotenv').config();
+const database = require('../models');
+const jwt = require('jsonwebtoken');
 
 const userLogin = database.login;
+const user = database.user;
 
 const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
@@ -35,19 +36,30 @@ const handleRefreshToken = async (req, res) => {
     return res.sendStatus(403);
   }
 
+  const userInfo = await user.findOne({
+    where: {
+      id: foundUser.userId,
+    },
+  });
+
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET_KEY,
     (err, decoded) => {
       if (err || foundUser.userId !== decoded.userId)
         return res.sendStatus(403);
-
       const accessToken = jwt.sign(
         { email: decoded.email, userId: jwt.decode.userId },
         process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: "15m" }
+        { expiresIn: '10m' }
       );
-      res.json({ accessToken });
+      res.json({
+        email: userInfo.email,
+        name: userInfo.fullName,
+        userId: userInfo.id,
+        isTenant: userInfo.isTenant,
+        accessToken,
+      });
     }
   );
 };

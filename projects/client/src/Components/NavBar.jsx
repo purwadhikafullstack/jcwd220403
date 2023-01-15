@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Container,
@@ -28,28 +27,27 @@ import LogoOnly from '../Assets/Logo_only.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Category from './Category';
-import { useSelector } from "react-redux"
+// import { useSelector } from "react-redux"
 import useLogout from '../hooks/useLogout';
 
 const NavBar = () => {
-  const location = useLocation()
-  const OnlyHome = location.pathname === "/"
-  const isDoneCreateData = useSelector((state) => state.DoneCreatePropertiesSlice.isDone)
+  const location = useLocation();
+  const OnlyHome = location.pathname === '/';
+  // const isDoneCreateData = useSelector((state) => state.DoneCreatePropertiesSlice.isDone)
   const { auth } = useAuth();
   const logout = useLogout();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const signOut = async () => {
     await logout();
     navigate('/');
   };
-  
   const [isMobile] = useMediaQuery('(max-width: 481px)');
-  const display = useBreakpointValue({
-    base: 'none',
-    md: 'none',
-    lg: 'black',
-  });
+  // const display = useBreakpointValue({
+  //   base: 'none',
+  //   md: 'none',
+  //   lg: 'black',
+  // });
   const displayTablet = useBreakpointValue({
     base: 'none',
     md: 'block',
@@ -116,7 +114,7 @@ const NavBar = () => {
                 />
               </InputGroup>
             </Box>
-            <Box ml={4} display={display} marginLeft='auto'>
+            <Box>
               <Text
                 fontSize='14px'
                 fontFamily='Poppins'
@@ -124,9 +122,11 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                <Link to={isDoneCreateData ? "/dashboard" : "/tenant"}>
-                  {isDoneCreateData ? "Your Dashboard" : "List your Property"}
-                </Link>
+                {auth?.isTenant === true ? (
+                  <Link to={'/tenant'}>Switch to hosting</Link>
+                ) : (
+                  <Link to={'/register-tenant'}>List your property</Link>
+                )}
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>
@@ -192,7 +192,7 @@ const NavBar = () => {
                   boxShadow='md'
                   color='black'
                 />
-                <MenuList color='black' zIndex='3' fontFamily="poppins">
+                <MenuList color='black' zIndex='3' fontFamily='poppins'>
                   <MenuItem>Register</MenuItem>
                   <MenuItem>Login</MenuItem>
                   <MenuDivider />

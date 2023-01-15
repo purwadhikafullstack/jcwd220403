@@ -24,6 +24,7 @@ import useAuth from '../hooks/useAuth';
 export default function LoginCard() {
   const { setAuth } = useAuth();
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
@@ -34,6 +35,7 @@ export default function LoginCard() {
   }
 
   const handleSubmit = async (loginData) => {
+    setDisableSubmitBtn(true);
     try {
       const res = axios.post('/login', loginData, {
         withCredentials: true,
@@ -46,7 +48,7 @@ export default function LoginCard() {
           pending: 'Login on progress...',
           success: {
             render({ data }) {
-              return `Login success, welcome ${data.data.userName}`;
+              return `Login success, welcome ${data.data.name}`;
             },
           },
           error: {
@@ -57,15 +59,21 @@ export default function LoginCard() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      const { accessToken } = toastify.data;
-      console.log(loginData)
-      setAuth({ loginData: loginData.email, accessToken });
+      const { accessToken, userId, isTenant, name } = toastify.data;
+      setAuth({
+        email: loginData.email,
+        userId,
+        isTenant,
+        name,
+        accessToken,
+      });
       handleRedirect();
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    setDisableSubmitBtn(false);
   };
 
   return loginSuccess ? (
@@ -79,7 +87,7 @@ export default function LoginCard() {
           .min(8, 'Password is too short'),
         email: Yup.string().email('invalid email').required('email required'),
       })}
-      onSubmit={(values, actions) => {
+      onSubmit={async (values, actions) => {
         handleSubmit(values);
         actions.resetForm();
       }}
@@ -147,6 +155,7 @@ export default function LoginCard() {
                       type='submit'
                       variant='outline'
                       colorScheme='teal'
+                      disabled={disableSubmitBtn}
                     >
                       Login
                     </Button>

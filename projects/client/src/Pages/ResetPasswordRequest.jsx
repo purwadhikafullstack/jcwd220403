@@ -7,6 +7,7 @@ import {
   Stack,
   Center,
   Heading,
+  FormLabel,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
 import { useState } from 'react';
@@ -72,14 +73,13 @@ function ResetPasswordRequest() {
             instructions to reset your password.
           </Center>
           <FormControl isRequired>
-            <Center>
-              <Input
-                type='email'
-                name='email'
-                textAlign={'center'}
-                onChange={handleInput}
-              />
-            </Center>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type='email'
+              name='email'
+              textAlign={'center'}
+              onChange={handleInput}
+            />
           </FormControl>
           <Stack spacing={6}>
             <Button
