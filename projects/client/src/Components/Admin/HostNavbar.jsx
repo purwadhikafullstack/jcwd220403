@@ -6,21 +6,12 @@ import {
   Button,
   Stack,
   Collapse,
-  Icon,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -59,7 +50,7 @@ export default function WithSubnavigation() {
             color={useColorModeValue('gray.800', 'white')}
             fontWeight={'bold'}
           >
-            Holistay Host
+            <Link to={'/'}>Holistay Host</Link>
           </Text>
 
           {/* <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -84,7 +75,7 @@ export default function WithSubnavigation() {
               bg: 'pink.300',
             }}
           >
-            Switch to traveling
+            <Link to={'/'}>Switch to traveling</Link>
           </Button>
         </Stack>
       </Flex>

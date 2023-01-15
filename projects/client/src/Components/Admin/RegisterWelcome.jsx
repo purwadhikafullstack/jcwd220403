@@ -11,6 +11,7 @@ import {
   UnorderedList,
   ListItem,
   useColorModeValue,
+  Input,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
@@ -30,7 +31,7 @@ export default function RegisterWelcome() {
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
           >
             <Text as={'span'} color={'red.400'}>
-              Verify your Host account
+              Verify your Hosting account
             </Text>
           </Heading>
           <Stack>
@@ -62,10 +63,11 @@ export default function RegisterWelcome() {
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}
             >
-              <Link to={'/verifyHost'}>Get started</Link>
+              <Link to={'verify'}>Get started</Link>
             </Button>
           </Stack>
         </Stack>
+
         <Flex
           flex={1}
           justify={'center'}

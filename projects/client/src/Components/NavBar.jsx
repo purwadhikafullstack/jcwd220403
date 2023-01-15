@@ -111,7 +111,7 @@ const NavBar = () => {
                 />
               </InputGroup>
             </Box>
-            <Box display={display} marginLeft='auto'>
+            <Box>
               <Text
                 fontSize='14px'
                 fontFamily='Poppins'
@@ -119,7 +119,7 @@ const NavBar = () => {
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
               >
-                <Link to={'/registerTenant'}>List your property</Link>
+                <Link to={'/register-tenant'}>List your property</Link>
               </Text>
             </Box>
             <Box marginLeft='auto' display={displayTablet}>

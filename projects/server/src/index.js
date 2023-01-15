@@ -61,10 +61,10 @@ app.use(
     abortOnLimit: true,
   })
 );
-app.use(RegisterAsTenant);
 //routes that need token
 app.use(verifyJWT);
 app.use(userRouters);
+app.use(RegisterAsTenant);
 
 app.get('/api', (req, res) => {
   res

@@ -124,13 +124,16 @@ module.exports = {
       where: {
         email,
       },
-      raw: true,
     });
 
     const isValidPassword = await bcrypt.compare(password, emailExist.password);
     if (isValidPassword) {
       if (emailExist.verified == true) {
-        let payload = { email: emailExist.email, userId: emailExist.id };
+        let payload = {
+          email: emailExist.email,
+          userId: emailExist.id,
+          isTenant: emailExist.isTenant,
+        };
 
         const accessToken = jwt.sign(
           payload,

@@ -17,6 +17,7 @@ import PersistLogin from './Components/PersistLogin';
 import HostHome from './Pages/admin/HostHome';
 import RegisterWelcome from './Components/Admin/RegisterWelcome';
 import VerifyForm from './Pages/admin/VerifyForm';
+import HostDashboard from './Pages/admin/HostDashboard';
 
 const router = createBrowserRouter([
   {
@@ -72,17 +73,31 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/registerTenant',
-    element: <HostHome />,
+    element: <PersistLogin />,
     children: [
       {
-        path: '/registerTenant',
-        element: <RegisterWelcome />,
+        element: <RequireAuth />,
+        children: [
+          {
+            path: '/tenant',
+            element: <HostHome />,
+            children: [
+              {
+                path: 'register-tenant',
+                element: <RegisterWelcome />,
+              },
+              {
+                path: 'verify',
+                element: <VerifyForm />,
+              },
+              {
+                path: 'dashboard',
+                element: <HostDashboard />,
+              },
+            ],
+          },
+        ],
       },
-      // {
-      //   path: '/verifyHost',
-      //   element: <VerifyForm />,
-      // },
     ],
   },
 ]);
