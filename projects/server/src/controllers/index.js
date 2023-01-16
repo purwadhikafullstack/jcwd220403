@@ -4,6 +4,8 @@ const tenantControllers = require('./tenantControllers');
 const refreshTokenController = require('./refreshTokenController');
 const logoutController = require('./logoutController');
 const RegisterAsTenant = require('./registerAsTenantController');
+const pagesControllers = require("./pagesControllers")
+
 module.exports = {
   authControllers,
   userControllers,
@@ -11,4 +13,5 @@ module.exports = {
   refreshTokenController,
   logoutController,
   RegisterAsTenant,
+  pagesControllers
 };

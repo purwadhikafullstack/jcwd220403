@@ -4,6 +4,7 @@ const logout = require('./logout');
 const authRouters = require('./authRouters');
 const userRouters = require('./userRouters');
 const RegisterAsTenant = require('./registerAsTenantRouter');
+const pagesRouters = require("./pagesRouters")
 
 module.exports = {
   userRouters,
@@ -12,4 +13,5 @@ module.exports = {
   logout,
   authRouters,
   RegisterAsTenant,
+  pagesRouters
 };
