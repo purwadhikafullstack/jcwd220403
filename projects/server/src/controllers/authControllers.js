@@ -117,8 +117,8 @@ module.exports = {
   login: async (req, res) => {
     const { email, password } = req.body;
     console.log(req.device)
-    // let browser = req.device.client.name;
-    // let device = req.device.device.type;
+    let browser = req.device.client.name;
+    let device = req.device.device.type;
 
     const emailExist = await user.findOne({
       where: {
@@ -152,8 +152,8 @@ module.exports = {
         const [loginFound, created] = await userLogin.findOrCreate({
           where: {
             userId: emailExist.id,
-            // device,
-            // browser,
+            device,
+            browser,
           },
           defaults: { refreshToken },
         });
@@ -164,8 +164,8 @@ module.exports = {
             {
               where: {
                 userId: emailExist.id,
-                // device,
-                // browser,
+                device,
+                browser,
               },
             }
           );

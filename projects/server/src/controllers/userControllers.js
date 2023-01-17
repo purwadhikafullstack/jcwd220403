@@ -39,7 +39,7 @@ module.exports = {
         try {
             const isAccountExist = await user.findOne({
                 where: {
-                    email: req.user.email,
+                    email: req.user,
                 },
                 raw: true,
             });
@@ -89,7 +89,7 @@ module.exports = {
                 },
                 {
                     where: {
-                        email: req.user.email,
+                        email: req.user,
                     },
                 }
             );
@@ -111,7 +111,7 @@ module.exports = {
             const hashPass = await bcrypt.hash(password, salt);
             await user.update({ password: hashPass, }, {
                 where: {
-                    email: req.user.email,
+                    email: req.user,
                 }
             })
             res.status(200).send("Update Success");
@@ -126,7 +126,7 @@ module.exports = {
             console.log(oldPassword)
             const isAccountExist = await user.findOne({
                 where: {
-                    email: req.user.email,
+                    email: req.user,
                 },
                 raw: true,
             });
@@ -187,7 +187,7 @@ module.exports = {
 
             await user.update({ email: verify.email, }, {
                 where: {
-                    email: req.user.email,
+                    email: req.user,
                 }
             })
             

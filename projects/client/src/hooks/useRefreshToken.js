@@ -19,6 +19,7 @@ const useRefreshToken = () => {
         isTenant: response.data.isTenant,
         name: response.data.name,
         userId: response.data.userId,
+        userPhoto: response.data.userPhoto,
         tenantId: response.data.tenantId,
       };
     });

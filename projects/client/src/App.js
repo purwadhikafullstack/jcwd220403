@@ -20,6 +20,7 @@ import RequireTenantRole from './Components/RequireTenantRole';
 import BeTenant from './Pages/BeTenant';
 import Dashboard from './Pages/Dashboard';
 import BasicUsage from './Components/AlertSuccess';
+import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
 
 const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: '/resetpassword/:id/:token',
         element: <ResetPassword />,
+      },
+      {
+        path: '/detailpage',
+        element: <DetailPages />,
       },
       {
         element: <PersistLogin />,

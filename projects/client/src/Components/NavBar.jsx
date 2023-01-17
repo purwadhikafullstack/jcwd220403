@@ -142,7 +142,7 @@ const NavBar = () => {
                     _hover={{ cursor: 'pointer' }}
                   >
                     <Icon as={HamburgerIcon} mr='2' ml='1' />
-                    <Avatar size='sm' name='Devofathurisqi' bgColor='#FE9900' />
+                    <Avatar size='sm' name='Devofathurisqi' bgColor='#FE9900' src={'http://localhost:2000/profilePicture/' + auth?.userPhoto} />
                   </Tag>
                 </MenuButton>
                 {auth?.accessToken ? (

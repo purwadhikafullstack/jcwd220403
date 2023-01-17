@@ -65,8 +65,9 @@ const handleRefreshToken = async (req, res) => {
         email: userInfo.email,
         name: userInfo.fullName,
         userId: userInfo.id,
+        userPhoto: userInfo.photo,
         isTenant: userInfo.isTenant,
-        tenantId: tenantInfo.id,
+        tenantId: tenantInfo?.id || '',
         accessToken,
       });
     }

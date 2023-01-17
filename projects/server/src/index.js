@@ -43,8 +43,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
-app.use(authRouters);
-app.use(userRouters);
 
 //#region API ROUTES
 
@@ -117,12 +115,12 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = '../public';
+const clientPath = '../Public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, clientPath, 'index.html'));
+  res.sendFile(join(__dirname, clientPath));
 });
 
 //#endregion

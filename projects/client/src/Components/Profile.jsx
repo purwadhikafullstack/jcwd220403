@@ -24,6 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { ChangeEmail } from "./ChangeEmail";
 import { ChangePass } from "./ChangePass";
 import Swal from "sweetalert2";
@@ -41,14 +42,11 @@ function ProfileSetting() {
     const gender = useRef("");
     const birthdate = useRef("");
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate()
 
     const getData = async () => {
         try {
-            const res = await axios.get("/user", {
-                headers: {
-                    Authorization: `Bearer ${auth.accessToken}`,
-                },
-            });
+            const res = await axiosPrivate.get("/user");
             setUser(res.data)
         } catch (err) {
             console.log(err);
@@ -63,7 +61,7 @@ function ProfileSetting() {
                 gender: gender.current.value,
                 id
             };
-            const result = await axios.patch("/user/profile", user);
+            const result = await axiosPrivate.patch("/user/profile", user);
             Swal.fire({
                 icon: 'success',
                 title: 'Succes...',
