@@ -1,4 +1,4 @@
-import { Box, Text, Image, Flex, Center } from '@chakra-ui/react';
+import { Box, Text, Image, Flex, Center, LinkBox } from '@chakra-ui/react';
 import { useState } from 'react';
 import Axios from 'axios';
 import { useEffect } from 'react';
@@ -7,6 +7,7 @@ import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import axios from "../api/axios"
 import { Carousel } from 'react-responsive-carousel';
+import { Link } from 'react-router-dom';
 
 
 function HomeCard() {
@@ -59,7 +60,8 @@ function HomeCard() {
                             {currentData && currentData.map((item) => {
                                 return (
                                     <Box
-                                        _hover={{ cursor: 'pointer' }}
+                                        as={Link}
+                                        to={"/detailpage/" + item.id}
                                         w='270px'
                                         h='260px'
                                         m='10px'
@@ -97,23 +99,6 @@ function HomeCard() {
                                             <Text mt='2' fontWeight='bold' fontSize='sm'>
                                                 {item.name}
                                             </Text>
-                                            {/* <Text mr='5px' fontSize='sm'>
-                                                Berjarak{' '}
-                                                {Math.ceil(
-                                                    getPreciseDistance(
-                                                        { latitude: cord.lat, longitude: cord.lng },
-                                                        {
-                                                            latitude: item.fields.geolocation[0],
-                                                            longitude: item.fields.geolocation[1],
-                                                        }
-                                                    ) / 1000
-                                                ) + ' km'}
-                                            </Text> */}
-                                            {/* <Text mr='5px' fontSize='sm'>
-                                                <Text fontWeight='bold' display='inline'>
-                                                    {item.description}
-                                                </Text>
-                                            </Text> */}
                                         </Box>
                                     </Box>
                                 );

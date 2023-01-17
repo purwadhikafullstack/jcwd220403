@@ -5,5 +5,3 @@ const refreshTokenController = require("../controllers/refreshTokenController");
 router.get("/api/refresh", refreshTokenController.handleRefreshToken);
 
 module.exports = router;
-
-module.exports = router;

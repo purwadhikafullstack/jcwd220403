@@ -13,28 +13,37 @@ import {
     VStack,
     Avatar,
     Divider,
+    SkeletonText,
+    Skeleton,
+    SkeletonCircle,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-// import axios from "../api/axios";
-import axios from "axios";
+import axios from "../../api/axios";
+// import axios from "axios";
 import useAuth from '../../hooks/useAuth';
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function DetailPage() {
     const [isMobile] = useMediaQuery("(max-width: 481px)")
     const { auth } = useAuth();
     const [data, setData] = useState([])
+    const [isloading, setIsloading] = useState(true)
+    const params = useParams()
 
     const getData = async () => {
         try {
-            const res = await axios.get("https://public.opendatasoft.com//api/records/1.0/search/?dataset=airbnb-listings&q=&rows=1&start=1");
-            setData(res.data.records[0].fields)
-            console.log(data)
+            const res = await axios.get(`/property/${params.id}`);
+            setData(res.data)
+            setTimeout(() => {
+                setIsloading(false)
+            }, 1000);
+            // console.log(res.data)
 
         } catch (err) {
             console.log(err);
         }
     };
+
 
     useEffect(() => {
         getData()
@@ -49,37 +58,42 @@ function DetailPage() {
             :
             <Center>
                 <Box w="80vw">
-                    <Heading fontSize="3xl">{data?.name}</Heading>
-                    <Text fontWeight="bold" fontSize="sm">{data?.city}, {data?.country}</Text>
-                    <Grid
-                        mt="4"
-                        overflow="hidden"
-                        borderRadius="2xl"
-                        templateRows='repeat(2, 1fr)'
-                        templateColumns='repeat(4, 1fr)' gap={2}
-                        >
-                        <GridItem rowSpan={2} colSpan={2} ><Image src="https://a0.muscache.com/im/pictures/b30b61e5-fad2-4363-931b-b52823a2705b.jpg?im_w=1200" /></GridItem>
-                        <GridItem colSpan={1} ><Image src="https://a0.muscache.com/im/pictures/ad3a5539-d121-4e8d-80ad-1dbc4cfd3755.jpg?im_w=720"/></GridItem>
-                        <GridItem colSpan={1} ><Image src={data?.xl_picture_url}/></GridItem>
-                        <GridItem colSpan={1} ><Image src={data?.xl_picture_url}/></GridItem>
-                        <GridItem colSpan={1} ><Image src={data?.xl_picture_url}/></GridItem>
-                        <Button border="1px" borderColor="black" position="absolute" mt="2" ml="2" size="sm">Tampilkan Semua Foto</Button>
-                    </Grid>
-                    <Box w="40vw">
-                        <HStack mt="8" mb="4" w="40vw" justify="space-between">
+                    <Skeleton isLoaded={!isloading}>
+                        <Heading fontSize="3xl">{data?.name}</Heading>
+                        <Text fontWeight="bold" fontSize="sm">{data?.category?.city}, {data?.category?.country}</Text>
+                    </Skeleton>
+                    
+                        <Grid
+                            mt="4"
+                            overflow="hidden"
+                            borderRadius="2xl"
+                            templateRows='repeat(2, 1fr)'
+                            templateColumns='repeat(4, 1fr)' gap={2}
+                            >
+                            <GridItem rowSpan={2} colSpan={2}><Skeleton isLoaded={!isloading}><Image src={'http://localhost:2000/propertyPicture/' + data?.picture} /></Skeleton></GridItem>
+                            <GridItem colSpan={1}><Skeleton isLoaded={!isloading}> <Image src={'http://localhost:2000/propertyPicture/' + data?.picture}/></Skeleton></GridItem>
+                            <GridItem colSpan={1}><Skeleton isLoaded={!isloading}> <Image src={'http://localhost:2000/propertyPicture/' + data?.picture}/></Skeleton></GridItem>
+                            <GridItem colSpan={1}><Skeleton isLoaded={!isloading}> <Image src={'http://localhost:2000/propertyPicture/' + data?.picture}/></Skeleton></GridItem>
+                            <GridItem colSpan={1}><Skeleton isLoaded={!isloading}> <Image src={'http://localhost:2000/propertyPicture/' + data?.picture}/></Skeleton></GridItem>
+                            {isloading ? null :<Button border="1px" borderColor="black" position="absolute" mt="2" ml="2" size="sm">Tampilkan Semua Foto</Button> }
+                        </Grid>
+                    
+                    <HStack mt="8" mb="4" w="40vw" >
+                        <SkeletonCircle mr="4" size="10" isLoaded={!isloading}>
+                            <Avatar size="md" src={'http://localhost:2000/propertyPicture/' + data?.picture} />
+                        </SkeletonCircle>
+                        <Skeleton isLoaded={!isloading}>
                             <Box>
-                                <Heading mt="2" fontSize="xl">Tuan Rumah : {data?.host_name}</Heading>
+                                <Heading mt="2" fontSize="xl">Tuan Rumah : Ilham</Heading>
                                 <Text fontSize="sm" color="gray.600">3 Room</Text>
                             </Box>
-                            <VStack>
-                                <Avatar size="md" src={data?.xl_picture_url} />
-                            </VStack>
-                        </HStack>
-                        <Divider/>
-                        <Text mt="4" mb="4" color="gray.600">{data?.description}</Text>
-                        <Divider/>
-                    </Box>
-                </Box>
+                        </Skeleton>
+                    </HStack>
+                    <Divider/>
+                        <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Description</Text></Skeleton>
+                        <SkeletonText isLoaded={!isloading}><Text mb="4" color="gray.600">{data?.description}</Text></SkeletonText>
+                    <Divider/>
+                </Box> 
             </Center>
             }
         </>

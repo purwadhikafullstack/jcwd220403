@@ -29,8 +29,8 @@ const corsOptions = {
   },
 };
 app.use(
-  cors(corsOptions)
-  // cors()
+  // cors(corsOptions)
+  cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
@@ -54,7 +54,6 @@ app.use(logout);
 
 app.use(tenantRouters);
 app.use(pagesRouters)
-app.use(tenantRouters)
 // app.use(express.static("./public/propertyPicture"))
 // app.use(express.static(join(__dirname, "../public/propertyPicture")));
 

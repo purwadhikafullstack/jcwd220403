@@ -10,7 +10,6 @@ import Footer from './Components/Footer';
 import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import Profile from './Pages/Profile';
-import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
 import HostHome from './Pages/admin/HostHome';
 import RegisterWelcome from './Pages/admin/RegisterWelcome';
@@ -46,12 +45,12 @@ const router = createBrowserRouter([
         element: <ResetPasswordRequest />,
       },
       {
-        path: '/resetpassword/:id/:token',
-        element: <ResetPassword />,
+        path: '/detailpage/:id',
+        element: <DetailPages />,
       },
       {
-        path: '/detailpage',
-        element: <DetailPages />,
+        path: '/resetpassword/:id/:token',
+        element: <ResetPassword />,
       },
       {
         element: <PersistLogin />,
@@ -103,8 +102,6 @@ const router = createBrowserRouter([
                     element: <BeTenant />,
                   },
                 ],
-                path: '/users',
-                element: <Users />,
               },
             ],
           },
