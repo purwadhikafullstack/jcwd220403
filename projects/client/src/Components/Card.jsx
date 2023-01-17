@@ -5,10 +5,13 @@ import { useEffect } from 'react';
 import { getPreciseDistance } from 'geolib';
 import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
+import axios from "../api/axios"
 
 
 function HomeCard() {
     const [data, setData] = useState();
+    const [currentData, setCurrentData] = useState()
+    console.log(currentData)
     const [loading, setLoading] = useState(false);
 
     //data ini masih di tembak, berikut adalah lat dan lng indonesia
@@ -24,6 +27,8 @@ function HomeCard() {
         try {
             setLoading(true);
             const res = await Axios.get(url);
+            const response = await axios.get("/landingpage")
+            setCurrentData(response.data)
             setData(res.data);
             setLoading(false);
         } catch (err) {
@@ -62,7 +67,7 @@ function HomeCard() {
                             bgColor='white'
                             mt='3'
                         >
-                            {data?.records.map((item) => {
+                            {currentData && currentData.map((item) => {
                                 return (
                                     <Box
                                         _hover={{ cursor: 'pointer' }}
@@ -78,16 +83,16 @@ function HomeCard() {
                                         >
                                             <Image
                                                 objectFit='cover'
-                                                src={item.fields.xl_picture_url}
+                                                src={'http://localhost:2000/propertyPicture/' +item.picture}
                                                 width='270px'
                                                 height='190px'
                                             />
                                         </Box>
                                         <Box px='10px' h='90px'>
                                             <Text mt='2' fontWeight='bold' fontSize='sm'>
-                                                {item.fields.city}, {item.fields.country}
+                                                {item.name}
                                             </Text>
-                                            <Text mr='5px' fontSize='sm'>
+                                            {/* <Text mr='5px' fontSize='sm'>
                                                 Berjarak{' '}
                                                 {Math.ceil(
                                                     getPreciseDistance(
@@ -98,13 +103,12 @@ function HomeCard() {
                                                         }
                                                     ) / 1000
                                                 ) + ' km'}
-                                            </Text>
-                                            <Text mr='5px' fontSize='sm'>
+                                            </Text> */}
+                                            {/* <Text mr='5px' fontSize='sm'>
                                                 <Text fontWeight='bold' display='inline'>
-                                                    ${item.fields.price}
-                                                </Text>{' '}
-                                                / night
-                                            </Text>
+                                                    {item.description}
+                                                </Text>
+                                            </Text> */}
                                         </Box>
                                     </Box>
                                 );

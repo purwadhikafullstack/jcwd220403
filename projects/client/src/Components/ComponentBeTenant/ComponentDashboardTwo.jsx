@@ -13,9 +13,11 @@ import { AiOutlineDelete, AiOutlineCloudUpload } from "react-icons/ai"
 import { ImFilePicture } from "react-icons/im"
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
+import useAuth from '../../hooks/useAuth'
 
 
 const ComponentDashboardTwo = () => {
+    const { auth } = useAuth();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
@@ -44,7 +46,6 @@ const ComponentDashboardTwo = () => {
     const [dataImages, setDataImages] = useState()
     // console.log(dataImages)
     const [imageForSlider, setImageForSlider] = useState()
-    console.log(imageForSlider)
 
     //for delete data
     const toast = useToast()
@@ -52,7 +53,7 @@ const ComponentDashboardTwo = () => {
 
     const getDataRoom = async () => {
         try {
-            const response = await axios.get("/getallpictureroom/1")
+            const response = await axios.get(`/getallpictureroom/${auth.tenantId}`)
             setImageForSlider(response.data)
         } catch (err) {
             console.log(err)
@@ -112,6 +113,7 @@ const ComponentDashboardTwo = () => {
             formData.append('description', description)
             formData.append('price', price)
             formData.append('file', picture)
+            formData.append('tenantId', auth.tenantId)
 
             const config = {
                 headers: {
@@ -119,7 +121,7 @@ const ComponentDashboardTwo = () => {
                 }
             }
 
-            await axios.post("/room/1", formData, config, {
+            await axios.post(`/room`, formData, config, {
                 withCredentials: true
             })
             setLoad(true)
@@ -150,7 +152,7 @@ const ComponentDashboardTwo = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             }
-            await axios.patch(`editroom/${editId}`, formData, config, {
+            await axios.patch(`editroom/${auth.tenantId}/${editId}`, formData, config, {
                 withCredentials: true
             })
             setLoad(true)

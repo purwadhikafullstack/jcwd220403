@@ -10,6 +10,7 @@ import axios from "axios"
 import { useDispatch } from "react-redux"
 import { submitClicked } from '../../Redux/ButtonSlice';
 import { BsCheckLg } from "react-icons/bs"
+import useAuth from '../../hooks/useAuth';
 
 const InputProperty = () => {
     const dispatch = useDispatch()
@@ -19,6 +20,8 @@ const InputProperty = () => {
     const [msg, setMsg] = useState("")
     const [load, setLoad] = useState(false)
     const [checklis, setChecklist] = useState(false)
+    const { auth } = useAuth();
+    console.log(auth)
 
     //validasi property
     const isErrorName = name === ''
@@ -31,17 +34,18 @@ const InputProperty = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-
             const formData = new FormData();
             formData.append('name', name);
             formData.append('description', description);
             formData.append('file', picture)
+            formData.append('tenantId', auth.tenantId)
 
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             };
+
             await axios.post('http://localhost:2000/api/properties', formData, config);
             setLoad(true)
             setTimeout(() => {

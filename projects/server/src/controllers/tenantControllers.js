@@ -1,6 +1,7 @@
 const database = require("../models")
 const axios = require("axios")
 const { sequelize } = require("../models")
+const jwt = require("jsonwebtoken")
 
 module.exports = {
     CreateFastility: async (req, res) => {
@@ -14,7 +15,7 @@ module.exports = {
     },
     CreatePropertys: async (req, res) => {
         try {
-            const { name, description } = req.body
+            const { name, description, tenantId } = req.body
 
             if (!name) {
                 return res.status(401).send('Name is required')
@@ -31,15 +32,13 @@ module.exports = {
             const CategoryId = await database.category.findOne({
                 order: [['id', 'DESC']]
             })
-            const latestCategoryId = CategoryId.id
 
             const newProperty = await database.property.create({
                 name: name,
                 description: description,
                 picture: req.file.filename,
-                // tenant id datanya masih di tembak, menunggu login tenant
-                tenantId: 1,
-                categoryId: latestCategoryId
+                tenantId: tenantId,
+                categoryId: CategoryId.id
             })
             //add facilities to the property
             const latestFacility = await database.facility.findOne({
@@ -99,7 +98,7 @@ module.exports = {
     },
     createRoomData: async (req, res) => {
         try {
-            const { name, description, price } = req.body
+            const { name, description, price, tenantId } = req.body
             const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
 
             if (!name) throw "Name is required"
@@ -119,15 +118,19 @@ module.exports = {
                 return res.status(401).send("File size exceeds the allowed limit of 5MB.")
             }
 
+            const getPropertyId = await database.property.findOne({
+                where: {
+                    tenantId: tenantId
+                },
+                raw: true
+            })
+
             await database.room.create({
                 name: name,
                 description: description,
                 price: price,
                 picture: req.file.filename,
-                //propertyId masih di tembak harusnya id di dapat dari tenantId yang login
-                propertyId: req.params.id
-                //harusnya seperti ini
-                // propertyId: data.tenantId
+                propertyId: getPropertyId.id
             })
             res.status(200).send("Room created")
         } catch (err) {
@@ -171,8 +174,7 @@ module.exports = {
                 picture: req.file.filename
             }, {
                 where: {
-                    //harusnya id dari tenant yang login
-                    tenantId: req.params.id
+                    tenantId: req.params.tenantId
                 }
             })
             res.status(200).send("Edited!")
@@ -190,8 +192,7 @@ module.exports = {
                 name: name
             }, {
                 where: {
-                    //harusnya id dari tenant yang login
-                    tenantId: req.params.id
+                    tenantId: req.params.tenantId
                 }
             })
             res.status(200).send("Name edited!")
@@ -204,11 +205,9 @@ module.exports = {
         try {
             const { name } = req.body
 
-            const propertyId = req.params.id
             const data = await database.property.findOne({
-                where: { id: propertyId },
+                where: { tenantId: req.params.tenantId },
                 include: [
-                    { model: database.category },
                     {
                         model: database.facility,
                         through: { attributes: [] }
@@ -222,8 +221,7 @@ module.exports = {
                 name: name
             }, {
                 where: {
-                    //harusnya id dari tenant yang login
-                    id: data.tenantId
+                    id: data.id
                 }
             })
             res.status(200).send("Facility updated successfully")
@@ -245,9 +243,7 @@ module.exports = {
                 description: description
             }, {
                 where: {
-                    //harusnya dari id tenant yang login
-                    //data ini masih di tembak
-                    tenantId: req.params.id
+                    tenantId: req.params.tenantId
                 }
             })
             res.status(200).send("Description updated")
@@ -264,15 +260,10 @@ module.exports = {
             if (!/^[A-Z][a-zA-Z\s]*$/.test(province)) throw "Province must start with an uppercase letter"
             if (!/^[A-Z][a-zA-Z\s]*$/.test(city)) throw "City must start with an uppercase letter"
 
-            const propertyId = req.params.id
             const data = await database.property.findOne({
-                where: { id: propertyId },
+                where: { tenantId: req.params.tenantId },
                 include: [
                     { model: database.category },
-                    {
-                        model: database.facility,
-                        through: { attributes: [] }
-                    }
                 ]
             })
 
@@ -296,8 +287,7 @@ module.exports = {
                 locationDetail: { type: 'Point', coordinates: result }
             }, {
                 where: {
-                    //harusnya id dari tenant yang login
-                    id: data.tenantId
+                    id: data.id
                 }
             })
             res.status(200).send("Location detail updated")
@@ -314,7 +304,7 @@ module.exports = {
             if (!name) throw "Name is required"
             if (!description) throw "Description is required"
             if (description.length > 300) throw 'Description is required and must be less than 500 characters'
-            if(!req.file) throw "picture is required"
+            if (!req.file) throw "picture is required"
 
             if (!allowedTypes.includes(req.file.mimetype)) {
                 return res.status(401).send("Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.")
@@ -325,13 +315,18 @@ module.exports = {
                 return res.status(401).send("File size exceeds the allowed limit of 5MB.")
             }
 
+            const getPropertyId = await database.property.findOne({
+                where : {
+                    tenantId : req.params.tenantId
+                }
+            })
+
             await database.room.update({
                 name: name,
                 description: description,
                 price: price,
                 picture: req.file.filename,
-                //propertyId harusnya dari id tenant yang login
-                propertyId: 1
+                propertyId: getPropertyId.id
             }, {
                 where: {
                     id: req.params.id
@@ -389,9 +384,8 @@ module.exports = {
     getAllDataProperty: async (req, res) => {
         try {
             //harusnya id nya dari id tenantId yang login
-            const propertyId = req.params.id
             const response = await database.property.findOne({
-                where: { id: propertyId },
+                where: { tenantId: req.params.tenantId },
                 include: [
                     { model: database.category },
                     {
@@ -451,10 +445,15 @@ module.exports = {
     },
     getAllPictureRoom: async (req, res) => {
         try {
-            //propertyId masih di tembak
+            const getPropertyId = await database.property.findOne({
+                where: {
+                    tenantId: req.params.tenantId
+                },
+                raw: true
+            })
             const room = await database.room.findAll({
                 where: {
-                    propertyId: req.params.id
+                    propertyId: getPropertyId.id
                 },
                 include: [{
                     model: database.image,
@@ -464,7 +463,7 @@ module.exports = {
             const data = room.map(item => {
                 return {
                     ...item.dataValues,
-                    images: [{picture: item.picture}, ...item.images]
+                    images: [{ picture: item.picture }, ...item.images]
                 }
             })
             res.status(200).send(data)

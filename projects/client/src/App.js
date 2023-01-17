@@ -10,7 +10,6 @@ import Footer from './Components/Footer';
 import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import Profile from './Pages/Profile';
-import Users from './Pages/TestingUsers';
 import PersistLogin from './Components/PersistLogin';
 import HostHome from './Pages/admin/HostHome';
 import RegisterWelcome from './Pages/admin/RegisterWelcome';
@@ -62,11 +61,6 @@ const router = createBrowserRouter([
                 path: '/user',
                 element: <Profile />,
               },
-              {
-                path: '/users',
-                element: <Users />,
-              },
-
             ],
           },
         ],
@@ -96,7 +90,11 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: '/tenant',
-                    element: <HostDashboard />,
+                    element: <Dashboard/>
+                  },
+                  {
+                    path: '/createtenant',
+                    element: <BeTenant />,
                   },
                 ],
               },
@@ -106,14 +104,14 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: '/tenant',
-    element: <BeTenant />,
-  },
-  {
-    path: '/dashboard',
-    element: <Dashboard />,
-  },
+  // {
+  //   path: '/createtenant',
+  //   element: <BeTenant />,
+  // },
+  // {
+  //   path: '/dashboard',
+  //   element: <Dashboard />,
+  // },
 ]);
 
 function App() {

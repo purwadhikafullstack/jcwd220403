@@ -1,9 +1,11 @@
 require('dotenv').config();
 const database = require('../models');
 const jwt = require('jsonwebtoken');
+const { HostNotFoundError } = require('sequelize');
 
 const userLogin = database.login;
 const user = database.user;
+const tenant = database.tenant;
 
 const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
@@ -42,6 +44,12 @@ const handleRefreshToken = async (req, res) => {
     },
   });
 
+  const tenantInfo = await tenant.findOne({
+    where: {
+      userId: foundUser.userId,
+    },
+  });
+
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET_KEY,
@@ -58,6 +66,7 @@ const handleRefreshToken = async (req, res) => {
         name: userInfo.fullName,
         userId: userInfo.id,
         isTenant: userInfo.isTenant,
+        tenantId: tenantInfo.id,
         accessToken,
       });
     }

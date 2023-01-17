@@ -37,8 +37,8 @@ function BasicUsage() {
               <Button colorScheme='blue' mr={3} onClick={() => dispatch(closeModal())}>
                 Close
               </Button>
-              <Link to="dashboard">
-              <Button variant='ghost'>Your Dashboard</Button>
+              <Link to="/tenant">
+              <Button variant='ghost'>Your Hosting</Button>
               </Link>
             </ModalFooter>
           </ModalContent>

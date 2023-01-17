@@ -169,19 +169,19 @@ export default function VerifyEmailForm() {
               style={
                 seconds > 0 || minutes > 0
                   ? {
-                      border: '1px solid grey',
-                      background: 'grey',
-                      padding: '4px',
-                      borderRadius: '5px',
-                      color: 'darkgrey',
-                    }
+                    border: '1px solid grey',
+                    background: 'grey',
+                    padding: '4px',
+                    borderRadius: '5px',
+                    color: 'darkgrey',
+                  }
                   : {
-                      border: '1px solid orange',
-                      background: 'orange',
-                      padding: '4px',
-                      borderRadius: '5px',
-                      color: 'white',
-                    }
+                    border: '1px solid orange',
+                    background: 'orange',
+                    padding: '4px',
+                    borderRadius: '5px',
+                    color: 'white',
+                  }
               }
               onClick={resendOTP}
             >

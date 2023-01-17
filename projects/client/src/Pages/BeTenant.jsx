@@ -196,5 +196,3 @@ function BeTenant() {
     );
 }
 export default BeTenant
-
-

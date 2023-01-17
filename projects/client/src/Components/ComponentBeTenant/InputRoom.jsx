@@ -5,6 +5,7 @@ import { BsCheckLg } from "react-icons/bs"
 import { useDispatch } from "react-redux"
 import { submitClickedToFalse } from '../../Redux/ButtonSlice';
 import { motion } from "framer-motion"
+import useAuth from '../../hooks/useAuth';
 
 const InputRoom = () => {
 
@@ -15,6 +16,7 @@ const InputRoom = () => {
     const [load, setLoad] = useState(false)
     const [errorMsg, setErrorMsg] = useState("")
     const [checklis, setChecklist] = useState(false)
+    const { auth } = useAuth();
 
     const isErrorName = name === ""
     const isErrorDesc = description === ""
@@ -38,16 +40,18 @@ const InputRoom = () => {
             formData.append('description', description)
             formData.append('price', price)
             formData.append('file', picture)
+            formData.append('tenantId', auth.tenantId)
 
             const config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
                 }
             }
 
-            await axios.post("/room/1", formData, config, {
+            await axios.post("/room", formData, config, {
                 withCredentials: true
             })
+            
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)

@@ -16,6 +16,7 @@ module.exports = {
             if (!verifiedUser) throw "Verify token failed";
 
             req.user = verifiedUser;
+            req.tenantId = verifiedUser.tenantId;
             next();
         } catch (err) {
             console.log(err);
