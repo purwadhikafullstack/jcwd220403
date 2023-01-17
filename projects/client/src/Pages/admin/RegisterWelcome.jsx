@@ -11,7 +11,6 @@ import {
   UnorderedList,
   ListItem,
   useColorModeValue,
-  Input,
 } from '@chakra-ui/react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
