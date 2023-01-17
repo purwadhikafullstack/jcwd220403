@@ -9,8 +9,8 @@ const useRefreshToken = () => {
       withCredentials: true,
     });
     setAuth((prev) => {
-      console.log(JSON.stringify(prev));
-      console.log(response.data.accessToken);
+      // console.log(JSON.stringify(prev));
+      // console.log(response.data.accessToken);
       return {
         ...prev,
         accessToken: response.data.accessToken,
@@ -18,6 +18,7 @@ const useRefreshToken = () => {
         isTenant: response.data.isTenant,
         name: response.data.name,
         userId: response.data.userId,
+        userPhoto: response.data.userPhoto,
         tenantId: response.data.tenantId,
       };
     });

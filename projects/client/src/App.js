@@ -20,6 +20,7 @@ import BeTenant from './Pages/BeTenant';
 import Dashboard from './Pages/Dashboard';
 import BasicUsage from './Components/AlertSuccess';
 import './Styles/swall.css';
+import Category from './Components/Category';
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            element: [<HomeCard />, <BasicUsage />, <Footer />],
+            element: [
+              <Category key={1} />,
+              <HomeCard key={2} />,
+              <Footer key={3} />,
+            ],
           },
           {
             element: <RequireAuth />,
@@ -87,13 +92,14 @@ const router = createBrowserRouter([
               },
               {
                 element: <RequireTenantRole />,
+                path: '/tenant',
                 children: [
                   {
-                    path: '/tenant',
-                    element: <Dashboard/>
+                    path: 'dashboard',
+                    element: <Dashboard />,
                   },
                   {
-                    path: '/createtenant',
+                    path: '/add-property',
                     element: <BeTenant />,
                   },
                 ],
@@ -104,14 +110,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: '/createtenant',
-  //   element: <BeTenant />,
-  // },
-  // {
-  //   path: '/dashboard',
-  //   element: <Dashboard />,
-  // },
 ]);
 
 function App() {

@@ -24,16 +24,11 @@ import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Logo from '../Assets/Logo.png';
 import LogoOnly from '../Assets/Logo_only.png';
 //import component
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import Category from './Category';
-// import { useSelector } from "react-redux"
 import useLogout from '../hooks/useLogout';
 
 const NavBar = () => {
-  const location = useLocation();
-  const OnlyHome = location.pathname === '/';
-  // const isDoneCreateData = useSelector((state) => state.DoneCreatePropertiesSlice.isDone)
   const { auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
@@ -123,7 +118,7 @@ const NavBar = () => {
                 color='black'
               >
                 {auth?.isTenant === true ? (
-                  <Link to={'/tenant'}>Switch to hosting</Link>
+                  <Link to={'/tenant/dashboard'}>Switch to hosting</Link>
                 ) : (
                   <Link to={'/register-tenant'}>List your property</Link>
                 )}
@@ -142,7 +137,15 @@ const NavBar = () => {
                     _hover={{ cursor: 'pointer' }}
                   >
                     <Icon as={HamburgerIcon} mr='2' ml='1' />
-                    <Avatar size='sm' name='Devofathurisqi' bgColor='#FE9900' />
+                    <Avatar
+                      size='sm'
+                      name='A'
+                      bgColor='#FE9900'
+                      src={
+                        'http://localhost:2000/profilePicture/' +
+                        auth?.userPhoto
+                      }
+                    />
                   </Tag>
                 </MenuButton>
                 {auth?.accessToken ? (
@@ -151,16 +154,15 @@ const NavBar = () => {
                       <Link to={'/user'}>Profile</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to={'/users'}>Profiles</Link>
-                    </MenuItem>
-                    <MenuItem>
                       <Link to={'/trip'}>Trips</Link>
                     </MenuItem>
                     <MenuItem>
                       <Link to={'/review'}>Reviews</Link>
                     </MenuItem>
                     <MenuDivider />
-                    <MenuItem>List Your Property</MenuItem>
+                    <MenuItem>
+                      <Link to={'/register-tenant'}>List Your Property</Link>
+                    </MenuItem>
                     <MenuDivider />
                     <MenuItem>Help</MenuItem>
                     <MenuItem onClick={signOut}>Logout</MenuItem>
@@ -174,7 +176,9 @@ const NavBar = () => {
                       <Link to={'/login'}>Login</Link>
                     </MenuItem>
                     <MenuDivider />
-                    <MenuItem>List Your Property</MenuItem>
+                    <MenuItem>
+                      <Link to={'/register-tenant'}>List Your Property</Link>
+                    </MenuItem>
                     <MenuDivider />
                     <MenuItem>Help</MenuItem>
                   </MenuList>
@@ -205,7 +209,6 @@ const NavBar = () => {
           </Box>
         </Container>
       </Center>
-      {OnlyHome ? <Category /> : null}
     </Box>
   );
 };

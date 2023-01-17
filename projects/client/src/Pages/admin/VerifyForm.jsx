@@ -13,11 +13,12 @@ import {
   FormControl,
   FormLabel,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import useRefreshToken from '../../hooks/useRefreshToken';
 
 export default function VerifyForm() {
   const [KTPNumber, setKTPNumber] = useState('');
@@ -27,10 +28,11 @@ export default function VerifyForm() {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  const refresh = useRefreshToken();
 
   function handleRedirect() {
     setInterval(() => {
-      navigate('/tenant');
+      navigate('/add-property');
     }, 3000);
   }
   const handleFileInput = (e) => {
@@ -70,6 +72,7 @@ export default function VerifyForm() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
+      await refresh();
       handleRedirect();
     } catch (error) {
       toast.error(error, {
@@ -78,6 +81,10 @@ export default function VerifyForm() {
     }
     setDisableSubmitBtn(false);
   };
+
+  useEffect(() => {
+    refresh();
+  });
 
   return (
     <Container maxW={'7xl'}>

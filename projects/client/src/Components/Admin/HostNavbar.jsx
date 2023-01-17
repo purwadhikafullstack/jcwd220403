@@ -16,7 +16,7 @@ import { Link, useLocation } from 'react-router-dom';
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const location = useLocation();
-  const ValidateComponent = location.pathname === "/createtenant"
+  const ValidateComponent = location.pathname === '/add-property';
   const Navbar = () => {
     return (
       <Box>
@@ -39,7 +39,11 @@ export default function WithSubnavigation() {
             <IconButton
               onClick={onToggle}
               icon={
-                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
               }
               variant={'ghost'}
               aria-label={'Toggle Navigation'}
@@ -52,10 +56,10 @@ export default function WithSubnavigation() {
               color={useColorModeValue('gray.800', 'white')}
               fontWeight={'bold'}
             >
-              <Link to={'/tenant'}>Holistay Host</Link>
+              <Link to={'/tenant/dashboard'}>Holistay Host</Link>
             </Text>
           </Flex>
-  
+
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={'flex-end'}
@@ -77,14 +81,10 @@ export default function WithSubnavigation() {
             </Button>
           </Stack>
         </Flex>
-  
+
         <Collapse in={isOpen} animateOpacity></Collapse>
       </Box>
-    )
-  }
-  return (
-    <Box>
-      {ValidateComponent? null : <Navbar/>}
-    </Box>
-  );
+    );
+  };
+  return <Box>{ValidateComponent ? null : <Navbar />}</Box>;
 }
