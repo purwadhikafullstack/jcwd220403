@@ -1,9 +1,6 @@
-require('dotenv').config();
 const path = require('path');
 const database = require('../models');
 const tenant = database.tenant;
-const user = database.tenant;
-const jwt = require('jsonwebtoken');
 
 const RegisterAsTenant = async (req, res) => {
   const { KTPNumber, userId } = req.body;

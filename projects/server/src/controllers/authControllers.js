@@ -1,6 +1,6 @@
-require('dotenv').config();
 const database = require('../models');
 const user = database.user;
+const tenant = database.tenant;
 const userLogin = database.login;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -116,9 +116,9 @@ module.exports = {
 
   login: async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.device)
-    // let browser = req.device.client.name;
-    // let device = req.device.device.type;
+    console.log(req.device);
+    let browser = req.device.client.name;
+    let device = req.device.device.type;
 
     const emailExist = await user.findOne({
       where: {
@@ -146,14 +146,14 @@ module.exports = {
         const refreshToken = jwt.sign(
           payload,
           process.env.REFRESH_TOKEN_SECRET_KEY,
-          { expiresIn: '30d' }
+          { expiresIn: '7d' }
         );
 
         const [loginFound, created] = await userLogin.findOrCreate({
           where: {
             userId: emailExist.id,
-            // device,
-            // browser,
+            device,
+            browser,
           },
           defaults: { refreshToken },
         });
@@ -164,16 +164,24 @@ module.exports = {
             {
               where: {
                 userId: emailExist.id,
-                // device,
-                // browser,
+                device,
+                browser,
               },
             }
           );
         }
 
+        const tenantInfo = await tenant.findOne({
+          where: {
+            userId: emailExist.id,
+          },
+        });
+
+        const daysForCookie = 7;
+
         res.header('Access-Control-Allow-Credentials', true);
         res.cookie('refreshToken', refreshToken, {
-          maxAge: 28 * 60 * 60 * 1000,
+          maxAge: daysForCookie * 24 * 60 * 60 * 1000,
           httpOnly: true,
           sameSite: 'None',
           secure: true,
@@ -183,7 +191,9 @@ module.exports = {
           userEmail: emailExist.email,
           name: emailExist.fullName,
           userId: emailExist.id,
+          userPhoto: emailExist.photo,
           isTenant: emailExist.isTenant,
+          tenantId: tenantInfo?.id || '',
         });
       } else {
         res.status(403).send({

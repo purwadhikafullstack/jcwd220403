@@ -1,7 +1,5 @@
-require('dotenv').config();
 const database = require('../models');
 const jwt = require('jsonwebtoken');
-const { HostNotFoundError } = require('sequelize');
 
 const userLogin = database.login;
 const user = database.user;
@@ -65,8 +63,9 @@ const handleRefreshToken = async (req, res) => {
         email: userInfo.email,
         name: userInfo.fullName,
         userId: userInfo.id,
+        userPhoto: userInfo.photo,
         isTenant: userInfo.isTenant,
-        tenantId: tenantInfo.id,
+        tenantId: tenantInfo?.id || '',
         accessToken,
       });
     }
