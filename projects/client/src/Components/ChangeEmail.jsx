@@ -3,6 +3,7 @@ import React from "react";
 import { Input, Button, FormControl, useDisclosure,
         Modal, ModalOverlay, ModalContent, ModalBody, HStack, ModalCloseButton, Text, Stack, Heading, Center, PinInput, PinInputField, Flex } from "@chakra-ui/react";
 import axios from '../api/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import * as Yup from "yup";
 import { Field, ErrorMessage, Formik, Form } from "formik";
 import Swal from 'sweetalert2'
@@ -25,13 +26,14 @@ export const ChangeEmail = () => {
     const logout = useLogout();
     const { auth } = useAuth();
     const navigate = useNavigate()
+    const axiosPrivate = useAxiosPrivate()
 
     const registerSchema = Yup.object().shape({
         email: Yup.string().email().required('Please enter your email address')
         .test('Email', ' The email address you entered already exists. ',
         function (value) {
             return new Promise((resolve, reject) => {
-                axios.get(`user/${value}/available`)
+                axiosPrivate.get(`user/${value}/available`)
                     .then((res) => {
                         resolve(!res.data)
                     })
@@ -48,12 +50,12 @@ export const ChangeEmail = () => {
     const signOut = async () => {
         await logout();
         navigate('/login');
-      };
+    };
 
     const onChangeEmail = async (data) => {
         try {
             setLoad(true)
-            const res = await axios.post(
+            const res = await axiosPrivate.post(
                 "user/otpEmail",
                 data,
             );
@@ -86,12 +88,7 @@ export const ChangeEmail = () => {
             const oldPassword = document.getElementById("oldPassword").value
             const res = await axios.post(
                 "user/checkPass",
-                { oldPassword },
-                {
-                    headers: {
-                        Authorization: `Bearer ${auth.accessToken}`,
-                    },
-                }
+                { oldPassword }
             );
             setOpen(res.data)
         } catch (err) {

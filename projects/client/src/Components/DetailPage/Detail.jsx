@@ -15,13 +15,14 @@ import {
     Divider,
     SkeletonText,
     Skeleton,
-    SkeletonCircle,
+    SkeletonCircle
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
-// import axios from "axios";
 import useAuth from '../../hooks/useAuth';
 import { useParams } from "react-router-dom";
+import { DateRange } from "react-date-range";
+import { addDays } from 'date-fns';
 
 function DetailPage() {
     const [isMobile] = useMediaQuery("(max-width: 481px)")
@@ -29,10 +30,22 @@ function DetailPage() {
     const [data, setData] = useState([])
     const [isloading, setIsloading] = useState(true)
     const params = useParams()
+    const [state, setState] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+
+    const disabledDates = [
+        // new Date("2023-01-19"),
+        // new Date("2023-01-20")
+    ];
 
     const getData = async () => {
         try {
-            const res = await axios.get(`/property/${params.id}`);
+            const res = await axios.get(`/detail/property/${params.id}`);
             setData(res.data)
             setTimeout(() => {
                 setIsloading(false)
@@ -57,7 +70,7 @@ function DetailPage() {
             </>
             :
             <Center>
-                <Box w="80vw">
+                <Box w="80vw" pb="10">
                     <Skeleton isLoaded={!isloading}>
                         <Heading fontSize="3xl">{data?.name}</Heading>
                         <Text fontWeight="bold" fontSize="sm">{data?.category?.city}, {data?.category?.country}</Text>
@@ -80,12 +93,12 @@ function DetailPage() {
                     
                     <HStack mt="8" mb="4" w="40vw" >
                         <SkeletonCircle mr="4" size="10" isLoaded={!isloading}>
-                            <Avatar size="md" src={'http://localhost:2000/propertyPicture/' + data?.picture} />
+                            <Avatar size="md" src={'http://localhost:2000/profilePicture/' + data?.tenant?.user.photo} />
                         </SkeletonCircle>
                         <Skeleton isLoaded={!isloading}>
                             <Box>
-                                <Heading mt="2" fontSize="xl">Tuan Rumah : Ilham</Heading>
-                                <Text fontSize="sm" color="gray.600">3 Room</Text>
+                                <Heading mt="2" fontSize="xl">Tuan Rumah : {data?.tenant?.user.fullName}</Heading>
+                                <Text fontSize="sm" color="gray.600">{data?.rooms?.length} Room</Text>
                             </Box>
                         </Skeleton>
                     </HStack>
@@ -93,6 +106,35 @@ function DetailPage() {
                         <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Description</Text></Skeleton>
                         <SkeletonText isLoaded={!isloading}><Text mb="4" color="gray.600">{data?.description}</Text></SkeletonText>
                     <Divider/>
+                        <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Tipe Kamar yang Tersedia di {data?.name}</Text></Skeleton>
+                    <Flex w="80w" justify="space-between">   
+                        <Box w="50w" >
+                            {data?.rooms?.map((item) => {
+                                return (
+                                    <Skeleton isLoaded={!isloading}>
+                                        <Flex mt="4" borderRadius="md" overflow="hidden" boxShadow="md">
+                                            <Flex w="15vw">
+                                                <Image src={'http://localhost:2000/roomPicture/' + item.picture} boxSize="full" objectFit="cover" />
+                                            </Flex>
+                                            <Box m="2" p="2" w="35vw" borderRadius="2xl" >
+                                                <Flex justify="space-between" overflowWrap="break-word" >
+                                                    <Text mb="2" fontWeight="bold">{item.name}</Text>
+                                                    <Text mb="2" fontWeight="bold" color="orange">Rp {new Intl.NumberFormat('en-DE').format(item.price)} / malam</Text>
+                                                </Flex>
+                                                <Divider/>
+                                                <Text h="15vh" overflow="scroll" >{item.description}</Text>
+                                                <Divider/>
+                                                <Button mt="2" colorScheme="orange">Pesan sekarang</Button>
+                                            </Box>
+                                        </Flex>
+                                    </Skeleton>
+                                )
+                            })}
+                        </Box>
+                        <Box w="30w">
+                            {/* iklan apa ajah nanti */}
+                        </Box>
+                    </Flex>
                 </Box> 
             </Center>
             }

@@ -26,15 +26,34 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const { id } = req.params;
-            const prop = await property.findOne(
-                { where: { id } }
-                );
-
-            res.status(200).send("succes");
+            const response = await database.property.findOne({
+                where: { id: req.params.id },
+                include: [
+                    { model: database.category },
+                    { model: database.facility},
+                    { 
+                        model: database.room,
+                        include: [
+                            {
+                                model: database.image,
+                            }
+                        ] 
+                    },
+                    { 
+                        model: database.tenant,
+                        include: [
+                            {
+                                model: database.user,
+                                attributes: ["fullName", "photo"], 
+                            }
+                        ]  
+                    },
+                ]
+            })
+            res.status(200).send(response)
         } catch (err) {
-            console.log(err);
-            res.status(400).send(err);
+            console.log(err)
+            res.status(404).send(err)
         }
     },
 }

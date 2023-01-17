@@ -84,18 +84,10 @@ function ProfileSetting() {
 
     const handleUpload = async () => {
         const data = new FormData();
+        data.append('userId', auth.userId);
         data.append("file", image);
 
-        await axios.patch(
-            "/user/profilePic",
-        data,
-        {
-            headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${auth.accessToken}`,
-            },
-        }
-        );
+        await axiosPrivate.patch("/user/profilePic", data);
         setImage({ images: "" });
     };
 

@@ -21,6 +21,8 @@ import Dashboard from './Pages/Dashboard';
 import BasicUsage from './Components/AlertSuccess';
 import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const router = createBrowserRouter([
   {

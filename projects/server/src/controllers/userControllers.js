@@ -6,6 +6,7 @@ const nodemailer = require('../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const { OTP_generator } = require('../middlewares/otp_service');
+const path = require('path');
 
 module.exports = {
     users: async (req, res) => {
@@ -81,19 +82,28 @@ module.exports = {
     },
     updateProfilePic: async (req, res) => {
         try {
-            let fileUploaded = req.file;
+            let fileUploaded = req.files.file;
+            const { userId } = req.body;
+
+            const extensionName = path.extname(fileUploaded.name);
+            const allowedExtension = ['.png', '.jpg', '.jpeg', '.webp'];
+            
+            if (!allowedExtension.includes(extensionName)) throw "Invalid image extension"
+
+            const filename =  "PIMG" + "-" + Date.now() + Math.round(Math.random() * 100000) + extensionName
             
             await user.update(
                 {
-                    photo: fileUploaded.filename,
+                    photo: filename,
                 },
                 {
                     where: {
-                        email: req.user,
+                        id: userId,
                     },
                 }
             );
 
+            fileUploaded.mv('./Public/profilePicture/' + filename)
             res.status(200).send({
                 massage: "Update Profile Picture Succes"
             });
