@@ -62,7 +62,7 @@ const InputCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosPrivate.post('http://localhost:2000/api/category', {
+      await axiosPrivate.post('/category', {
         country,
         province,
         city,

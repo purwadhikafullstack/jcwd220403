@@ -41,7 +41,7 @@ import { ImFilePicture } from 'react-icons/im';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import useAuth from '../../hooks/useAuth';
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const ComponentDashboardTwo = () => {
   const { auth } = useAuth();

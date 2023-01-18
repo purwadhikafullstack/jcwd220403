@@ -11,12 +11,12 @@ import RequireAuth from './Components/RequireAuth';
 import ResetPassword from './Pages/ResetPassword';
 import Profile from './Pages/Profile';
 import PersistLogin from './Components/PersistLogin';
-import HostHome from './Pages/admin/HostHome';
-import RegisterWelcome from './Pages/admin/RegisterWelcome';
-import VerifyForm from './Pages/admin/VerifyForm';
+import HostHome from './Pages/Tenant/HostHome';
+import RegisterWelcome from './Pages/Tenant/RegisterWelcome';
+import VerifyForm from './Pages/Tenant/VerifyForm';
 import RequireTenantRole from './Components/RequireTenantRole';
-import BeTenant from './Pages/BeTenant';
-import Dashboard from './Pages/Dashboard';
+import BeTenant from './Pages/Tenant/BeTenant';
+import Dashboard from './Pages/Tenant/Dashboard';
 import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
 import 'react-date-range/dist/styles.css'; // main style file
