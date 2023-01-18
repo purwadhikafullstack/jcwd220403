@@ -16,7 +16,7 @@ import {
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 export default function VerifyForm() {
@@ -24,13 +24,14 @@ export default function VerifyForm() {
   const [errorMessage, setErrorMEssage] = useState('');
   const [selectedFile, setSelectedFile] = useState();
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
-  const navigate = useNavigate();
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const blobColor = useColorModeValue('red.50', 'red.400');
 
   function handleRedirect() {
     setInterval(() => {
-      navigate('/tenant');
+      setSubmitSuccess(true);
     }, 3000);
   }
   const handleFileInput = (e) => {
@@ -53,7 +54,7 @@ export default function VerifyForm() {
       data.append('KTPNumber', KTPNumber);
       data.append('KTPPhoto', selectedFile);
       const res = axiosPrivate.post('/registerAsTenant', data);
-      await toast.promise(
+      const toastData = await toast.promise(
         res,
         {
           pending: 'Login on progress...',
@@ -70,6 +71,14 @@ export default function VerifyForm() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
+
+      setAuth((prev) => {
+        return {
+          ...prev,
+          isTenant: true,
+          tenantId: toastData.data.data.tenantId,
+        };
+      });
       handleRedirect();
     } catch (error) {
       toast.error(error, {
@@ -79,7 +88,9 @@ export default function VerifyForm() {
     setDisableSubmitBtn(false);
   };
 
-  return (
+  return submitSuccess ? (
+    <Navigate to={'/tenant/add-property'} />
+  ) : (
     <Container maxW={'7xl'}>
       <ToastContainer />
       <Stack
@@ -160,7 +171,7 @@ export default function VerifyForm() {
             top={'-20%'}
             left={0}
             zIndex={-1}
-            color={useColorModeValue('red.50', 'red.400')}
+            color={blobColor}
           />
           <Box
             position={'relative'}

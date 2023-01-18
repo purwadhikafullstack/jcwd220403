@@ -14,15 +14,14 @@ import PersistLogin from './Components/PersistLogin';
 import HostHome from './Pages/admin/HostHome';
 import RegisterWelcome from './Pages/admin/RegisterWelcome';
 import VerifyForm from './Pages/admin/VerifyForm';
-import HostDashboard from './Pages/admin/HostDashboard';
 import RequireTenantRole from './Components/RequireTenantRole';
 import BeTenant from './Pages/BeTenant';
 import Dashboard from './Pages/Dashboard';
-import BasicUsage from './Components/AlertSuccess';
 import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import Category from './Components/Category';
 
 const router = createBrowserRouter([
   {
@@ -59,7 +58,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            element: [<HomeCard />, <BasicUsage />, <Footer />],
+            element: [
+              <Category key={1} />,
+              <HomeCard key={2} />,
+              <Footer key={3} />,
+            ],
           },
           {
             element: <RequireAuth />,
@@ -94,13 +97,14 @@ const router = createBrowserRouter([
               },
               {
                 element: <RequireTenantRole />,
+                path: '/tenant',
                 children: [
                   {
-                    path: '/tenant',
-                    element: <Dashboard/>
+                    path: 'dashboard',
+                    element: <Dashboard />,
                   },
                   {
-                    path: '/createtenant',
+                    path: 'add-property',
                     element: <BeTenant />,
                   },
                 ],
@@ -110,55 +114,6 @@ const router = createBrowserRouter([
         ],
       },
     ],
-  },
-  // {
-  //   path: '/createtenant',
-  //   element: <BeTenant />,
-  // },
-  // {
-  //   path: '/dashboard',
-  //   element: <Dashboard />,
-  // },
-  //tenant
-  {
-    element: <PersistLogin />,
-    children: [
-      {
-        element: <RequireAuth />,
-        children: [
-          {
-            element: <HostHome />,
-            children: [
-              {
-                path: '/register-tenant',
-                element: <RegisterWelcome />,
-              },
-              {
-                path: '/verify-tenant',
-                element: <VerifyForm />,
-              },
-              {
-                element: <RequireTenantRole />,
-                children: [
-                  {
-                    path: '/tenant',
-                    element: <HostDashboard />,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '/tenant',
-    element: <BeTenant />,
-  },
-  {
-    path: '/dashboard',
-    element: <Dashboard />,
   },
 ]);
 

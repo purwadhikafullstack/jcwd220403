@@ -13,7 +13,7 @@ const {
   logout,
   tenantRouters,
   RegisterAsTenant,
-  pagesRouters
+  pagesRouters,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -52,10 +52,7 @@ app.use(cookieParser());
 app.use(refresh);
 app.use(logout);
 
-app.use(tenantRouters);
-app.use(pagesRouters)
-// app.use(express.static("./public/propertyPicture"))
-// app.use(express.static(join(__dirname, "../public/propertyPicture")));
+app.use(pagesRouters);
 
 //device detection
 app.use(middlewareDetect);
@@ -69,19 +66,15 @@ app.use(
     abortOnLimit: true,
   })
 );
+
 //routes that need token
 app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
+app.use(tenantRouters);
 
 app.get('/api', (req, res) => {
-  res
-    //   .cookie('cookie', 'api', {
-    //     maxAge: 50000,
-    //     httpOnly: false,
-    //     path: '/api',
-    //   })
-    .send(`Hello, this is my API`);
+  res.send(`Hello, this is my API`);
 });
 
 app.get('/api/greetings', (req, res, next) => {

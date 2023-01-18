@@ -1,9 +1,6 @@
-require('dotenv').config();
 const path = require('path');
 const database = require('../models');
 const tenant = database.tenant;
-const user = database.tenant;
-const jwt = require('jsonwebtoken');
 
 const RegisterAsTenant = async (req, res) => {
   const { KTPNumber, userId } = req.body;
@@ -40,19 +37,23 @@ const RegisterAsTenant = async (req, res) => {
 
     const filename = `user${userId}${extensionName}`;
 
-    await tenant.create({
+    const newTenant = await tenant.create({
       KTPPhoto: filename,
       KTPNumber,
       userId,
     });
 
+    console.log(newTenant);
+
     ktp.mv('./public/ktp/' + filename);
+
     res.status(200);
     res.send({
       status: true,
       message: 'file is uploaded',
       data: {
         KTPNumber,
+        tenantId: newTenant?.id,
         name: ktp.name,
         mimetype: ktp.mimetype,
         size: ktp.size,

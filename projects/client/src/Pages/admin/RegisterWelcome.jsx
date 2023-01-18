@@ -11,12 +11,18 @@ import {
   UnorderedList,
   ListItem,
   useColorModeValue,
-  Input,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 export default function RegisterWelcome() {
-  return (
+  const { auth } = useAuth();
+  const location = useLocation();
+  const blobColor = useColorModeValue('red.50', 'red.400');
+
+  return auth?.isTenant === true ? (
+    <Navigate to={'/tenant/dashboard'} state={{ from: location }} replace />
+  ) : (
     <Container maxW={'7xl'}>
       <Stack
         align={'center'}
@@ -82,7 +88,7 @@ export default function RegisterWelcome() {
             top={'-20%'}
             left={0}
             zIndex={-1}
-            color={useColorModeValue('red.50', 'red.400')}
+            color={blobColor}
           />
           <Box
             position={'relative'}
