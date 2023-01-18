@@ -48,6 +48,7 @@ import axios from '../api/axios';
 
 const NavBar = () => {
   const { auth } = useAuth();
+  console.log(auth)
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();

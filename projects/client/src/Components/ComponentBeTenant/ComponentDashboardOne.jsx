@@ -313,39 +313,227 @@ const DashboardOne = () => {
 
   function MyMap() {
     return (
-      <Box
-        border='2px solid white'
-        borderRadius='10px'
-        boxShadow='md'
-        height='200px'
-        width={width}
-      >
-        <BingMapsReact
-          bingMapsKey='AomnrSfTreMtpt0Jm_l56DONLM_o-GkAwmDRzqtgMhaPqEnnHT6zAF5IysqWK1_e'
-          mapOptions={{
-            navigationBarMode: 'square',
-          }}
-          viewOptions={{
-            center: {
-              latitude: data.category.locationDetail.coordinates[0],
-              longitude: data.category.locationDetail.coordinates[1],
-            },
-            mapTypeId: 'Road',
-          }}
-        />
-      </Box>
-    );
-  }
-  const width = useBreakpointValue({
-    base: '300px',
-    md: '600px',
-    lg: '600px',
-  });
-  const widthProgress = useBreakpointValue({
-    base: '80px',
-    md: '100px',
-    lg: '100px',
-  });
+        <Box>
+            {data && (
+                <Box p={6}>
+                    <Heading as="h2" size="md" mb={4} fontFamily="Helvetica">
+                        {data.name}
+                        <Popover isOpen={isOpenPopover}
+                            onClose={() => setIsOpenPopover(false)}>
+                            <PopoverTrigger>
+                                <Button bg="white" _hover="none" marginLeft="10px" onClick={() => setIsOpenPopover(true)}>
+                                    <Icon as={AiOutlineEdit} cursor="pointer" boxSize="20px" color="gray.600" />
+                                </Button>
+                            </PopoverTrigger>
+                            <Portal>
+                                <PopoverContent>
+                                    <PopoverArrow />
+                                    <PopoverHeader textAlign="center">Edit your name property</PopoverHeader>
+                                    <PopoverCloseButton />
+                                    <PopoverBody>
+                                        <FormControl isInvalid={isErrorNameProperty}>
+                                            <FormLabel color="red" fontSize="12px">{msgName}</FormLabel>
+                                            <Input id="name" type="text" value={nameProperty} variant="flushed"
+                                                placeholder="Your name property?"
+                                                onChange={(e) => setNameProperty(e.target.value)} />
+                                            {isErrorNameProperty ? (<FormHelperText color="red" textAlign="center">Name is required</FormHelperText>) :
+                                                (<FormHelperText color="#478fd3" textAlign="center">Create name success</FormHelperText>)}
+                                        </FormControl>
+                                    </PopoverBody>
+                                    <PopoverFooter><Center><Button colorScheme="blue" variant="outline" onClick={editName}>{load ? <Spinner /> : "Submit"}</Button></Center></PopoverFooter>
+                                </PopoverContent>
+                            </Portal>
+                        </Popover>
+                    </Heading>
+                    <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={6}>
+                        <Box shadow="md" p={4}>
+                            <Box position="relative">
+                                <Carousel
+                                    autoPlay
+                                    infiniteLoop
+                                    showArrows={true}>
+                                    {data.propertypictures.map((image, i) => (
+                                        <Box key={i}>
+                                            <Image cursor="pointer" height="auto" style={{ filter: hover ? "brightness(30%)" : "none" }} src={`http://localhost:2000/propertyPicture/${image.picture}`} />
+                                        </Box>
+                                    ))}
+                                </Carousel>
+                                <Tooltip label="Change Picture?" fontSize="md" placement="top" openDelay={300} color="black" bg="white">
+                                    <Button onClick={onOpen} style={{
+                                        position: "absolute", top: "0", left: "0", right: "0", bottom: "0",
+                                        width: "100%", height: "100%", opacity: "0", cursor: "pointer",
+                                        zIndex: 1,
+                                    }} onMouseOver={handleMouseEnter} onMouseOut={handleMouseLeave}>Open Modal</Button>
+                                </Tooltip>
+                                <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+                                    <ModalOverlay />
+                                    <ModalContent>
+                                        <ModalHeader>Change Picture</ModalHeader>
+                                        <ModalCloseButton />
+                                        <ModalBody pb={6}>
+                                            <form onSubmit={editPicture}>
+                                                <Input type="file" onChange={(e) => setPicture(e.target.files[0])} variant="flushed" color="red.400" />
+                                            </form>
+                                            <Text textAlign="center" color="red">{msgPicture}</Text>
+                                        </ModalBody>
+                                        <ModalFooter>
+                                            <Button colorScheme='blue' mr={3} type="submit" onClick={editPicture} >
+                                                {load ? <Spinner /> : "Save"}
+                                            </Button>
+                                            <Button onClick={onClose}>Cancel</Button>
+                                            <Button colorScheme="blue" variant="outline" marginLeft="10px" onClick={() => dispatch(openDrawerForMorePicture())}>More Picture?</Button>
+                                        </ModalFooter>
+                                    </ModalContent>
+                                </Modal>
+                                <InputMorePictureProperty />
+                            </Box>
+                            <Text fontSize="lg" fontWeight="bold" mt={2} fontFamily="Helvetica">
+                                Facilities provided
+                            </Text>
+                            <Text fontSize="md" color="gray.600" fontFamily="Helvetica">
+                                {data.facilities[0].name}
+                                <Icon as={AiOutlineEdit} cursor="pointer" boxSize="20px" color="gray.600" marginLeft="10px" onClick={OpenDrawer} ref={iconRef} />
+                                <Drawer
+                                    isOpen={isOpenDrawer}
+                                    placement='right'
+                                    onClose={CloserDrawer}
+                                    finalFocusRef={iconRef}
+                                    size="md"
+                                >
+                                    <DrawerOverlay />
+                                    <DrawerContent>
+                                        <DrawerCloseButton />
+                                        <DrawerHeader>Edit your fasility property <br />
+                                        </DrawerHeader>
+                                        <DrawerBody>
+                                            <Text color="red" textAlign="center" fontSize="12px">{msgNameFacility}</Text>
+                                            <Flex flexWrap="wrap" marginTop="10px" gap="10px" cursor="pointer" justifyContent="center">
+                                                {DataFasility.map((item) => (
+                                                    <Card width="130px" height="110px"
+                                                        onClick={() => handleItemClick(item)}
+                                                        style={clickedItem.includes(item) ? { border: '2px solid black', fontWeight: 'bold' } : null}
+                                                        _hover={{ border: '2px solid black' }}>
+                                                        <CardBody>
+                                                            <Box>
+                                                                <Heading size="md">{item.img}</Heading>
+                                                                <Text pt='2' fontSize='md'>
+                                                                    {item.title}
+                                                                </Text>
+                                                            </Box>
+                                                        </CardBody>
+                                                    </Card>
+                                                ))}
+                                            </Flex>
+                                        </DrawerBody>
+                                        <DrawerFooter>
+                                            <Button variant='outline' mr={3} onClick={CloserDrawer}>
+                                                Cancel
+                                            </Button>
+                                            <Button colorScheme='blue' variant="outline" onClick={editFacilities}>{load ? <Spinner /> : "Submit"}</Button>
+                                        </DrawerFooter>
+                                    </DrawerContent>
+                                </Drawer>
+                            </Text>
+                        </Box>
+                        <Box shadow="md" p={4}>
+                            <Text fontSize="lg" fontWeight="bold" mt={2}>
+                                Description
+                            </Text>
+                            <Text fontSize="md" color="gray.600">
+                                {data.description}
+                                <Popover isLazy placement="bottom"
+                                    isOpen={openPopoverDesc}
+                                    onClose={() => setOpenPopoverDesc(false)}>
+                                    <PopoverTrigger>
+                                        <Button bg="white" _hover="none" marginLeft="10px" onClick={() => setOpenPopoverDesc(true)}>
+                                            <Icon as={AiOutlineEdit} cursor="pointer" boxSize="20px" color="gray.600" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <Portal>
+                                        <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverHeader textAlign="center">Edit your Description</PopoverHeader>
+                                            <PopoverCloseButton />
+                                            <PopoverBody>
+                                                <FormControl isInvalid={isErrorNameProperty}>
+                                                    <FormLabel color="red" fontSize="12px" textAlign="center">{msgNameDesc}</FormLabel>
+                                                    <Textarea id="name" type="text" variant="flushed" defaultValue={valueDesc}
+                                                        placeholder="Edit your Description" size="md"
+                                                        onChange={(e) => setDesc(e.target.value)} />
+                                                    {isErrorDescProperty ? (<FormHelperText color="red" textAlign="center">Desc is required</FormHelperText>) :
+                                                        (<FormHelperText color="#478fd3" textAlign="center">Update desc success</FormHelperText>)}
+                                                </FormControl>
+                                            </PopoverBody>
+                                            <PopoverFooter><Center><Button colorScheme="blue" variant="outline" onClick={editDescription}>{load ? <Spinner /> : "Submit"}</Button></Center></PopoverFooter>
+                                        </PopoverContent>
+                                    </Portal>
+                                </Popover>
+                            </Text>
+                            <Text fontSize="lg" fontWeight="bold" mt={2}>
+                                Location Detail
+                            </Text>
+                            <TableContainer>
+                                <Table variant='simple'>
+                                    <TableCaption>Edit location Detail
+                                        <Icon as={AiOutlineEdit} cursor="pointer" boxSize="20px" color="gray.600" marginLeft="10px" onClick={handleModalOpen} />
+                                    </TableCaption>
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Country</Th>
+                                            <Th>Province</Th>
+                                            <Th>City</Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                        <Tr>
+                                            <Td>{data.category.country}</Td>
+                                            <Td>{data.category.province}</Td>
+                                            <Td>{data.category.city}</Td>
+                                        </Tr>
+                                    </Tbody>
+                                    <Tfoot>
+                                        <Tr>
+                                            <Th>Country</Th>
+                                            <Th>Province</Th>
+                                            <Th>City</Th>
+                                        </Tr>
+                                    </Tfoot>
+                                </Table>
+                            </TableContainer>
+                            <Modal closeOnOverlayClick={false} isOpen={modalOpen} onClose={handleModalClose}>
+                                <ModalOverlay />
+                                <ModalContent>
+                                    <ModalHeader>Edit location Detail</ModalHeader>
+                                    <ModalCloseButton />
+                                    <ModalBody pb={6}>
+                                        <form onSubmit={editLocationDetail}>
+                                            <Text fontSize="14px" textAlign="center" color="red">{msgErrorLocation}</Text>
+                                            <FormControl isInvalid={isErrorCountry} width="auto" marginLeft="10px" marginRight="10px" >
+                                                <FormLabel>Country</FormLabel>
+                                                <Input variant="flushed" placeholder='Country?'
+                                                    onChange={(e) => setCountry(e.target.value)}
+                                                />
+                                                {isErrorCountry ? (<FormHelperText color="red">Country is required</FormHelperText>) :
+                                                    (<FormHelperText color="#478fd3">Update country success</FormHelperText>)}
+                                            </FormControl>
+                                            <FormControl isInvalid={isErrorProvince} width="auto" marginLeft="10px" marginRight="10px" >
+                                                <FormLabel>Province</FormLabel>
+                                                <Input variant="flushed" placeholder='Province?'
+                                                    onChange={(e) => setProvince(e.target.value)}
+                                                />
+                                                {isErrorProvince ? (<FormHelperText color="red">Province is required</FormHelperText>) :
+                                                    (<FormHelperText color="#478fd3">Update province success</FormHelperText>)}
+                                            </FormControl>
+                                            <FormControl isInvalid={isErrorCity} width="auto" marginLeft="10px" marginRight="10px" >
+                                                <FormLabel>City</FormLabel>
+                                                <Input variant="flushed" placeholder='City?'
+                                                    onChange={(e) => setCity(e.target.value)}
+                                                />
+                                                {isErrorCity ? (<FormHelperText color="red">City is required</FormHelperText>) :
+                                                    (<FormHelperText color="#478fd3">Update city success</FormHelperText>)}
+                                            </FormControl>
+                                        </form>
+                                    </ModalBody>
 
   return (
     <Box>
