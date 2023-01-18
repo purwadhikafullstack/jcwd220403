@@ -3,6 +3,7 @@ import ButtonSlice from "./ButtonSlice"
 import ModalSlice from "./ModalSlice"
 import PropertySlice from "./PropertySlice"
 import DoneCreatePropertiesSlice from "./DoneCreatePropertiesSlice"
+import MorePictureProperty from "./MorePictureProperty"
 
 
 export default configureStore({
@@ -11,5 +12,6 @@ export default configureStore({
         ModalSlice,
         PropertySlice,
         DoneCreatePropertiesSlice,
+        MorePictureProperty,
     }
 })

@@ -1,7 +1,7 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class property extends Model {
+  class propertypicture extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,40 +9,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      property.belongsTo(models.tenant, {
+      propertypicture.belongsTo(models.property, {
         foreignKey: {
           allowNull: false,
         },
       });
-      property.belongsTo(models.category, {
-        foreignKey: {
-          allowNull: false,
-        },
-      });
-      property.hasMany(models.room);
-      property.belongsToMany(models.facility, { through: 'propertyFacility' });
-      property.hasMany(models.propertypicture)
     }
   }
-  property.init(
+  propertypicture.init(
     {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      description: {
-        type: DataTypes.TEXT,
+      type: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      picture: {
+      size: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      path: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: 'property',
+      modelName: "propertypicture",
     }
   );
-  return property;
+  return propertypicture;
 };

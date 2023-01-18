@@ -18,8 +18,11 @@ import BingMapsReact from "bingmaps-react";
 import { DataFasility } from '../../Data/DataFasility';
 import { useDispatch } from "react-redux"
 import { getName } from '../../Redux/PropertySlice';
+import { openDrawerForMorePicture } from '../../Redux/MorePictureProperty';
+import InputMorePictureProperty from './InputMorePictureProperty';
 import "../../Styles/inputFile.css"
 import useAuth from '../../hooks/useAuth';
+import { Carousel } from 'react-responsive-carousel';
 
 const DashboardOne = () => {
     const dispatch = useDispatch()
@@ -73,9 +76,9 @@ const DashboardOne = () => {
             const response = await axios.get(`/property/${auth.tenantId}`, {
                 withCredentials: true
             })
-            setData(response.data)
-            dispatch(getName(response.data.name))
-            setValueDesc(response.data.description)
+            setData(response.data[0])
+            dispatch(getName(response.data[0].name))
+            setValueDesc(response.data[0].description)
         } catch (err) {
             console.log(err)
         }
@@ -326,7 +329,16 @@ const DashboardOne = () => {
                     <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={6}>
                         <Box shadow="md" p={4}>
                             <Box position="relative">
-                                <Image src={'http://localhost:2000/propertyPicture/' +data.picture} cursor="pointer" style={{ filter: hover ? "brightness(30%)" : "none" }} />
+                                <Carousel
+                                    autoPlay
+                                    infiniteLoop
+                                    showArrows={true}>
+                                    {data.propertypictures.map((image, i) => (
+                                        <Box key={i}>
+                                            <Image cursor="pointer" style={{ filter: hover ? "brightness(30%)" : "none" }} src={`http://localhost:2000/propertyPicture/${image.picture}`} />
+                                        </Box>
+                                    ))}
+                                </Carousel>
                                 <Tooltip label="Change Picture?" fontSize="md" placement="top" openDelay={300} color="black" bg="white">
                                     <Button onClick={onOpen} style={{
                                         position: "absolute", top: "0", left: "0", right: "0", bottom: "0",
@@ -350,9 +362,11 @@ const DashboardOne = () => {
                                                 {load ? <Spinner /> : "Save"}
                                             </Button>
                                             <Button onClick={onClose}>Cancel</Button>
+                                            <Button colorScheme="blue" variant="outline" marginLeft="10px" onClick={() => dispatch(openDrawerForMorePicture())}>More Picture?</Button>
                                         </ModalFooter>
                                     </ModalContent>
                                 </Modal>
+                                <InputMorePictureProperty />
                             </Box>
                             <Text fontSize="lg" fontWeight="bold" mt={2} fontFamily="Helvetica">
                                 Facilities provided

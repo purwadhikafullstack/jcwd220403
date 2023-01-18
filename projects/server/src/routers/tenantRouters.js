@@ -16,12 +16,15 @@ router.post('/api/category', tenantControllers.CreateCategory);
 router.post('/api/properties', multerUpload.single('file'), tenantControllers.CreatePropertys)
 router.post('/api/room', roomUpload.single('file'), tenantControllers.createRoomData);
 router.post('/api/addmanyimageroom', roomUpload.single('file'), tenantControllers.createManyImageinRoom);
+router.post('/api/createMorePictureProperty/:tenantId', multerUpload.single('file'), tenantControllers.createMorePictureProperty)
 
 //get data
 router.get('/api/property/:tenantId', tenantControllers.getAllDataProperty);
 router.get('/api/roombyid/:id', tenantControllers.getRoomPropertyById);
 router.get('/api/roomimages/:id', tenantControllers.getDataRoomAndImagesRoom);
 router.get('/api/getallpictureroom/:tenantId', tenantControllers.getAllPictureRoom)
+router.get('/api/getmorePictureProperty/:tenantId', tenantControllers.getDataPropertyAndImagesProperty)
+
 
 //update
 router.patch('/api/editpicture/:tenantId', multerUpload.single('file'), tenantControllers.updatePictureProperty);
@@ -35,5 +38,6 @@ router.patch('/api/editroom/:tenantId/:id',roomUpload.single('file'), tenantCont
 router.delete('/api/deleteproperty/:id', tenantControllers.deleteAllDataProperty);
 router.delete('/api/deleteroom/:id', tenantControllers.deleteDataRooms);
 router.delete('/api/deleteroomimage/:id', tenantControllers.deleteRoomImages);
+router.delete('/api/deletepropertyimage/:id', tenantControllers.deletePropertyImage);
 
 module.exports = router;

@@ -6,30 +6,19 @@ import { getPreciseDistance } from 'geolib';
 import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import axios from "../api/axios"
+import { Carousel } from 'react-responsive-carousel';
 
 
 function HomeCard() {
-    const [data, setData] = useState();
     const [currentData, setCurrentData] = useState()
     console.log(currentData)
     const [loading, setLoading] = useState(false);
 
-    //data ini masih di tembak, berikut adalah lat dan lng indonesia
-    const cord = {
-        lat: -6.2,
-        lng: 106.816666,
-    };
-
-    const url =
-        'https://public.opendatasoft.com/api/records/1.0/search/?dataset=airbnb-listings&q=indonesia&rows=100&start=1&sort&facet=host_response_time&facet=host_response_rate&facet=host_verifications&facet=city&facet=country&facet=property_type&facet=room_type&facet=bed_type&facet=amenities&facet=availability_365&facet=cancellation_policy&refine.features=Require+Guest+Phone+Verification';
-
     const getdata = async () => {
         try {
             setLoading(true);
-            const res = await Axios.get(url);
             const response = await axios.get("/landingpage")
             setCurrentData(response.data)
-            setData(res.data);
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -80,13 +69,29 @@ function HomeCard() {
                                             borderRadius='13px'
                                             borderTopRadius='13px'
                                             overflow='hidden'
+                                            width="270px"
+                                            height="190px"
                                         >
-                                            <Image
+                                            {/* <Image
                                                 objectFit='cover'
-                                                src={'http://localhost:2000/propertyPicture/' +item.picture}
+                                                src={'http://localhost:2000/propertyPicture/' + item.picture}
                                                 width='270px'
                                                 height='190px'
-                                            />
+                                            /> */}
+                                            <Carousel
+                                                infiniteLoop
+                                                showArrows={true}>
+                                                {item.propertypictures.map((image, i) => (
+                                                    <Box key={i}>
+                                                        <Image
+                                                            objectFit='cover'
+                                                            src={'http://localhost:2000/propertyPicture/' + image.picture}
+                                                            width='270px'
+                                                            height='190px'
+                                                        />
+                                                    </Box>
+                                                ))}
+                                            </Carousel>
                                         </Box>
                                         <Box px='10px' h='90px'>
                                             <Text mt='2' fontWeight='bold' fontSize='sm'>

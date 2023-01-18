@@ -158,10 +158,43 @@ module.exports = {
                 type: req.file.mimetype,
                 size: req.file.size,
                 path: req.file.path,
-                //roomId masih di tembak
                 roomId: req.body.roomId
             })
             res.status(200).send("More picture success!")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    createMorePictureProperty: async (req, res) => {
+        try {
+            const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
+
+            if (!req.file) {
+                return res.status(401).send("Picture is required")
+            }
+            if (!allowedTypes.includes(req.file.mimetype)) {
+                return res.status(401).send("Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.")
+            }
+
+            // Check file size
+            if (req.file.size > 5000000) { // 5000000 bytes = 5MB
+                return res.status(401).send("File size exceeds the allowed limit of 5MB.")
+            }
+            const getPropertyId = await database.property.findOne({
+                where: {
+                    tenantId: req.params.tenantId
+                },
+                raw: true
+            })
+            await database.propertypicture.create({
+                name: req.file.filename,
+                type: req.file.mimetype,
+                size: req.file.size,
+                path: req.file.path,
+                propertyId: getPropertyId.id
+            })
+            res.status(200).send("More picture on propertypicture success!")
         } catch (err) {
             console.log(err)
             res.status(404).send(err)
@@ -316,8 +349,8 @@ module.exports = {
             }
 
             const getPropertyId = await database.property.findOne({
-                where : {
-                    tenantId : req.params.tenantId
+                where: {
+                    tenantId: req.params.tenantId
                 }
             })
 
@@ -383,8 +416,7 @@ module.exports = {
     },
     getAllDataProperty: async (req, res) => {
         try {
-            //harusnya id nya dari id tenantId yang login
-            const response = await database.property.findOne({
+            const response = await database.property.findAll({
                 where: { tenantId: req.params.tenantId },
                 include: [
                     { model: database.category },
@@ -392,10 +424,19 @@ module.exports = {
                         model: database.facility,
                         through: { attributes: [] }
                     },
-                    { model: database.room }
+                    { model: database.room },
+                    {
+                        model: database.propertypicture,
+                        attributes: [[sequelize.col('name'), 'picture']]
+                    },
                 ]
             })
-            res.status(200).send(response)
+            const data = response.map(item => {
+                const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
+                delete newData.picture;
+                return newData;
+            });
+            res.status(200).send(data)
         } catch (err) {
             console.log(err)
             res.status(404).send(err)
@@ -430,6 +471,21 @@ module.exports = {
             res.status(404).send(err)
         }
     },
+    getDataPropertyAndImagesProperty: async (req, res) => {
+        try {
+            const response = await database.property.findAll({
+                where: {
+                    tenantId: req.params.tenantId
+                }, include: [{
+                    model: database.propertypicture
+                }]
+            })
+            res.status(200).send(response)
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
     deleteRoomImages: async (req, res) => {
         try {
             await database.image.destroy({
@@ -438,6 +494,19 @@ module.exports = {
                 }
             })
             res.status(201).send("Deleted!")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    deletePropertyImage: async (req, res) => {
+        try {
+            await database.propertypicture.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.status(201).send("deleted")
         } catch (err) {
             console.log(err)
             res.status(404).send(err)
@@ -471,5 +540,5 @@ module.exports = {
             console.log(err)
             res.status(404).send(err)
         }
-    }
+    },
 }

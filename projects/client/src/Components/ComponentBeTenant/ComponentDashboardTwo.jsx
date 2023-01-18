@@ -46,6 +46,7 @@ const ComponentDashboardTwo = () => {
     const [dataImages, setDataImages] = useState()
     // console.log(dataImages)
     const [imageForSlider, setImageForSlider] = useState()
+    // console.log(imageForSlider)
 
     //for delete data
     const toast = useToast()
@@ -152,7 +153,7 @@ const ComponentDashboardTwo = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             }
-            await axios.patch(`editroom/${auth.tenantId}/${editId}`, formData, config, {
+            await axios.patch(`/editroom/${auth.tenantId}/${editId}`, formData, config, {
                 withCredentials: true
             })
             setLoad(true)
@@ -182,7 +183,7 @@ const ComponentDashboardTwo = () => {
                 }
             }
 
-            await axios.post("addmanyimageroom", formData, config, {
+            await axios.post("/addmanyimageroom", formData, config, {
                 withCredentials: true
             })
             setLoad(true)
