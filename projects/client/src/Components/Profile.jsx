@@ -20,10 +20,12 @@ import {
     ModalBody,
     ModalContent,
     ModalCloseButton,
-    Image
+    Image,
+    Skeleton,
+    SkeletonCircle,
+    SkeletonText,
 } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
-import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { ChangeEmail } from "./ChangeEmail";
 import { ChangePass } from "./ChangePass";
@@ -34,6 +36,7 @@ function ProfileSetting() {
     const [open, setOpen] = useState(false)
     const [user, setUser] = useState("")
     const [image, setImage] = useState("");
+    const [isloading, setIsloading] = useState(true)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = useRef(null)
     const finalRef = useRef(null)
@@ -48,6 +51,9 @@ function ProfileSetting() {
         try {
             const res = await axiosPrivate.get("/user");
             setUser(res.data)
+            setTimeout(() => {
+                setIsloading(false)
+            }, 1000);
         } catch (err) {
             console.log(err);
         }
@@ -70,11 +76,9 @@ function ProfileSetting() {
                     container: 'my-swal'
                 }
             })
-            // window.location.reload()
         } catch (err) {
             console.log(err)
             console.log(err.response.data);
-            alert(err.response.data);
         }
     };
 
@@ -98,7 +102,7 @@ function ProfileSetting() {
 
     useEffect(() => {
         getData()
-    }, [image])
+    }, [])
 
     return (
         <>
@@ -109,13 +113,19 @@ function ProfileSetting() {
                 <Box w="90vw" h="70vh">
                     <HStack justify="space-between">
                         <Box>
-                            <Heading fontSize="lg">Halo, saya {user.fullName?.split(" ")[0]}</Heading>
-                            <Text fontSize="sm" color="gray.600">Bergabung di tahun 2022</Text>
-                            <Text fontSize="sm" mt="4" as="u" fontWeight="bold" _hover={{ cursor: "pointer" }} onClick={() => setOpen(true)}>Edit Profile</Text>
+                            <Skeleton isLoaded={!isloading}>
+                                <Heading fontSize="lg">Halo, saya {user.fullName?.split(" ")[0]}</Heading>
+                                <Text fontSize="sm" color="gray.600">Bergabung di tahun 2022</Text>
+                                <Text fontSize="sm" mt="4" as="u" fontWeight="bold" _hover={{ cursor: "pointer" }} onClick={() => setOpen(true)}>Edit Profile</Text>
+                            </Skeleton>
                         </Box>
                         <VStack>
-                            <Avatar size='md' name={user.fullName} src={'http://localhost:2000/profilePicture/' +user.photo}/>
-                            <Text _hover={{ cursor: "pointer" }} as="u" fontWeight="bold" onClick={onOpen} fontSize="sm">Perbarui Foto</Text>
+                            <SkeletonCircle size="" isLoaded={!isloading}>
+                                <Avatar size='md' name={user.fullName} src={'http://localhost:2000/profilePicture/' +user.photo}/>
+                            </SkeletonCircle>
+                            <Skeleton isLoaded={!isloading}>
+                                <Text _hover={{ cursor: "pointer" }} as="u" fontWeight="bold" onClick={onOpen} fontSize="sm">Perbarui Foto</Text>
+                            </Skeleton>
                             <Modal
                                 isOpen={isOpen}
                                 onClose={ClosePP}
@@ -139,18 +149,30 @@ function ProfileSetting() {
                         </VStack>
                     </HStack>
                     <Box>
-                        <Heading fontSize="lg" mb="2" mt="8">Verifikasi identitas</Heading>
-                        <Text fontSize="sm">Tunjukkan keaslian identitas Anda kepada semua orang dengan lencana verifikasi identitas.</Text>
-                        <Button size="sm" mt="4" mb="4">Dapatkan Lencana</Button>
+                        <Skeleton isLoaded={!isloading}>
+                            <Heading fontSize="lg" mb="2" mt="8">Verifikasi identitas</Heading>
+                        </Skeleton>
+                        <SkeletonText isLoaded={!isloading}>
+                            <Text fontSize="sm">Tunjukkan keaslian identitas Anda kepada semua orang dengan lencana verifikasi identitas.</Text>
+                        </SkeletonText>
+                        <Skeleton isLoaded={!isloading}>
+                            <Button size="sm" mt="4" mb="4">Dapatkan Lencana</Button>
+                        </Skeleton>
                     </Box>
                     <Divider/>
                     <Box mb="4">
-                        <Heading fontSize="lg" mb="2" mt="4">Akun Terverifikasi</Heading>
-                        <Text fontSize="sm">{user.email}</Text>
-                        <Flex justify="space-evenly">
-                            <ChangeEmail/>
-                            <ChangePass/>
-                        </Flex>
+                        <Skeleton isLoaded={!isloading}>
+                            <Heading fontSize="lg" mb="2" mt="4">Akun Terverifikasi</Heading>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                            <Text fontSize="sm">{user.email}</Text>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                            <Flex justify="space-evenly">
+                                <ChangeEmail/>
+                                <ChangePass/>
+                            </Flex>
+                        </Skeleton>
                     </Box>
                     <Divider/>
                 {open ? 
@@ -184,8 +206,12 @@ function ProfileSetting() {
             :
             <Flex justifyContent="space-evenly" w="90vw">
                 <VStack w="22vw" borderRadius="xl" border="1px" borderColor="gray.400" p="4">
-                    <Avatar size='2xl' name={user.fullName} src={'http://localhost:2000/profilePicture/' + user.photo}/>
-                    <Text _hover={{ cursor: "pointer" }} as="u" fontWeight="bold" onClick={onOpen}>Perbarui Foto</Text>
+                    <SkeletonCircle size="" isLoaded={!isloading}>
+                        <Avatar size='2xl' name={user.fullName} src={'http://localhost:2000/profilePicture/' + user.photo}/>
+                    </SkeletonCircle>
+                    <Skeleton isLoaded={!isloading}>
+                        <Text _hover={{ cursor: "pointer" }} as="u" fontWeight="bold" onClick={onOpen}>Perbarui Foto</Text>
+                    </Skeleton>
                     <Modal
                                 initialFocusRef={initialRef}
                                 finalFocusRef={finalRef}
@@ -209,24 +235,37 @@ function ProfileSetting() {
                                 </ModalBody>
                             </Modal>
                     <Box w="20vw">
-                        <Heading fontSize="xl" mb="2" mt="14">Verifikasi identitas</Heading>
-                        <Text>Tunjukkan keaslian identitas Anda kepada semua orang dengan lencana verifikasi identitas.</Text>
-                        <Button mt="4" mb="4" w="inherit">Dapatkan Lencana</Button>
+                        <Skeleton isLoaded={!isloading}>
+                            <Heading fontSize="xl" mb="2" mt="14">Verifikasi identitas</Heading>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                            <Text>Tunjukkan keaslian identitas Anda kepada semua orang dengan lencana verifikasi identitas.</Text>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                            <Button mt="4" mb="4" w="inherit">Dapatkan Lencana</Button>
+                        </Skeleton>
                         <Divider/>
-                        <Heading fontSize="xl" mb="2" mt="4">Akun Terverifikasi</Heading>
-                        <Text>{user.email}</Text>
-                        <Flex justify="space-evenly">
-                            <ChangeEmail/>
-                            <ChangePass/>
-                        </Flex>
+                        <Skeleton isLoaded={!isloading}>
+                            <Heading fontSize="xl" mb="2" mt="4">Akun Terverifikasi</Heading>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                        </Skeleton>
+                        <Skeleton isLoaded={!isloading}>
+                            <Text>{user.email}</Text>
+                            <Flex justify="space-evenly">
+                                <ChangeEmail/>
+                                <ChangePass/>
+                            </Flex>
+                        </Skeleton>
                         <Divider mt="4" />
                     </Box>
-                    
                 </VStack>
                 <Box w="50vw" h="70vh">
-                    <Heading>Halo, saya {user.fullName}</Heading>
-                    <Text fontSize="sm" color="gray.600">Bergabung di tahun 2022</Text>
-                    <Text fontSize="sm" mt="4" as="u" fontWeight="bold" _hover={{ cursor: "pointer" }} onClick={() => setOpen(true)}>Edit Profile</Text>
+                    <Skeleton isLoaded={!isloading}>
+                        <Heading>Halo, saya {user.fullName}</Heading>
+                        <Text fontSize="sm" color="gray.600">Bergabung di tahun 2022</Text>
+                        <Text fontSize="sm" mt="4" as="u" fontWeight="bold" _hover={{ cursor: "pointer" }} onClick={() => setOpen(true)}>Edit Profile</Text>
+                    </Skeleton>
                 {open ? 
                 <>
                     <VStack spacing={4} align="flex-start" mt="8">

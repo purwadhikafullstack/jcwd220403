@@ -3,6 +3,7 @@ import React from "react";
 import { Input, Button, FormLabel, VStack, FormControl, useDisclosure,
         Modal, ModalOverlay, ModalHeader, ModalFooter, ModalContent, ModalBody, Center, HStack, ModalCloseButton, Text, Stack, Heading} from "@chakra-ui/react";
 import axios from '../api/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import * as Yup from "yup";
 import { Field, ErrorMessage, Formik, Form } from "formik";
 import Swal from 'sweetalert2'
@@ -13,6 +14,7 @@ export const ChangePass = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [open, setOpen] = useState(false)
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate()
 
     const registerSchema = Yup.object().shape({
         password: Yup.string().required('Please enter your password').min(8, "Password should be at least eight characters"),
@@ -22,14 +24,9 @@ export const ChangePass = () => {
     const onChangePass = async (data) => {
         try {
 
-            const res = await axios.patch(
+            const res = await axiosPrivate.patch(
                 "user/updatePass",
                 data,
-                {
-                    headers: {
-                        Authorization: `Bearer ${auth.accessToken}`,
-                    },
-                }
             );
             Swal.fire({
                 icon: 'success',
@@ -56,14 +53,9 @@ export const ChangePass = () => {
     const onSubmitPass = async () => {
         try {
             const oldPassword = document.getElementById("oldPassword").value
-            const res = await axios.post(
+            const res = await axiosPrivate.post(
                 "user/checkPass",
-                { oldPassword },
-                {
-                    headers: {
-                        Authorization: `Bearer ${auth.accessToken}`,
-                    },
-                }
+                { oldPassword }
             );
             setOpen(res.data)
         } catch (err) {

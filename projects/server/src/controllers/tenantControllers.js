@@ -541,4 +541,16 @@ module.exports = {
             res.status(404).send(err)
         }
     },
+    getAllCategory: async (req, res) => {
+        try {
+            const category = await database.category.findAll({
+                attributes: ['city', 'province'],
+                group: ['city', 'province']
+            });
+            res.status(200).send(category)
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
 }

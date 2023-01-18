@@ -86,7 +86,7 @@ export const ChangeEmail = () => {
     const onSubmitPass = async () => {
         try {
             const oldPassword = document.getElementById("oldPassword").value
-            const res = await axios.post(
+            const res = await axiosPrivate.post(
                 "user/checkPass",
                 { oldPassword }
             );

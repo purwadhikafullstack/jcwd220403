@@ -21,8 +21,6 @@ import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import useAuth from '../../hooks/useAuth';
 import { useParams } from "react-router-dom";
-import { DateRange } from "react-date-range";
-import { addDays } from 'date-fns';
 
 function DetailPage() {
     const [isMobile] = useMediaQuery("(max-width: 481px)")
@@ -37,11 +35,6 @@ function DetailPage() {
             key: 'selection'
         }
     ]);
-
-    const disabledDates = [
-        // new Date("2023-01-19"),
-        // new Date("2023-01-20")
-    ];
 
     const getData = async () => {
         try {
@@ -65,9 +58,52 @@ function DetailPage() {
     return (
         <>
             {isMobile ? 
-            <>
-            
-            </>
+            <Center>
+                <Box w="80vw" pb="10">
+                    <Skeleton isLoaded={!isloading}>
+                        <Heading fontSize="2xl">{data?.name}</Heading>
+                        <Text fontWeight="bold" fontSize="small">{data?.category?.city}, {data?.category?.country}</Text>
+                    </Skeleton>
+                    <Skeleton isLoaded={!isloading} >
+                        <Image src={'http://localhost:2000/propertyPicture/' + data?.picture} />
+                    </Skeleton>
+                    <HStack mt="8" mb="4" w="80vw" >
+                        <SkeletonCircle mr="4" size="10" isLoaded={!isloading}>
+                            <Avatar size="md" src={'http://localhost:2000/profilePicture/' + data?.tenant?.user.photo} />
+                        </SkeletonCircle>
+                        <Skeleton isLoaded={!isloading}>
+                            <Box>
+                                <Heading mt="2" fontSize="xl">Tuan Rumah : {data?.tenant?.user.fullName}</Heading>
+                                <Text fontSize="sm" color="gray.600">{data?.rooms?.length} Room</Text>
+                            </Box>
+                        </Skeleton>
+                    </HStack>
+                    <Divider/>
+                        <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Description</Text></Skeleton>
+                        <SkeletonText isLoaded={!isloading}><Text mb="4" textAlign="justify" color="gray.600">{data?.description}</Text></SkeletonText>
+                    <Divider/>
+                        <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Tipe Kamar yang Tersedia di {data?.name}</Text></Skeleton>
+                        <Box w="80w" >
+                            {data?.rooms?.map((item) => {
+                                return (
+                                    <Skeleton isLoaded={!isloading}>
+                                        <Flex mt="4" borderRadius="md" overflow="hidden" boxShadow="md">
+                                            <Box m="2" p="2" w="80vw" borderRadius="2xl" >
+                                                <Image src={'http://localhost:2000/roomPicture/' + item.picture} objectFit="cover" />
+                                                <Text mb="2" mt="2" fontWeight="bold">{item.name}</Text>
+                                                <Divider/>
+                                                <Text mb="2" h="15vh" textAlign="justify" overflow="scroll" >{item.description}</Text>
+                                                <Divider/>
+                                                <Text mt="2" fontWeight="bold" fontSize="sm" color="orange">Rp {new Intl.NumberFormat('en-DE').format(item.price)} / malam</Text>
+                                                <Button mt="2" colorScheme="orange">Pesan sekarang</Button>
+                                            </Box>
+                                        </Flex>
+                                    </Skeleton>
+                                )
+                            })}
+                        </Box>
+                </Box> 
+            </Center>
             :
             <Center>
                 <Box w="80vw" pb="10">
@@ -104,7 +140,7 @@ function DetailPage() {
                     </HStack>
                     <Divider/>
                         <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Description</Text></Skeleton>
-                        <SkeletonText isLoaded={!isloading}><Text mb="4" color="gray.600">{data?.description}</Text></SkeletonText>
+                        <SkeletonText isLoaded={!isloading}><Text mb="4" textAlign="justify" color="gray.600">{data?.description}</Text></SkeletonText>
                     <Divider/>
                         <Skeleton isLoaded={!isloading}><Text mt="4" fontWeight="bold" >Tipe Kamar yang Tersedia di {data?.name}</Text></Skeleton>
                     <Flex w="80w" justify="space-between">   
@@ -122,7 +158,7 @@ function DetailPage() {
                                                     <Text mb="2" fontWeight="bold" color="orange">Rp {new Intl.NumberFormat('en-DE').format(item.price)} / malam</Text>
                                                 </Flex>
                                                 <Divider/>
-                                                <Text h="15vh" overflow="scroll" >{item.description}</Text>
+                                                <Text h="15vh" textAlign="justify" overflow="scroll" >{item.description}</Text>
                                                 <Divider/>
                                                 <Button mt="2" colorScheme="orange">Pesan sekarang</Button>
                                             </Box>
