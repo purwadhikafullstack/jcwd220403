@@ -5,94 +5,98 @@ import { useEffect } from 'react';
 import { getPreciseDistance } from 'geolib';
 import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import axios from "../api/axios"
-
+import axios from '../api/axios';
 
 function HomeCard() {
-    const [data, setData] = useState();
-    const [currentData, setCurrentData] = useState()
-    console.log(currentData)
-    const [loading, setLoading] = useState(false);
+  const [data, setData] = useState();
+  const [currentData, setCurrentData] = useState();
+  console.log(currentData);
+  const [loading, setLoading] = useState(false);
 
-    //data ini masih di tembak, berikut adalah lat dan lng indonesia
-    const cord = {
-        lat: -6.2,
-        lng: 106.816666,
-    };
+  //data ini masih di tembak, berikut adalah lat dan lng indonesia
+  const cord = {
+    lat: -6.2,
+    lng: 106.816666,
+  };
 
-    const url =
-        'https://public.opendatasoft.com/api/records/1.0/search/?dataset=airbnb-listings&q=indonesia&rows=100&start=1&sort&facet=host_response_time&facet=host_response_rate&facet=host_verifications&facet=city&facet=country&facet=property_type&facet=room_type&facet=bed_type&facet=amenities&facet=availability_365&facet=cancellation_policy&refine.features=Require+Guest+Phone+Verification';
+  const url =
+    'https://public.opendatasoft.com/api/records/1.0/search/?dataset=airbnb-listings&q=indonesia&rows=100&start=1&sort&facet=host_response_time&facet=host_response_rate&facet=host_verifications&facet=city&facet=country&facet=property_type&facet=room_type&facet=bed_type&facet=amenities&facet=availability_365&facet=cancellation_policy&refine.features=Require+Guest+Phone+Verification';
 
-    const getdata = async () => {
-        try {
-            setLoading(true);
-            const res = await Axios.get(url);
-            const response = await axios.get("/landingpage")
-            setCurrentData(response.data)
-            setData(res.data);
-            setLoading(false);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await Axios.get(url);
+      const response = await axios.get('/landingpage');
+      setCurrentData(response.data);
+      setData(res.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    useEffect(() => {
-        getdata();
-    }, []);
+  useEffect(() => {
+    getdata();
+  }, []);
 
-    const Loadingg = () => {
-        return (
-            <Center>
-                <PulseLoader color='#19b4b5' size={30} margin='50px 0px' />
-            </Center>
-        );
-    };
-
+  const Loadingg = () => {
     return (
-        <>
-            {loading ? (
-                <Loadingg />
-            ) : (
-                <Center>
-                    <motion.div
-                        className='card'
-                        initial={{ x: '-100%' }}
-                        animate={{ x: 0 }}
-                        transition={{ duration: 0.5 }}
+      <Center>
+        <PulseLoader color='#19b4b5' size={30} margin='50px 0px' />
+      </Center>
+    );
+  };
+
+  return (
+    <>
+      {loading ? (
+        <Loadingg />
+      ) : (
+        <Center>
+          <motion.div
+            className='card'
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Flex
+              flexWrap={'wrap'}
+              justifyContent='center'
+              position='relative'
+              bgColor='white'
+              mt='3'
+            >
+              {currentData &&
+                currentData.map((item, index) => {
+                  return (
+                    <Box
+                      key={index}
+                      _hover={{ cursor: 'pointer' }}
+                      w='270px'
+                      h='260px'
+                      m='10px'
+                      boxSize='auto'
                     >
-                        <Flex
-                            flexWrap={'wrap'}
-                            justifyContent='center'
-                            position='relative'
-                            bgColor='white'
-                            mt='3'
-                        >
-                            {currentData && currentData.map((item) => {
-                                return (
-                                    <Box
-                                        _hover={{ cursor: 'pointer' }}
-                                        w='270px'
-                                        h='260px'
-                                        m='10px'
-                                        boxSize='auto'
-                                    >
-                                        <Box
-                                            borderRadius='13px'
-                                            borderTopRadius='13px'
-                                            overflow='hidden'
-                                        >
-                                            <Image
-                                                objectFit='cover'
-                                                src={'http://localhost:2000/propertyPicture/' +item.picture}
-                                                width='270px'
-                                                height='190px'
-                                            />
-                                        </Box>
-                                        <Box px='10px' h='90px'>
-                                            <Text mt='2' fontWeight='bold' fontSize='sm'>
-                                                {item.name}
-                                            </Text>
-                                            {/* <Text mr='5px' fontSize='sm'>
+                      <Box
+                        borderRadius='13px'
+                        borderTopRadius='13px'
+                        overflow='hidden'
+                      >
+                        <Image
+                          objectFit='cover'
+                          src={
+                            'http://localhost:2000/propertyPicture/' +
+                            item.picture
+                          }
+                          width='270px'
+                          height='190px'
+                        />
+                      </Box>
+                      <Box px='10px' h='90px'>
+                        <Text mt='2' fontWeight='bold' fontSize='sm'>
+                          {item.name}
+                        </Text>
+                        {/* <Text mr='5px' fontSize='sm'>
                                                 Berjarak{' '}
                                                 {Math.ceil(
                                                     getPreciseDistance(
@@ -104,20 +108,20 @@ function HomeCard() {
                                                     ) / 1000
                                                 ) + ' km'}
                                             </Text> */}
-                                            {/* <Text mr='5px' fontSize='sm'>
+                        {/* <Text mr='5px' fontSize='sm'>
                                                 <Text fontWeight='bold' display='inline'>
                                                     {item.description}
                                                 </Text>
                                             </Text> */}
-                                        </Box>
-                                    </Box>
-                                );
-                            })}
-                        </Flex>
-                    </motion.div>
-                </Center>
-            )}
-        </>
-    );
+                      </Box>
+                    </Box>
+                  );
+                })}
+            </Flex>
+          </motion.div>
+        </Center>
+      )}
+    </>
+  );
 }
 export default HomeCard;

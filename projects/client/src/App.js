@@ -14,12 +14,9 @@ import PersistLogin from './Components/PersistLogin';
 import HostHome from './Pages/admin/HostHome';
 import RegisterWelcome from './Pages/admin/RegisterWelcome';
 import VerifyForm from './Pages/admin/VerifyForm';
-import HostDashboard from './Pages/admin/HostDashboard';
 import RequireTenantRole from './Components/RequireTenantRole';
-import BeTenant from './Pages/BeTenant';
-import Dashboard from './Pages/Dashboard';
-import BasicUsage from './Components/AlertSuccess';
-import './Styles/swall.css';
+import BeTenant from './Pages/admin/BeTenant';
+import Dashboard from './Pages/admin/Dashboard';
 import Category from './Components/Category';
 
 const router = createBrowserRouter([
@@ -99,7 +96,7 @@ const router = createBrowserRouter([
                     element: <Dashboard />,
                   },
                   {
-                    path: '/add-property',
+                    path: 'add-property',
                     element: <BeTenant />,
                   },
                 ],

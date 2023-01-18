@@ -64,9 +64,11 @@ import { useDispatch } from 'react-redux';
 import { getName } from '../../Redux/PropertySlice';
 import '../../Styles/inputFile.css';
 import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const DashboardOne = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   console.log(data);
   const [load, setLoad] = useState(false);
@@ -113,9 +115,7 @@ const DashboardOne = () => {
 
   const getDataForDashboard = async () => {
     try {
-      const response = await axios.get(`/property/${auth.tenantId}`, {
-        withCredentials: true,
-      });
+      const response = await axiosPrivate.get(`/property/${auth.tenantId}`);
       setData(response.data);
       dispatch(getName(response.data.name));
       setValueDesc(response.data.description);
@@ -141,7 +141,11 @@ const DashboardOne = () => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      await axios.patch(`/editpicture/${auth.tenantId}`, formData, config);
+      await axiosPrivate.patch(
+        `/editpicture/${auth.tenantId}`,
+        formData,
+        config
+      );
       setLoad(true);
       setTimeout(() => {
         setLoad(false);
@@ -182,7 +186,7 @@ const DashboardOne = () => {
   const editName = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`/editname/${auth.tenantId}`, {
+      await axiosPrivate.patch(`/editname/${auth.tenantId}`, {
         name: nameProperty,
       });
       setLoad(true);
@@ -212,7 +216,7 @@ const DashboardOne = () => {
       const nameFacility = clickedItem
         .map((facility) => facility.title)
         .join(', ');
-      await axios.patch(`/editfacility/${auth.tenantId}`, {
+      await axiosPrivate.patch(`/editfacility/${auth.tenantId}`, {
         name: nameFacility,
       });
       setLoad(true);
@@ -254,7 +258,7 @@ const DashboardOne = () => {
 
   const editDescription = async () => {
     try {
-      await axios.patch(`/editdescription/${auth.tenantId}`, {
+      await axiosPrivate.patch(`/editdescription/${auth.tenantId}`, {
         description: desc,
       });
       setLoad(true);
@@ -279,7 +283,7 @@ const DashboardOne = () => {
 
   const editLocationDetail = async () => {
     try {
-      await axios.patch(`/editlocation/${auth.tenantId}`, {
+      await axiosPrivate.patch(`/editlocation/${auth.tenantId}`, {
         country,
         province,
         city,

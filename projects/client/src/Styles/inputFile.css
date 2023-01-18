@@ -1,4 +1,4 @@
-Input[type=file]::file-selector-button {
+/* Input[type=file]::file-selector-button {
   margin-right: 20px;
   border: none;
   background: white;
@@ -7,4 +7,4 @@ Input[type=file]::file-selector-button {
   color: black;
   cursor: pointer;
   border: 2px solid black;
-}
+} */

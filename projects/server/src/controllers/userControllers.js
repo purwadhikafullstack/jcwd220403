@@ -1,3 +1,4 @@
+const path = require('path');
 const database = require('../models');
 const user = database.user;
 const bcrypt = require('bcrypt');
@@ -84,11 +85,32 @@ module.exports = {
   },
   updateProfilePic: async (req, res) => {
     try {
-      let fileUploaded = req.file;
+      if (!req.files) {
+        res.status(500);
+        res.send({
+          status: false,
+          message: 'No file uploaded',
+        });
+      }
+
+      const { fileUploaded } = req.files;
+      const { userId } = req.body;
+
+      const extensionName = path.extname(fileUploaded.name);
+      const allowedExtension = ['.png', '.jpg', '.jpeg', '.webp'];
+
+      if (!allowedExtension.includes(extensionName)) {
+        res.status(500);
+        res.send({
+          status: false,
+          message: 'Invalid image extension',
+        });
+      }
+      const filename = `avatar${userId}${extensionName}`;
 
       await user.update(
         {
-          photo: fileUploaded.filename,
+          photo: filename,
         },
         {
           where: {
@@ -96,6 +118,8 @@ module.exports = {
           },
         }
       );
+
+      fileUploaded.mv('./public/profilePicture/' + filename);
 
       res.status(200).send({
         massage: 'Update Profile Picture Succes',

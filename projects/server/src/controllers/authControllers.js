@@ -116,7 +116,6 @@ module.exports = {
 
   login: async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.device);
     let browser = req.device.client.name;
     let device = req.device.device.type;
 
