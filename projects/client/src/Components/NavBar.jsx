@@ -185,6 +185,7 @@ const NavBar = () => {
                 cursor='pointer'
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
+                marginRight="10px"
               >
                 {auth?.isTenant === true ? (
                   <Link to={'/tenant/dashboard'}>Switch to hosting</Link>
