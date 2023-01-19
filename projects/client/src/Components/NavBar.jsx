@@ -3,8 +3,6 @@ import {
   Box,
   Image,
   Input,
-  InputGroup,
-  InputLeftElement,
   Text,
   Menu,
   MenuButton,
@@ -30,10 +28,11 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Select,
   List,
   ListItem,
-  Divider,
+  TagLabel,
+  TagCloseButton,
+  UnorderedList,
 } from '@chakra-ui/react';
 import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Logo from '../Assets/Logo.png';
@@ -45,10 +44,12 @@ import useLogout from '../hooks/useLogout';
 import { DateRange } from 'react-date-range';
 import { addDays } from 'date-fns';
 import axios from '../api/axios';
+import useSearch from '../hooks/useSeacrh';
+import { all } from 'axios';
 
 const NavBar = () => {
   const { auth } = useAuth();
-  console.log(auth)
+  const { setSearch } = useSearch()
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,9 +85,15 @@ const NavBar = () => {
     }
   };
 
-  useEffect(() => {
-    getLokasi();
-  }, []);
+const onSearch = () => {
+  setSearch({lokasi, state})
+  navigate('/')
+}
+
+useEffect(() => {
+  getLokasi()
+}, [])
+
 
   const signOut = async () => {
     await logout();
@@ -132,52 +139,17 @@ const NavBar = () => {
                 width={logoTabletAndDesktop}
                 display={displayTablet}
               />
-            </Box>
-            <Image
-              src={LogoOnly}
-              width='30px'
-              display={displayLogoOnly}
-              marginRight='5px'
-            />
-          </Link>
-          <Flex
-            justify='space-around'
-            align='center'
-            color='black'
-            w={isMobile ? '70vw' : '30vw'}
-            h='50px'
-            borderRadius='full'
-            cursor='pointer'
-            border='1px'
-            borderColor='gray.100'
-            boxShadow='md'
-            mr={isMobile ? 3 : 12}
-            onClick={onOpen}
-          >
-            <Text fontSize={isMobile ? 'x-small' : 'small'}>
-              {lokasi ? lokasi : 'Ke mana saja'}
-            </Text>
-            <Text fontSize={isMobile ? 'xl' : '2xl'}>|</Text>
-            <Text fontSize={isMobile ? 'x-small' : 'small'}>
-              {lokasi
-                ? new Date(state[0]['startDate']).toLocaleString('en', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  }) +
-                  ' - ' +
-                  new Date(state[0]['endDate']).toLocaleString('en', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })
-                : 'Minggu Manapun'}
-            </Text>
-            <Button borderRadius='full' size='sm' bgColor='orange'>
-              <SearchIcon />
-            </Button>
-          </Flex>
-          {isMobile ? null : (
+              </Box>
+            </Link>
+            <Flex justify="space-around" align="center" color="black" w={isMobile ? "70vw" : "30vw"} h="50px" borderRadius='full' cursor="pointer" border="1px" borderColor="gray.100" boxShadow="md" mr={isMobile ? 3: 12} onClick={onOpen}>
+              <Text fontSize={isMobile ? "x-small" : "small"}>{lokasi ? lokasi : "Ke mana saja"}</Text>
+              <Text fontSize={isMobile ? "xl" : "2xl"}>|</Text>
+              <Text fontSize={isMobile ? "x-small" : "small"} overflow="hidden" >{lokasi ? new Date(state[0]["startDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) + " - " + new Date(state[0]["endDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) : "Minggu Mana pun"}</Text>
+              <Button borderRadius="full" size="sm" bgColor="orange">
+                <SearchIcon  />
+              </Button>
+            </Flex>
+            {/* {isMobile ? null : 
             <Box>
               <Text
                 fontSize='14px'
@@ -194,7 +166,7 @@ const NavBar = () => {
                 )}
               </Text>
             </Box>
-          )}
+          )} */}
           <Box marginLeft='auto' display={displayTablet}>
             <Menu>
               <MenuButton w='70px'>
@@ -290,24 +262,19 @@ const NavBar = () => {
         <DrawerContent>
           <DrawerBody>
             <Center>
-              <Tabs
-                isFitted
-                variant='soft-rounded'
-                colorScheme='orange'
-                w={isMobile ? '90vw' : '60vw'}
-              >
-                <TabList
-                  mb='1em'
-                  bgColor='gray.100'
-                  borderRadius='2xl'
-                  overflow='hidden'
-                  h='12'
-                >
-                  <Tab display='block' alignSelf='center'>
-                    <Text fontSize='small'>Lokasi</Text>
-                    <Text fontSize={isMobile ? 'xx-small' : 'small'}>
-                      {lokasi ? lokasi : 'Cari lokasi'}
-                    </Text>
+              <Tabs isFitted variant="soft-rounded" colorScheme="orange" w={isMobile ? "90vw" : "60vw"}>
+                <TabList mb='1em' bgColor="gray.100" borderRadius="3xl" overflow="hidden" h="12" >
+                  <Tab display="block" alignSelf="center">
+                    <Text fontSize="small">Lokasi</Text>
+                    <Text fontSize={isMobile ? "xx-small" : "small"}>{lokasi ? 
+                    <Tag
+                      color="black"
+                      colorScheme="inherit"
+                      size={isMobile ? "sm" : "md"}
+                    >
+                      <TagLabel>{lokasi}</TagLabel>
+                      <TagCloseButton onClick={() => setLokasi("")} />
+                    </Tag> : "Cari lokasi"}</Text>
                   </Tab>
                   <Tab display='block' alignSelf='center'>
                     <Text fontSize='small'>Tanggal</Text>
@@ -325,8 +292,8 @@ const NavBar = () => {
                         })}
                     </Text>
                   </Tab>
-                  <Button bgColor='orange' borderRadius='full' size='lg'>
-                    <SearchIcon />
+                  <Button bgColor="orange" borderRadius="full" size="lg" onClick={() => {onSearch(); onClose()}} >
+                    <SearchIcon  />
                   </Button>
                 </TabList>
                 <TabPanels>
@@ -362,6 +329,21 @@ const NavBar = () => {
                             })}
                           </List>
                         ) : null}
+                        {lokasi.length === 0 ?
+                        <>
+                          <Text color="orange" fontSize="x-small">{`Holistay tersedia di ${alllokasi.length} kota`}</Text> 
+                          <Flex>
+                              {alllokasi.map(item => {
+                                return (
+                                      <UnorderedList>
+                                        <ListItem fontSize="xx-small" >{item.city}</ListItem>
+                                      </UnorderedList>
+                                    )
+                                  })}
+                          </Flex>
+                        </>
+                          : null
+                        }
                       </Box>
                     </Center>
                   </TabPanel>

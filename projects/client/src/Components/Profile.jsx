@@ -82,6 +82,10 @@ function ProfileSetting() {
     }
   };
 
+    useEffect(() => {
+        getData()
+    }, [image])
+
   const handleChoose = (e) => {
     setImage(e.target.files[0]);
   };
@@ -99,10 +103,6 @@ function ProfileSetting() {
     onClose();
     setImage('');
   }
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <>
