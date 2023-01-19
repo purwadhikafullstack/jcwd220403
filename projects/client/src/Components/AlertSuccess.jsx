@@ -15,7 +15,7 @@ import {
     Text,
 } from '@chakra-ui/react'
 
-function BasicUsage() {
+function AlertSuccess() {
     const dispatch = useDispatch()
     const isOpen = useSelector((state) => state.ModalSlice.isOpen)
   
@@ -37,7 +37,7 @@ function BasicUsage() {
               <Button colorScheme='blue' mr={3} onClick={() => dispatch(closeModal())}>
                 Close
               </Button>
-              <Link to="/tenant">
+              <Link to="/tenant/dashboard">
               <Button variant='ghost'>Your Hosting</Button>
               </Link>
             </ModalFooter>
@@ -47,4 +47,4 @@ function BasicUsage() {
     )
   }
 
-export default BasicUsage
+export default AlertSuccess
