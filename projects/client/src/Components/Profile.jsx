@@ -89,7 +89,7 @@ function ProfileSetting() {
   const handleUpload = async () => {
     const data = new FormData();
     data.append('userId', auth.userId);
-    data.append('file', image);
+    data.append('fileUploaded', image);
 
     await axiosPrivate.patch('/user/profilePic', data);
     setImage({ images: '' });

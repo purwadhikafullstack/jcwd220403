@@ -125,11 +125,4 @@ app.listen(PORT, (err) => {
   }
 });
 
-// const user = database.user;
-// const login = database.login;
-// const propertyPicture = database.propertypicture;
-
-// user.sync({ alter: true });
-// propertyPicture.sync({ alter: true });
-// login.sync({ alter: true });
 // database.sequelize.sync({ alter: true });

@@ -85,7 +85,15 @@ module.exports = {
   },
   updateProfilePic: async (req, res) => {
     try {
-      let fileUploaded = req.files.file;
+      if (!req.files) {
+        res.status(500);
+        res.send({
+          status: false,
+          message: 'No file uploaded',
+        });
+      }
+
+      const { fileUploaded } = req.files;
       const { userId } = req.body;
 
       const extensionName = path.extname(fileUploaded.name);
@@ -94,12 +102,14 @@ module.exports = {
       if (!allowedExtension.includes(extensionName))
         throw 'Invalid image extension';
 
-      const filename =
-        'PIMG' +
-        '-' +
-        Date.now() +
-        Math.round(Math.random() * 100000) +
-        extensionName;
+      // const filename =
+      //   'PIMG' +
+      //   '-' +
+      //   Date.now() +
+      //   Math.round(Math.random() * 100000) +
+      //   extensionName;
+
+      const filename = `avatar${userId}${extensionName}`;
 
       await user.update(
         {
@@ -107,14 +117,14 @@ module.exports = {
         },
         {
           where: {
-            id: userId,
+            email: req.user,
           },
         }
       );
 
       fileUploaded.mv('./Public/profilePicture/' + filename);
       res.status(200).send({
-        massage: 'Update Profile Picture Succes',
+        massage: 'Update Profile Picture Success',
       });
     } catch (err) {
       console.log(err);
