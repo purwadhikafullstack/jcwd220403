@@ -11,14 +11,20 @@ import { BsPlusSquareDotted } from "react-icons/bs"
 import { BiEdit } from "react-icons/bi"
 import { AiOutlineDelete, AiOutlineCloudUpload } from "react-icons/ai"
 import { ImFilePicture } from "react-icons/im"
-import {TbHomeOff, TbHome} from "react-icons/tb"
-import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { TbHomeOff, TbHome } from "react-icons/tb"
+import { BsCalendar3 } from "react-icons/bs"
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import useAuth from '../../hooks/useAuth'
+import { openModalCertainDate } from '../../Redux/CertainDate'
+import { useDispatch } from "react-redux"
+import InputDisableCertainDate from './InputDisableCertainDate'
+
 
 
 const ComponentDashboardTwo = () => {
     const { auth } = useAuth();
+    const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
@@ -51,6 +57,7 @@ const ComponentDashboardTwo = () => {
 
     //for delete data
     const toast = useToast()
+
 
 
     const getDataRoom = async () => {
@@ -360,25 +367,34 @@ const ComponentDashboardTwo = () => {
                                         cursor="pointer"
                                         onClick={() => handleOpenDrawer(room)}
                                     />
-                                    {room.availability? (
+                                    {room.availability ? (
                                         <Icon
-                                        as={TbHome}
-                                        alt="Card image"
-                                        boxSize="30px"
-                                        objectFit="cover"
-                                        cursor="pointer"
-                                        onClick={() => handleDisableRoom(room)}
-                                    />
+                                            as={TbHome}
+                                            alt="Card image"
+                                            boxSize="30px"
+                                            objectFit="cover"
+                                            cursor="pointer"
+                                            onClick={() => handleDisableRoom(room)}
+                                        />
                                     ) : (
                                         <Icon
-                                        as={TbHomeOff}
+                                            as={TbHomeOff}
+                                            alt="Card image"
+                                            boxSize="30px"
+                                            objectFit="cover"
+                                            cursor="pointer"
+                                            onClick={() => handleAlvaibleRoom(room)}
+                                        />
+                                    )}
+                                    <Icon
+                                        as={BsCalendar3}
                                         alt="Card image"
                                         boxSize="30px"
                                         objectFit="cover"
                                         cursor="pointer"
-                                        onClick={() => handleAlvaibleRoom(room)}
-                                        />
-                                    )}
+                                        onClick={() => dispatch(openModalCertainDate(room))}
+                                    />
+                                    <InputDisableCertainDate />
                                     <Drawer
                                         isOpen={isOpenDrawer}
                                         placement='bottom'

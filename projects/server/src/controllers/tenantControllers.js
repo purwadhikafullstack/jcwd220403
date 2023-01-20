@@ -517,10 +517,13 @@ module.exports = {
                 where: {
                     propertyId: getPropertyId.id
                 },
-                include: [{
-                    model: database.image,
-                    attributes: [[sequelize.col('name'), 'picture']]
-                }]
+                include: [
+                    {
+                        model: database.image,
+                        attributes: [[sequelize.col('name'), 'picture']]
+                    },
+                    {model : database.unavailableDates}
+                ]
             });
             const data = room.map(item => {
                 return {

@@ -30,5 +30,19 @@ module.exports = {
             console.log(err)
             res.status(401).send(err)
         }
+    },
+    disableCertainDate: async (req, res) => {
+        try {
+            const { date } = req.body
+            if (!date) throw "date is required"
+            await database.unavailableDates.create({
+                date: date,
+                roomId: req.params.id
+            })
+            res.status(201).send("disable Certain Date created!")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
     }
 }

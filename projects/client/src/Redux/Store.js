@@ -4,6 +4,7 @@ import ModalSlice from "./ModalSlice"
 import PropertySlice from "./PropertySlice"
 import DoneCreatePropertiesSlice from "./DoneCreatePropertiesSlice"
 import MorePictureProperty from "./MorePictureProperty"
+import CertainDate from "./CertainDate"
 
 
 export default configureStore({
@@ -13,5 +14,6 @@ export default configureStore({
         PropertySlice,
         DoneCreatePropertiesSlice,
         MorePictureProperty,
+        CertainDate,
     }
 })

@@ -28,10 +28,10 @@ const DeleteProperty = () => {
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)
+                dispatch(isDeleteData())
+                dispatch(isDeletePropertyData())
+                window.location.reload()
             }, 2000)
-            dispatch(isDeleteData())
-            dispatch(isDeletePropertyData())
-            window.location.reload()
         } catch (err) {
             console.log(err)
         }

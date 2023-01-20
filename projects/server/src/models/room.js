@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       room.hasMany(models.transaction);
       room.hasMany(models.highSeason);
       room.hasMany(models.image);
+      room.hasMany(models.unavailableDates);
     }
   }
   room.init(
@@ -29,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
-      }
+      },
     },
     {
       sequelize,
