@@ -8,8 +8,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 
 function HomeCard() {
-  const [currentData, setCurrentData] = useState();
-  console.log(currentData);
+  const [currentData, setCurrentData] = useState()
   const [loading, setLoading] = useState(false);
 
   const getdata = async () => {
@@ -58,12 +57,12 @@ function HomeCard() {
                 currentData.map((item) => {
                   return (
                     <Box
-                      as={Link}
-                      to={'/detailpage/' + item.id}
                       w='270px'
                       h='260px'
                       m='10px'
                       boxSize='auto'
+                      as={Link}
+                      to={'/detailpage/' + item.id}
                     >
                       <Box
                         borderRadius='13px'
@@ -78,15 +77,16 @@ function HomeCard() {
                                                 width='270px'
                                                 height='190px'
                                             /> */}
-                        <Carousel infiniteLoop showArrows={true}>
+                        <Carousel
+                          infiniteLoop
+                          autoPlay
+                          showArrows={true}>
                           {item.propertypictures.map((image, i) => (
-                            <Box key={i}>
+                            <Box key={i}
+                            >
                               <Image
                                 objectFit='cover'
-                                src={
-                                  'http://localhost:2000/propertyPicture/' +
-                                  image.picture
-                                }
+                                src={'http://localhost:2000/propertyPicture/' + image.picture}
                                 width='270px'
                                 height='190px'
                               />
@@ -97,6 +97,26 @@ function HomeCard() {
                       <Box px='10px' h='90px'>
                         <Text mt='2' fontWeight='bold' fontSize='sm'>
                           {item.name}
+                        </Text>
+                        {/* <Text mr='5px' fontSize='sm'>
+                                                Berjarak{' '}
+                                                {Math.ceil(
+                                                    getPreciseDistance(
+                                                        { latitude: cord.lat, longitude: cord.lng },
+                                                        {
+                                                            latitude: item.fields.geolocation[0],
+                                                            longitude: item.fields.geolocation[1],
+                                                        }
+                                                    ) / 1000
+                                                ) + ' km'}
+                                            </Text> */}
+                        {/* <Text mr='5px' fontSize='sm'>
+                                                <Text fontWeight='bold' display='inline'>
+                                                    {item.description}
+                                                </Text>
+                                            </Text> */}
+                        <Text fontSize="sm" fontWeight="bold" color="gray.400" display="inline">
+                          {item.category.country}, {item.category.province}, {item.category.city}
                         </Text>
                       </Box>
                     </Box>

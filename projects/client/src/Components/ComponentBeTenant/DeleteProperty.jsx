@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { closeModal } from '../../Redux/ModalSlice'
 import { isDeleteData } from '../../Redux/DoneCreatePropertiesSlice'
 import { isDeletePropertyData } from '../../Redux/DoneCreatePropertiesSlice'
-import axios from "axios"
+import axios from "../../api/axios"
+import useAuth from '../../hooks/useAuth'
 
 
 const DeleteProperty = () => {
@@ -18,18 +19,19 @@ const DeleteProperty = () => {
     const [input, setInput] = useState("")
     const [load, setLoad] = useState(false)
     const validasi = `Delete Property ${name}`
+    const { auth } = useAuth();
 
 
     const deleteProperty = async () => {
         try {
-            await axios.delete("http://localhost:2000/api/deleteproperty/1")
+            await axios.delete(`/deleteproperty/${auth.tenantId}`)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)
+                dispatch(isDeleteData())
+                dispatch(isDeletePropertyData())
+                window.location.reload()
             }, 2000)
-            dispatch(isDeleteData())
-            dispatch(isDeletePropertyData())
-            window.location.reload()
         } catch (err) {
             console.log(err)
         }

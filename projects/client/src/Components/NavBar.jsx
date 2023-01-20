@@ -48,6 +48,7 @@ import axios from '../api/axios';
 
 const NavBar = () => {
   const { auth } = useAuth();
+  console.log(auth)
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -184,6 +185,7 @@ const NavBar = () => {
                 cursor='pointer'
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
+                marginRight="10px"
               >
                 {auth?.isTenant === true ? (
                   <Link to={'/tenant/dashboard'}>Switch to hosting</Link>
