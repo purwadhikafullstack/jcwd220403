@@ -8,11 +8,13 @@ import {
   Text,
   IconButton,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import DatesAndGuest from '../../Components/Booking/DatesAndGuest';
 import LoginToBook from '../../Components/Booking/LoginToBook';
 import PropertyCard from '../../Components/Booking/PropertyCard';
 
 export default function BookingDetail() {
+  const navigate = useNavigate();
   return (
     <Stack
       minH={'100vh'}
@@ -26,6 +28,7 @@ export default function BookingDetail() {
               colorScheme='teal'
               aria-label='Back to Property'
               icon={<ArrowBackIcon />}
+              onClick={() => navigate(-1)}
             />
             <Heading fontSize={'3xl'}>
               <Text color={'teal.400'} as={'span'}>

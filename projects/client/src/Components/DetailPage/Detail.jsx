@@ -20,10 +20,11 @@ import {
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 function DetailPage() {
+  const navigate = useNavigate();
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const { auth } = useAuth();
   const [data, setData] = useState([]);
@@ -148,10 +149,14 @@ function DetailPage() {
                           Rp {new Intl.NumberFormat('en-DE').format(item.price)}{' '}
                           / malam
                         </Text>
-                        <Button mt='2' colorScheme='orange'>
-                          <Link to={`/book/${data.id}/${i}/${item.id}`}>
-                            Pesan sekarang
-                          </Link>
+                        <Button
+                          mt='2'
+                          colorScheme='orange'
+                          onClick={() =>
+                            navigate(`/book/${data.id}/${i}/${item.id}`)
+                          }
+                        >
+                          Pesan sekarang
                         </Button>
                       </Box>
                     </Flex>
@@ -323,10 +328,14 @@ function DetailPage() {
                             {item.description}
                           </Text>
                           <Divider />
-                          <Button mt='2' colorScheme='orange'>
-                            <Link to={`/book/${data.id}/${i}/${item.id}`}>
-                              Pesan sekarang
-                            </Link>
+                          <Button
+                            mt='2'
+                            colorScheme='orange'
+                            onClick={() =>
+                              navigate(`/book/${data.id}/${i}/${item.id}`)
+                            }
+                          >
+                            Pesan sekarang
                           </Button>
                         </Box>
                       </Flex>
