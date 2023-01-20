@@ -7,6 +7,9 @@ import {
   Heading,
   Text,
   Divider,
+  CardFooter,
+  Button,
+  ButtonGroup,
   Skeleton,
   HStack,
 } from '@chakra-ui/react';
@@ -69,27 +72,26 @@ function PropertyCard({ day, setDay }) {
             borderRadius='lg'
           />
           <Stack mt='6' spacing='3'>
-            <Heading size='lg'>{data.name}</Heading>
-            <Heading size='sm'>{data.rooms[0].name}</Heading>
+            <Heading size='xl'>{data.rooms[params.index].name}</Heading>
             <Divider />
 
             <Heading size='md'>Price Details</Heading>
             <HStack justifyContent={'space-between'}>
               {day > 1 ? (
                 <Text>
-                  {priceInCurrency()} x {day} nights
+                  Rp.{data.rooms[params.index].price} x {day} nights
                 </Text>
               ) : (
                 <Text>
-                  {priceInCurrency()} x {day} nights
+                  Rp.{data.rooms[params.index].price} x {day} night
                 </Text>
               )}
-              <Text>{totalPrice()}</Text>
+              <Text>Rp.{data.rooms[params.index].price * day}</Text>
             </HStack>
             <Divider />
             <HStack justifyContent={'space-between'}>
               <Heading size='md'>Total</Heading>
-              <Text>{totalPrice()}</Text>
+              <Text>Rp.{data.rooms[params.index].price * day}</Text>
             </HStack>
           </Stack>
         </CardBody>

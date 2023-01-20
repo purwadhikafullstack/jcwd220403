@@ -76,6 +76,10 @@ const router = createBrowserRouter([
           },
 
           {
+            path: '/book/:propertyId/:index/:roomId',
+            element: <BookingDetail />,
+          },
+          {
             element: <RequireAuth />,
             children: [
               {

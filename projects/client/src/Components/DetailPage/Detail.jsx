@@ -10,6 +10,7 @@ import {
   GridItem,
   Button,
   HStack,
+  VStack,
   Avatar,
   Divider,
   SkeletonText,
@@ -18,38 +19,32 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import { DateRange } from 'react-date-range';
-import { addDays } from 'date-fns';
-import useSearch from '../../hooks/useSeacrh';
+import useAuth from '../../hooks/useAuth';
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function DetailPage() {
   const [isMobile] = useMediaQuery('(max-width: 481px)');
-  const navigate = useNavigate();
+  const { auth } = useAuth();
   const [data, setData] = useState([]);
   const [isloading, setIsloading] = useState(true);
   const params = useParams();
-  const { setSearch, search } = useSearch();
-  const [lokasi, setLokasi] = useState('');
-
   const [state, setState] = useState([
     {
-      startDate: search.state ? search.state[0].startDate : new Date(),
-      endDate: search.state ? search.state[0].endDate : new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       key: 'selection',
     },
   ]);
 
   const getData = async () => {
     try {
-      const res = await axios.post(
-        `/detail/property/${params.id}`,
-        search ? search : { state, lokasi }
-      );
+      const res = await axios.get(`/detail/property/${params.id}`);
       setData(res.data);
-      // setTimeout(() => {
-      setIsloading(false);
-      // }, 1000);
+      setTimeout(() => {
+        setIsloading(false);
+      }, 1000);
+      // console.log(res.data)
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +52,7 @@ function DetailPage() {
 
   useEffect(() => {
     getData();
-  }, [search]);
+  }, []);
 
   return (
     <>
@@ -108,39 +103,6 @@ function DetailPage() {
               </Text>
             </SkeletonText>
             <Divider />
-            <Skeleton mt='4' isLoaded={!isloading}>
-              <Box w='30w' mb='4'>
-                <Center>
-                  <Box border='1px' borderRadius='xl' overflow='hidden'>
-                    <DateRange
-                      fixedHeight={true}
-                      rangeColors={['#FE9900']}
-                      editableDateInputs={true}
-                      onChange={(item) => setState([item.selection])}
-                      minDate={addDays(new Date(), 0)}
-                      maxDate={addDays(new Date(), 60)}
-                      moveRangeOnFirstSelection={false}
-                      ranges={state}
-                      showMonthAndYearPickers={false}
-                    />
-                  </Box>
-                </Center>
-                <Button
-                  w='full'
-                  mt='2'
-                  colorScheme='orange'
-                  disabled={state === search.state}
-                  onClick={() => {
-                    setSearch({ lokasi, state });
-                    setIsloading(true);
-                  }}
-                >
-                  Change Date
-                </Button>
-              </Box>
-            </Skeleton>
-
-            <Divider />
             <Skeleton isLoaded={!isloading}>
               <Text mt='4' fontWeight='bold'>
                 Tipe Kamar yang Tersedia di {data?.name}
@@ -165,8 +127,7 @@ function DetailPage() {
                           objectFit='cover'
                         />
                         <Text mb='2' mt='2' fontWeight='bold'>
-                          {' '}
-                          {item.name}{' '}
+                          {item.name}
                         </Text>
                         <Divider />
                         <Text
@@ -187,15 +148,10 @@ function DetailPage() {
                           Rp {new Intl.NumberFormat('en-DE').format(item.price)}{' '}
                           / malam
                         </Text>
-                        <Button
-                          mt='2'
-                          colorScheme='orange'
-                          disabled={item.transactions.length !== 0}
-                          onClick={() =>
-                            navigate(`/book/${data.id}/${i}/${item.id}`)
-                          }
-                        >
-                          Pesan sekarang
+                        <Button mt='2' colorScheme='orange'>
+                          <Link to={`/book/${data.id}/${i}/${item.id}`}>
+                            Pesan sekarang
+                          </Link>
                         </Button>
                       </Box>
                     </Flex>
@@ -367,15 +323,10 @@ function DetailPage() {
                             {item.description}
                           </Text>
                           <Divider />
-                          <Button
-                            mt='2'
-                            colorScheme='orange'
-                            disabled={item.transactions.length !== 0}
-                            onClick={() =>
-                              navigate(`/book/${data.id}/${i}/${item.id}`)
-                            }
-                          >
-                            Pesan sekarang
+                          <Button mt='2' colorScheme='orange'>
+                            <Link to={`/book/${data.id}/${i}/${item.id}`}>
+                              Pesan sekarang
+                            </Link>
                           </Button>
                         </Box>
                       </Flex>
@@ -383,37 +334,7 @@ function DetailPage() {
                   );
                 })}
               </Box>
-              <Skeleton mt='4' isLoaded={!isloading}>
-                <Box w='30w'>
-                  <Center>
-                    <Box border='1px' borderRadius='xl' overflow='hidden'>
-                      <DateRange
-                        fixedHeight={true}
-                        rangeColors={['#FE9900']}
-                        editableDateInputs={true}
-                        onChange={(item) => setState([item.selection])}
-                        minDate={addDays(new Date(), 0)}
-                        maxDate={addDays(new Date(), 60)}
-                        moveRangeOnFirstSelection={false}
-                        ranges={state}
-                        showMonthAndYearPickers={false}
-                      />
-                    </Box>
-                  </Center>
-                  <Button
-                    w='full'
-                    mt='2'
-                    colorScheme='orange'
-                    disabled={state === search.state}
-                    onClick={() => {
-                      setSearch({ lokasi, state });
-                      setIsloading(true);
-                    }}
-                  >
-                    Change Date
-                  </Button>
-                </Box>
-              </Skeleton>
+              <Box w='30w'>{/* iklan apa ajah nanti */}</Box>
             </Flex>
           </Box>
         </Center>
