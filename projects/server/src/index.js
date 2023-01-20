@@ -31,8 +31,8 @@ const corsOptions = {
   },
 };
 app.use(
-  cors(corsOptions)
-  // cors()
+  // cors(corsOptions)
+  cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&

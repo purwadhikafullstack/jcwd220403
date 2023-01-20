@@ -24,31 +24,23 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 function DetailPage() {
-const [isMobile] = useMediaQuery('(max-width: 481px)');
-const { auth } = useAuth();
-const [data, setData] = useState([]);
-const [isloading, setIsloading] = useState(true);
-const params = useParams();
-const [state, setState] = useState([
-    {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-    },
-]);
+    const [isMobile] = useMediaQuery("(max-width: 481px)")
+    const [data, setData] = useState([])
+    const [isloading, setIsloading] = useState(true)
+    const params = useParams()
 
-const getData = async () => {
-    try {
-    const res = await axios.get(`/detail/property/${params.id}`);
-    setData(res.data);
-    setTimeout(() => {
-        setIsloading(false);
-    }, 1000);
-    // console.log(res.data)
-    } catch (err) {
-    console.log(err);
+    const getData = async () => {
+        try {
+            const res = await axios.get(`/detail/property/${params.id}`);
+            setData(res.data)
+            setTimeout(() => {
+                setIsloading(false)
+            }, 1000);
+            console.log(res.data)
+        } catch (err) {
+            console.log(err);
+        }
     }
-};
 
 useEffect(() => {
     getData();

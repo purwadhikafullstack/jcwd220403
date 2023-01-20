@@ -24,7 +24,6 @@ router.get('/api/roombyid/:id', tenantControllers.getRoomPropertyById);
 router.get('/api/roomimages/:id', tenantControllers.getDataRoomAndImagesRoom);
 router.get('/api/getallpictureroom/:tenantId', tenantControllers.getAllPictureRoom)
 router.get('/api/getmorePictureProperty/:tenantId', tenantControllers.getDataPropertyAndImagesProperty)
-router.get('/api/category', tenantControllers.getAllCategory)
 
 //update
 router.patch('/api/editpicture/:tenantId', multerUpload.single('file'), tenantControllers.updatePictureProperty);

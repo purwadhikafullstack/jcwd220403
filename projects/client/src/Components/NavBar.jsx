@@ -45,7 +45,6 @@ import { DateRange } from 'react-date-range';
 import { addDays } from 'date-fns';
 import axios from '../api/axios';
 import useSearch from '../hooks/useSeacrh';
-import { all } from 'axios';
 
 const NavBar = () => {
   const { auth } = useAuth();
@@ -139,6 +138,12 @@ useEffect(() => {
                 width={logoTabletAndDesktop}
                 display={displayTablet}
               />
+              <Image               
+                src={LogoOnly}               
+                width='30px'               
+                display={displayLogoOnly}               
+                marginRight='5px'             
+              />
               </Box>
             </Link>
             <Flex justify="space-around" align="center" color="black" w={isMobile ? "70vw" : "30vw"} h="50px" borderRadius='full' cursor="pointer" border="1px" borderColor="gray.100" boxShadow="md" mr={isMobile ? 3: 12} onClick={onOpen}>
@@ -149,7 +154,7 @@ useEffect(() => {
                 <SearchIcon  />
               </Button>
             </Flex>
-            {/* {isMobile ? null : 
+            {isMobile ? null : 
             <Box>
               <Text
                 fontSize='14px'
@@ -166,7 +171,7 @@ useEffect(() => {
                 )}
               </Text>
             </Box>
-          )} */}
+          }
           <Box marginLeft='auto' display={displayTablet}>
             <Menu>
               <MenuButton w='70px'>
