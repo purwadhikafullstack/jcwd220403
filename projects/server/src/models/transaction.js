@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(
           'Menunggu Pembayaran',
           'Menunggu Konfirmasi Pembayaran',
-          'Dibatalkan'
+          'Dibatalkan',
+          'Berhasil'
         ),
         allowNull: false,
       },
