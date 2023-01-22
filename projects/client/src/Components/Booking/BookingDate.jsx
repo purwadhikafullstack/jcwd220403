@@ -33,10 +33,12 @@ function BookingDate({ date, setDate }) {
           <PopoverTrigger>
             <Button>Edit</Button>
           </PopoverTrigger>
-          <PopoverContent w='700px'>
+          <PopoverContent minW='700px'>
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverHeader>Date</PopoverHeader>
+            <PopoverHeader bg={'teal.50'} paddingLeft='47%' fontWeight={'bold'}>
+              Date
+            </PopoverHeader>
             <PopoverBody>
               <Calendar
                 selectRange={true}

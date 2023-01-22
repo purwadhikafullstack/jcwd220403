@@ -18,6 +18,9 @@ import PropertyCard from '../../Components/Booking/PropertyCard';
 
 export default function BookingDetail() {
   const navigate = useNavigate();
+  const [adultGuest, setAdultGuest] = useState(1);
+  const [childrenGuest, setChildrenGuest] = useState(0);
+  const [infantGuest, setInfantGuest] = useState(0);
   const [date, setDate] = useState([
     new Date(),
     new Date(new Date().setDate(new Date().getDate() + 1)), //setting jam
@@ -29,6 +32,11 @@ export default function BookingDetail() {
       (date[1].getTime() - date[0].getTime()) / (1000 * 3600 * 24)
     );
     setDay(numberOfDaysFormula);
+  };
+
+  const totalGuest = () => {
+    const totalGuestList = adultGuest + childrenGuest + infantGuest;
+    return totalGuestList;
   };
 
   useEffect(() => {
@@ -61,7 +69,15 @@ export default function BookingDetail() {
           </HStack>
           <Divider />
           <BookingDate date={date} setDate={setDate} />
-          <GuestList />
+          <GuestList
+            adultGuest={adultGuest}
+            setAdultGuest={setAdultGuest}
+            childrenGuest={childrenGuest}
+            setChildrenGuest={setChildrenGuest}
+            infantGuest={infantGuest}
+            setInfantGuest={setInfantGuest}
+            totalGuest={totalGuest}
+          />
           <Divider />
           <LoginToBook />
         </Stack>
