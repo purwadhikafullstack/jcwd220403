@@ -7,9 +7,6 @@ import {
   Heading,
   Text,
   Divider,
-  CardFooter,
-  Button,
-  ButtonGroup,
   Skeleton,
   HStack,
 } from '@chakra-ui/react';
@@ -17,17 +14,36 @@ import { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import { useParams } from 'react-router-dom';
 
-function PropertyCard() {
+function PropertyCard({ day, setDay }) {
   const [data, setData] = useState([]);
-  const [day, setDay] = useState(1);
   const [isloading, setIsloading] = useState(true);
   const params = useParams();
+
+  function priceInCurrency() {
+    const price = data.rooms[params.index].price;
+
+    let priceInRupiah = Intl.NumberFormat('id-ID', {
+      currency: `IDR`,
+      style: 'currency',
+    });
+    return priceInRupiah.format(price);
+  }
+
+  function totalPrice() {
+    const totalPrice = data.rooms[params.index].price * day;
+
+    let priceInRupiah = Intl.NumberFormat('id-ID', {
+      currency: `IDR`,
+      style: 'currency',
+    });
+
+    return priceInRupiah.format(totalPrice);
+  }
 
   const getData = async () => {
     try {
       const res = await axios.get(`/detail/property/${params.propertyId}`);
       setData(res.data);
-      //   console.log(data.rooms[params.index]);
       setIsloading(false);
     } catch (err) {
       console.log(err);
@@ -38,11 +54,13 @@ function PropertyCard() {
     getData();
   }, [isloading]);
 
+  console.log(data);
+
   return isloading ? (
     <Skeleton isLoaded={true}> </Skeleton>
   ) : (
     <Skeleton isLoaded={!isloading}>
-      <Card maxW='sm'>
+      <Card maxW='xl'>
         <CardBody>
           <Image
             src={
@@ -53,26 +71,27 @@ function PropertyCard() {
             borderRadius='lg'
           />
           <Stack mt='6' spacing='3'>
-            <Heading size='xl'>{data.rooms[params.index].name}</Heading>
+            <Heading size='lg'>{data.name}</Heading>
+            <Heading size='sm'>{data.rooms[params.index].name}</Heading>
             <Divider />
 
             <Heading size='md'>Price Details</Heading>
             <HStack justifyContent={'space-between'}>
               {day > 1 ? (
                 <Text>
-                  Rp.{data.rooms[params.index].price} x {day} nights
+                  {priceInCurrency()} x {day} nights
                 </Text>
               ) : (
                 <Text>
-                  Rp.{data.rooms[params.index].price} x {day} night
+                  {priceInCurrency()} x {day} nights
                 </Text>
               )}
-              <Text>Rp.{data.rooms[params.index].price * day}</Text>
+              <Text>{totalPrice()}</Text>
             </HStack>
             <Divider />
             <HStack justifyContent={'space-between'}>
               <Heading size='md'>Total</Heading>
-              <Text>Rp.{data.rooms[params.index].price * day}</Text>
+              <Text>{totalPrice()}</Text>
             </HStack>
           </Stack>
         </CardBody>

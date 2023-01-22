@@ -53,6 +53,7 @@ app.use(cookieParser());
 app.use(refresh);
 app.use(logout);
 
+app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
 // app.use(express.static("./public/propertyPicture"))
@@ -129,4 +130,4 @@ app.listen(PORT, (err) => {
   }
 });
 
-// database.sequelize.sync({ alter: true });
+database.sequelize.sync({ alter: true });

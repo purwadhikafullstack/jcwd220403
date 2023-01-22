@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
   transaction.init(
     {
       checkIn: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       checkOut: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       transactionStatus: {

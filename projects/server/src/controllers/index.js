@@ -4,8 +4,10 @@ const tenantControllers = require('./tenantControllers');
 const refreshTokenController = require('./refreshTokenController');
 const logoutController = require('./logoutController');
 const RegisterAsTenant = require('./registerAsTenantController');
-const pagesControllers = require("./pagesControllers")
-const roomControllers = require("./roomsControllers")
+const pagesControllers = require('./pagesControllers');
+const roomControllers = require('./roomsControllers');
+const bookingController = require('./booking/bookingController');
+const paymentContoller = require('./booking/paymentController');
 
 module.exports = {
   authControllers,
@@ -15,5 +17,7 @@ module.exports = {
   logoutController,
   RegisterAsTenant,
   pagesControllers,
-  roomControllers
+  roomControllers,
+  bookingController,
+  paymentContoller,
 };

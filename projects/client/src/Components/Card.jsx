@@ -8,7 +8,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 
 function HomeCard() {
-  const [currentData, setCurrentData] = useState()
+  const [currentData, setCurrentData] = useState();
   const [loading, setLoading] = useState(false);
 
   const getdata = async () => {
@@ -80,13 +80,17 @@ function HomeCard() {
                         <Carousel
                           infiniteLoop
                           autoPlay
-                          showArrows={true}>
+                          showArrows={true}
+                          showThumbs={false}
+                        >
                           {item.propertypictures.map((image, i) => (
-                            <Box key={i}
-                            >
+                            <Box key={i}>
                               <Image
                                 objectFit='cover'
-                                src={'http://localhost:2000/propertyPicture/' + image.picture}
+                                src={
+                                  'http://localhost:2000/propertyPicture/' +
+                                  image.picture
+                                }
                                 width='270px'
                                 height='190px'
                               />
@@ -115,8 +119,14 @@ function HomeCard() {
                                                     {item.description}
                                                 </Text>
                                             </Text> */}
-                        <Text fontSize="sm" fontWeight="bold" color="gray.400" display="inline">
-                          {item.category.country}, {item.category.province}, {item.category.city}
+                        <Text
+                          fontSize='sm'
+                          fontWeight='bold'
+                          color='gray.400'
+                          display='inline'
+                        >
+                          {item.category.country}, {item.category.province},{' '}
+                          {item.category.city}
                         </Text>
                       </Box>
                     </Box>

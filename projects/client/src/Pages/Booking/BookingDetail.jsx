@@ -8,21 +8,41 @@ import {
   Text,
   IconButton,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DatesAndGuest from '../../Components/Booking/DatesAndGuest';
+import BookingDate from '../../Components/Booking/BookingDate';
+import GuestList from '../../Components/Booking/GuestList';
 import LoginToBook from '../../Components/Booking/LoginToBook';
 import PropertyCard from '../../Components/Booking/PropertyCard';
 
 export default function BookingDetail() {
   const navigate = useNavigate();
+  const [date, setDate] = useState([
+    new Date(),
+    new Date(new Date().setDate(new Date().getDate() + 1)), //setting jam
+  ]);
+  const [day, setDay] = useState(0);
+
+  const numberOfDays = () => {
+    let numberOfDaysFormula = Math.floor(
+      (date[1].getTime() - date[0].getTime()) / (1000 * 3600 * 24)
+    );
+    setDay(numberOfDaysFormula);
+  };
+
+  useEffect(() => {
+    numberOfDays();
+  }, [date]);
+
   return (
     <Stack
       minH={'100vh'}
       direction={{ base: 'column', md: 'row' }}
       justifyContent={'space-between'}
     >
-      <Flex p={6} flex={1} justify={'center'}>
-        <Stack spacing={6} w={'full'} maxW={'lg'}>
+      <Flex p={8} flex={1} justify={'center'}>
+        <Stack spacing={6} maxW={'xl'}>
           <HStack>
             <IconButton
               colorScheme='teal'
@@ -40,13 +60,14 @@ export default function BookingDetail() {
             </Heading>
           </HStack>
           <Divider />
-          <DatesAndGuest />
+          <BookingDate date={date} setDate={setDate} />
+          <GuestList />
           <Divider />
           <LoginToBook />
         </Stack>
       </Flex>
-      <Flex flex={1}>
-        <PropertyCard />
+      <Flex flex={1} p={8}>
+        <PropertyCard day={day} setDay={setDay} />
       </Flex>
     </Stack>
   );
