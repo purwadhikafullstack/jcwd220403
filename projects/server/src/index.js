@@ -14,8 +14,9 @@ const {
   tenantRouters,
   RegisterAsTenant,
   pagesRouters,
-  roomsRouters
-
+  roomsRouters, 
+  tenantTransactionRouter
+  
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -57,6 +58,7 @@ app.use(logout);
 app.use(tenantRouters);
 app.use(pagesRouters)
 app.use(roomsRouters)
+app.use(tenantTransactionRouter)
 // app.use(express.static("./public/propertyPicture"))
 // app.use(express.static(join(__dirname, "../public/propertyPicture")));
 

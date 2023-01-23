@@ -6,6 +6,7 @@ const userRouters = require('./userRouters');
 const RegisterAsTenant = require('./registerAsTenantRouter');
 const pagesRouters = require("./pagesRouters")
 const roomsRouters = require("./roomsRouters")
+const tenantTransactionRouter = require("./transactionTenantRouters")
 
 module.exports = {
   userRouters,
@@ -15,5 +16,6 @@ module.exports = {
   authRouters,
   RegisterAsTenant,
   pagesRouters,
-  roomsRouters
+  roomsRouters,
+  tenantTransactionRouter
 };

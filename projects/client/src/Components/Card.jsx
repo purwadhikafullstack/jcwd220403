@@ -19,6 +19,7 @@ function HomeCard() {
             const response = await axios.post("/landingpage", search)
             setCurrentData(response.data)
             setLoading(false);
+            console.log(response.data)
         } catch (err) {
             console.log(err);
         }
@@ -98,6 +99,12 @@ function HomeCard() {
                         <Box px='10px' h='90px'>
                             <Text mt='2' fontWeight='bold' fontSize='sm'>
                             {item.name}
+                            </Text>
+                            <Text fontSize="sm" fontWeight="bold" color="gray.400" display="inline">
+                                {item.category.country}, {item.category.province}, {item.category.city}
+                            </Text>
+                            <Text mt='2' fontWeight='bold' fontSize='sm'>
+                            {item.rooms[0].price}
                             </Text>
                         </Box>
                         </Box>

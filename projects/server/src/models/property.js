@@ -37,11 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       picture: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      qtyroom: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      }
     },
     {
       sequelize,

@@ -1,20 +1,21 @@
-const { sequelize } = require("../models")
 const database = require("../models")
-const property = database.property
-const { Op, or, Sequelize } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 module.exports = {
     landingPage: async (req, res) => {
         const {lokasi, state} = req.body
-        console.log(state)
         try{
             const response = await database.property.findAll({
+                attributes: ['id', 'name', 'description', 'picture'],
                 include: [
                     { 
                         model: database.room,
+                        attributes: ['price', 'picture', 'availability', 'propertyId'],
                         include: [
                             { 
                                 model: database.transaction,
+                                required: false,
+                                attributes: ['id'],
                                 where: {
                                     [Op.or] : [
                                         {
@@ -33,31 +34,38 @@ module.exports = {
                                                 }
                                             ]
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
-                            {
-                                model: database.image,
-                            }
-                        ] 
+                        ],
                     },
                     { 
+                        attributes: ['city', 'province', 'country'],
                         model: database.category,
                         where: { city: lokasi ? lokasi : {[Op.not]: null} },
-                    },
+                    }, 
                     {
                         model: database.propertypicture,
-                        attributes: [[sequelize.col('name'),'picture']]
+                        attributes: [[Sequelize.col('name'),'picture']]
                     },
+                ],
+                order: [
+                    // ['id', 'ASC'],
+                    ['rooms','price', 'ASC'],
+                ],
+                having: [
                     {
-                        model:database.category
+                        [Op.and]: [
+                            {
+                                'rooms.transactions.id': null,
+                                'rooms.availability': true
+                            }
+                        ]
                     }
-                ]
+                ],
             })
-
-            const result = response.filter(item => item.rooms.length !== item.qtyroom)
             
-            const data = result.map(item => {
+            const data = response.map(item => {
                 const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
                 delete newData.picture;
                 return newData;
@@ -70,45 +78,59 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const cekin = '2023-01-21T14:00:00.000Z'
-            const cekot = '2023-01-26T14:00:00.000Z'
+            const {lokasi, state} = req.body
+
             const response = await database.property.findOne({
-                where: { id: req.params.id },
                 include: [
-                    { model: database.category },
-                    { model: database.facility},
-                    { model: database.propertypicture},
                     { 
                         model: database.room,
+                        where: { propertyId: req.params.id },
                         include: [
-                            {
-                                model: database.image,
-                            },
                             { 
                                 model: database.transaction,
+                                required: false,
                                 where: {
-                                    [Op.or]: [
+                                    [Op.or] : [
                                         {
-                                            checkin: {[Op.gte]: new Date()},
-                                            id: null
+                                            [Op.and]: [
+                                                {
+                                                    checkIn: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()}
+                                                }
+                                            ]
                                         },
-                                    ]
-
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    checkIn: {[Op.lt]: state ? state[0].endDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()}
+                                                }
+                                            ]
+                                        },
+                                    ],
                                 },
-                                raw: true
-
                             },
+                            {
+                                model: database.image,
+                            }
                         ] 
                     },
-                    // { 
-                    //     model: database.tenant,
-                    //     include: [
-                    //         {
-                    //             model: database.user,
-                    //             attributes: ["fullName", "photo"], 
-                    //         }
-                    //     ]  
-                    // },
+                    {
+                        model: database.propertypicture,
+                        attributes: [[Sequelize.col('name'),'picture']]
+                    },
+                    { 
+                        model: database.tenant,
+                        include: [
+                            {
+                                model: database.user,
+                                attributes: ["fullName", "photo"], 
+                            }
+                        ]  
+                    },
+                    {
+                        model:database.category
+                    }
                 ]
             })
             
@@ -118,64 +140,4 @@ module.exports = {
             res.status(404).send(err)
         }
     },
-    getRoom: async (req, res) => {
-        try {
-            const cekin = '2023-01-21T14:00:00.000Z'
-            const cekot = '2023-01-26T14:00:00.000Z'
-            const lokasi = ""
-
-            const response = await database.property.findAll({
-                attributes: [
-                    'property.id',
-                    [
-                        sequelize.fn('COUNT', sequelize.col('property.id')), 'jumlah kamar'
-                    ]
-                ],
-                include: [
-                    { 
-                        model: database.room,
-                        attributes: [],
-                        required: true,
-                        include: [
-                            { 
-                                model: database.transaction,
-                                where: {
-                                    [Op.or] : [
-                                        {
-                                            [Op.and]: [
-                                                {
-                                                    checkIn: cekin,
-                                                    checkOut: cekot
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            [Op.and]: [
-                                                {
-                                                    checkIn: cekot,
-                                                    checkOut: cekin
-                                                }
-                                            ]
-                                        },
-                                    ]
-                                },
-                                attributes: [],
-                            },
-                            {
-                                model: database.image,
-                                attributes: [],
-                            }
-                        ] 
-                    },
-                ],
-                group: 'rooms.propertyId'
-            })
-
-
-            res.status(200).send(response)
-        } catch (err) {
-            console.log(err)
-            res.status(404).send(err)
-        }
-    }
 }

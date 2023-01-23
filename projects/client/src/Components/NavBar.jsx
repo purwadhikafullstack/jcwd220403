@@ -48,7 +48,7 @@ import useSearch from '../hooks/useSeacrh';
 
 const NavBar = () => {
   const { auth } = useAuth();
-  const { setSearch } = useSearch()
+  const { search ,setSearch } = useSearch()
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,9 +59,9 @@ const NavBar = () => {
 
   const [state, setState] = useState([
     {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'selection',
+      startDate: search.state ? search.state[0].startDate : new Date(),
+      endDate: search.state ? search.state[0].endDate : new Date(),
+      key: "selection",
     },
   ]);
 
@@ -149,7 +149,7 @@ useEffect(() => {
             <Flex justify="space-around" align="center" color="black" w={isMobile ? "70vw" : "30vw"} h="50px" borderRadius='full' cursor="pointer" border="1px" borderColor="gray.100" boxShadow="md" mr={isMobile ? 3: 12} onClick={onOpen}>
               <Text fontSize={isMobile ? "x-small" : "small"}>{lokasi ? lokasi : "Ke mana saja"}</Text>
               <Text fontSize={isMobile ? "xl" : "2xl"}>|</Text>
-              <Text fontSize={isMobile ? "x-small" : "small"} overflow="hidden" >{lokasi ? new Date(state[0]["startDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) + " - " + new Date(state[0]["endDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) : "Minggu Mana pun"}</Text>
+              <Text fontSize={isMobile ? "x-small" : "small"} overflow="hidden" >{state === search.state ? new Date(state[0]["startDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) + " - " + new Date(state[0]["endDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) : "Minggu Mana pun"}</Text>
               <Button borderRadius="full" size="sm" bgColor="orange">
                 <SearchIcon  />
               </Button>

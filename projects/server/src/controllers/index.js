@@ -6,6 +6,7 @@ const logoutController = require('./logoutController');
 const RegisterAsTenant = require('./registerAsTenantController');
 const pagesControllers = require("./pagesControllers")
 const roomControllers = require("./roomsControllers")
+const tenantTransaction = require("./transactionTenantControllers")
 
 module.exports = {
   authControllers,
@@ -15,5 +16,6 @@ module.exports = {
   logoutController,
   RegisterAsTenant,
   pagesControllers,
-  roomControllers
+  roomControllers,
+  tenantTransaction
 };

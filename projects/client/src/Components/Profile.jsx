@@ -51,9 +51,7 @@ function ProfileSetting() {
     try {
       const res = await axiosPrivate.get('/user');
       setUser(res.data);
-      setTimeout(() => {
-        setIsloading(false);
-      }, 1000);
+      setIsloading(false);
     } catch (err) {
       console.log(err);
     }
@@ -97,6 +95,7 @@ function ProfileSetting() {
 
     await axiosPrivate.patch('/user/profilePic', data);
     setImage({ images: '' });
+    setIsloading(true)
   };
 
   function ClosePP() {
