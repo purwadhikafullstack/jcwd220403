@@ -1,4 +1,4 @@
-const database = require('../models');
+const database = require('../../models');
 const userLogin = database.login;
 
 const handleLogout = async (req, res) => {

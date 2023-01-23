@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const registerAsTenantController = require('../controllers/registerAsTenantController');
+const { registerAsTenantController } = require('../controllers');
 
 router.post(
   '/api/registerAsTenant',

@@ -65,13 +65,16 @@ const router = createBrowserRouter([
               <Category key={1} />,
               <HomeCard key={2} />,
               <Footer key={3} />,
-              <AlertSuccess key={4}/>
+              <AlertSuccess key={4} />,
             ],
           },
+
+          //booking
           {
             path: '/book/:propertyId/:index/:roomId',
             element: <BookingDetail />,
           },
+
           {
             element: <RequireAuth />,
             children: [

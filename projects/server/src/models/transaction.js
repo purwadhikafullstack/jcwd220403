@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       transaction.hasOne(models.review);
       transaction.hasOne(models.payment);
+      transaction.hasOne(models.guest);
     }
   }
   transaction.init(
@@ -38,7 +39,10 @@ module.exports = (sequelize, DataTypes) => {
           'Menunggu Pembayaran',
           'Menunggu Konfirmasi Pembayaran',
           'Dibatalkan',
-          'Berhasil'
+          'Gagal',
+          'Sukses',
+          'Aktif',
+          'Selesai'
         ),
         allowNull: false,
       },

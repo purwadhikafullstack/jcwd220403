@@ -1,13 +1,13 @@
-const database = require('../models');
+const database = require('../../models');
 const user = database.user;
 const tenant = database.tenant;
 const userLogin = database.login;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('../middlewares/nodemailer');
+const nodemailer = require('../../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
-const { OTP_generator } = require('../middlewares/otp_service');
+const { OTP_generator } = require('../../middlewares/otp_service');
 
 module.exports = {
   register: async (req, res) => {
@@ -138,7 +138,7 @@ module.exports = {
           payload,
           process.env.ACCESS_TOKEN_SECRET_KEY,
           {
-            expiresIn: '10m',
+            expiresIn: '2h',
           }
         );
 
