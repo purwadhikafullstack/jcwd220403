@@ -14,9 +14,10 @@ const {
   tenantRouters,
   RegisterAsTenant,
   pagesRouters,
-  roomsRouters, 
-  tenantTransactionRouter
-  
+  roomsRouters,
+  tenantTransactionRouter,
+  transactionRouters,
+  privateTransactionRouters,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -32,8 +33,8 @@ const corsOptions = {
   },
 };
 app.use(
-  // cors(corsOptions)
-  cors()
+  cors(corsOptions)
+  // cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
@@ -52,17 +53,21 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
+//routes that don't need token START
 app.use(refresh);
 app.use(logout);
 
+app.use(transactionRouters);
 app.use(tenantRouters);
-app.use(pagesRouters)
-app.use(roomsRouters)
-app.use(tenantTransactionRouter)
+app.use(pagesRouters);
+app.use(roomsRouters);
+app.use(tenantTransactionRouter);
+//routes that don't need token END
+
 // app.use(express.static("./public/propertyPicture"))
 // app.use(express.static(join(__dirname, "../public/propertyPicture")));
 
-//device detection
+//device detection START
 app.use(middlewareDetect);
 app.use(authRouters);
 app.use(
@@ -75,11 +80,13 @@ app.use(
   })
 );
 
-//routes that need token
+//routes that need token START
 app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
-app.use(tenantRouters);
+app.use(privateTransactionRouters);
+//routes that need token END
+//device detection END
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

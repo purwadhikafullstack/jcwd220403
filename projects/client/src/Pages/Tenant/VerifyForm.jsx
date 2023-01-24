@@ -18,16 +18,18 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { ToastContainer, toast } from 'react-toastify';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import '../../Styles/verify-tenant/styles.css';
 
 export default function VerifyForm() {
   const [KTPNumber, setKTPNumber] = useState('');
-  const [errorMessage, setErrorMEssage] = useState('');
+  const [errorMessageForFile, setErrorMessageForFile] = useState('');
+  const [errorMessageForID, setErrorMessageForID] = useState('');
   const [selectedFile, setSelectedFile] = useState();
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { auth, setAuth } = useAuth();
-  const blobColor = useColorModeValue('red.50', 'red.400');
+  const blobColor = useColorModeValue('teal.50', 'teal.400');
 
   function handleRedirect() {
     setInterval(() => {
@@ -38,10 +40,22 @@ export default function VerifyForm() {
     const file = e.target.files[0];
     const MAX_FILE_SIZE = 1024 * 1024; //1M
     if (file?.size > MAX_FILE_SIZE) {
-      setErrorMEssage('file is too large');
+      setErrorMessageForFile('file is too large');
+      setSelectedFile();
     } else {
+      setErrorMessageForFile('');
       setSelectedFile(file);
-      setErrorMEssage('');
+    }
+  };
+  const handleIDInput = (e) => {
+    const KTPNumberInput = e.target.value;
+
+    if (KTPNumberInput.length !== 16) {
+      setErrorMessageForID('Wrong ID format');
+      setKTPNumber();
+    } else {
+      setErrorMessageForID('');
+      setKTPNumber(KTPNumberInput);
     }
   };
   const handleSubmit = async (e) => {
@@ -102,10 +116,10 @@ export default function VerifyForm() {
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             lineHeight={1.1}
-            fontWeight={600}
+            fontWeight={700}
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
           >
-            <Text as={'span'} color={'red.400'}>
+            <Text as={'span'} color={'orange.400'}>
               Verify your Hosting account
             </Text>
           </Heading>
@@ -116,29 +130,31 @@ export default function VerifyForm() {
                 <Input
                   placeholder='Your ID Number'
                   type={'number'}
-                  value={KTPNumber}
-                  onChange={(e) => setKTPNumber(e.target.value)}
+                  // value={KTPNumber}
+                  onChange={(e) => handleIDInput(e)}
                 ></Input>
+                <Text color={'red'}>{errorMessageForID}</Text>
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>ID Picture</FormLabel>
                 <Input
+                  className='file-selector-verify'
                   type={'file'}
                   accept={'image/*'}
-                  sx={{
-                    '::file-selector-button': {
-                      height: 10,
-                      padding: 0,
-                      mr: 4,
-                      background: 'none',
-                      border: 'none',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                    },
-                  }}
+                  // sx={{
+                  //   '::file-selector-button': {
+                  //     height: 10,
+                  //     padding: 0,
+                  //     mr: 4,
+                  //     background: 'none',
+                  //     border: 'none',
+                  //     fontWeight: 'bold',
+                  //     cursor: 'pointer',
+                  //   },
+                  // }}
                   onChange={(e) => handleFileInput(e)}
                 ></Input>
-                <Text color={'red'}>{errorMessage}</Text>
+                <Text color={'red'}>{errorMessageForFile}</Text>
               </FormControl>
             </Stack>
             <Button
@@ -146,9 +162,9 @@ export default function VerifyForm() {
               fontWeight={'normal'}
               px={6}
               py={6}
-              colorScheme={'red'}
-              bg={'red.400'}
-              _hover={{ bg: 'red.500' }}
+              colorScheme={'teal'}
+              bg={'teal.400'}
+              _hover={{ bg: 'teal.500' }}
               onClick={handleSubmit}
               disabled={disableSubmitBtn}
             >

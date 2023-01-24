@@ -1,12 +1,16 @@
-const authControllers = require('./authControllers');
+const authControllers = require('./auth/authControllers');
 const userControllers = require('./userControllers');
 const tenantControllers = require('./tenantControllers');
-const refreshTokenController = require('./refreshTokenController');
-const logoutController = require('./logoutController');
+const refreshTokenController = require('./auth/refreshTokenController');
+const logoutController = require('./auth/logoutController');
 const RegisterAsTenant = require('./registerAsTenantController');
-const pagesControllers = require("./pagesControllers")
-const roomControllers = require("./roomsControllers")
-const tenantTransaction = require("./transactionTenantControllers")
+const tenantTransaction = require('./transactionTenantControllers');
+const pagesControllers = require('./pagesControllers');
+const roomControllers = require('./roomsControllers');
+const paymentContoller = require('./transaction/paymentController');
+const transactionControllers = require('./transaction/transactionControllers');
+const privateTransactionControllers = require('./transaction/privateTransactionControllers');
+const registerAsTenantController = require('./registerAsTenantController');
 
 module.exports = {
   authControllers,
@@ -17,5 +21,9 @@ module.exports = {
   RegisterAsTenant,
   pagesControllers,
   roomControllers,
-  tenantTransaction
+  tenantTransaction,
+  paymentContoller,
+  transactionControllers,
+  privateTransactionControllers,
+  registerAsTenantController,
 };

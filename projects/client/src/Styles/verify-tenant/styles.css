@@ -1,0 +1,9 @@
+Input.file-selector-verify[type='file']::file-selector-button {
+  height: 35px;
+  padding: 0px;
+  margin-right: 14px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}

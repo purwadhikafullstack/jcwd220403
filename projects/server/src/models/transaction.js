@@ -21,24 +21,30 @@ module.exports = (sequelize, DataTypes) => {
       });
       transaction.hasOne(models.review);
       transaction.hasOne(models.payment);
+      transaction.hasOne(models.guest);
     }
   }
   transaction.init(
     {
       checkIn: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       checkOut: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       transactionStatus: {
         type: DataTypes.ENUM(
           'Menunggu Pembayaran',
           'Menunggu Konfirmasi Pembayaran',
-          'Dibatalkan'
+          'Dibatalkan',
+          'Gagal',
+          'Sukses',
+          'Aktif',
+          'Selesai'
         ),
+        defaultValue: 'Menunggu Pembayaran',
         allowNull: false,
       },
       isReminded: {

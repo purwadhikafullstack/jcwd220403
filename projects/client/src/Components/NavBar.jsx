@@ -48,7 +48,7 @@ import useSearch from '../hooks/useSeacrh';
 
 const NavBar = () => {
   const { auth } = useAuth();
-  const { search ,setSearch } = useSearch()
+  const { search, setSearch } = useSearch();
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,7 +61,7 @@ const NavBar = () => {
     {
       startDate: search.state ? search.state[0].startDate : new Date(),
       endDate: search.state ? search.state[0].endDate : new Date(),
-      key: "selection",
+      key: 'selection',
     },
   ]);
 
@@ -84,15 +84,14 @@ const NavBar = () => {
     }
   };
 
-const onSearch = () => {
-  setSearch({lokasi, state})
-  navigate('/')
-}
+  const onSearch = () => {
+    setSearch({ lokasi, state });
+    navigate('/');
+  };
 
-useEffect(() => {
-  getLokasi()
-}, [])
-
+  useEffect(() => {
+    getLokasi();
+  }, []);
 
   const signOut = async () => {
     await logout();
@@ -138,23 +137,52 @@ useEffect(() => {
                 width={logoTabletAndDesktop}
                 display={displayTablet}
               />
-              <Image               
-                src={LogoOnly}               
-                width='30px'               
-                display={displayLogoOnly}               
-                marginRight='5px'             
+              <Image
+                src={LogoOnly}
+                width='30px'
+                display={displayLogoOnly}
+                marginRight='5px'
               />
-              </Box>
-            </Link>
-            <Flex justify="space-around" align="center" color="black" w={isMobile ? "70vw" : "30vw"} h="50px" borderRadius='full' cursor="pointer" border="1px" borderColor="gray.100" boxShadow="md" mr={isMobile ? 3: 12} onClick={onOpen}>
-              <Text fontSize={isMobile ? "x-small" : "small"}>{lokasi ? lokasi : "Ke mana saja"}</Text>
-              <Text fontSize={isMobile ? "xl" : "2xl"}>|</Text>
-              <Text fontSize={isMobile ? "x-small" : "small"} overflow="hidden" >{state === search.state ? new Date(state[0]["startDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) + " - " + new Date(state[0]["endDate"]).toLocaleString("en", {day : "numeric", month: "short", year: "numeric"}) : "Minggu Mana pun"}</Text>
-              <Button borderRadius="full" size="sm" bgColor="orange">
-                <SearchIcon  />
-              </Button>
-            </Flex>
-            {isMobile ? null : 
+            </Box>
+          </Link>
+          <Flex
+            justify='space-around'
+            align='center'
+            color='black'
+            w={isMobile ? '70vw' : '30vw'}
+            h='50px'
+            borderRadius='full'
+            cursor='pointer'
+            border='1px'
+            borderColor='gray.100'
+            boxShadow='md'
+            mr={isMobile ? 3 : 12}
+            onClick={onOpen}
+          >
+            <Text fontSize={isMobile ? 'x-small' : 'small'}>
+              {lokasi ? lokasi : 'Ke mana saja'}
+            </Text>
+            <Text fontSize={isMobile ? 'xl' : '2xl'}>|</Text>
+            <Text fontSize={isMobile ? 'x-small' : 'small'} overflow='hidden'>
+              {state === search.state
+                ? new Date(state[0]['startDate']).toLocaleString('en', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  }) +
+                  ' - ' +
+                  new Date(state[0]['endDate']).toLocaleString('en', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                : 'Minggu Mana pun'}
+            </Text>
+            <Button borderRadius='full' size='sm' bgColor='orange'>
+              <SearchIcon />
+            </Button>
+          </Flex>
+          {isMobile ? null : (
             <Box>
               <Text
                 fontSize='14px'
@@ -162,7 +190,7 @@ useEffect(() => {
                 cursor='pointer'
                 _hover={{ fontWeight: 'bold' }}
                 color='black'
-                marginRight="10px"
+                marginRight='10px'
               >
                 {auth?.isTenant === true ? (
                   <Link to={'/tenant/dashboard'}>Switch to hosting</Link>
@@ -171,7 +199,7 @@ useEffect(() => {
                 )}
               </Text>
             </Box>
-          }
+          )}
           <Box marginLeft='auto' display={displayTablet}>
             <Menu>
               <MenuButton w='70px'>
@@ -267,19 +295,35 @@ useEffect(() => {
         <DrawerContent>
           <DrawerBody>
             <Center>
-              <Tabs isFitted variant="soft-rounded" colorScheme="orange" w={isMobile ? "90vw" : "60vw"}>
-                <TabList mb='1em' bgColor="gray.100" borderRadius="3xl" overflow="hidden" h="12" >
-                  <Tab display="block" alignSelf="center">
-                    <Text fontSize="small">Lokasi</Text>
-                    <Text fontSize={isMobile ? "xx-small" : "small"}>{lokasi ? 
-                    <Tag
-                      color="black"
-                      colorScheme="inherit"
-                      size={isMobile ? "sm" : "md"}
-                    >
-                      <TagLabel>{lokasi}</TagLabel>
-                      <TagCloseButton onClick={() => setLokasi("")} />
-                    </Tag> : "Cari lokasi"}</Text>
+              <Tabs
+                isFitted
+                variant='soft-rounded'
+                colorScheme='orange'
+                w={isMobile ? '90vw' : '60vw'}
+              >
+                <TabList
+                  mb='1em'
+                  bgColor='gray.100'
+                  borderRadius='3xl'
+                  overflow='hidden'
+                  h='12'
+                >
+                  <Tab display='block' alignSelf='center'>
+                    <Text fontSize='small'>Lokasi</Text>
+                    <Text fontSize={isMobile ? 'xx-small' : 'small'}>
+                      {lokasi ? (
+                        <Tag
+                          color='black'
+                          colorScheme='inherit'
+                          size={isMobile ? 'sm' : 'md'}
+                        >
+                          <TagLabel>{lokasi}</TagLabel>
+                          <TagCloseButton onClick={() => setLokasi('')} />
+                        </Tag>
+                      ) : (
+                        'Cari lokasi'
+                      )}
+                    </Text>
                   </Tab>
                   <Tab display='block' alignSelf='center'>
                     <Text fontSize='small'>Tanggal</Text>
@@ -297,8 +341,16 @@ useEffect(() => {
                         })}
                     </Text>
                   </Tab>
-                  <Button bgColor="orange" borderRadius="full" size="lg" onClick={() => {onSearch(); onClose()}} >
-                    <SearchIcon  />
+                  <Button
+                    bgColor='orange'
+                    borderRadius='full'
+                    size='lg'
+                    onClick={() => {
+                      onSearch();
+                      onClose();
+                    }}
+                  >
+                    <SearchIcon />
                   </Button>
                 </TabList>
                 <TabPanels>
@@ -334,21 +386,25 @@ useEffect(() => {
                             })}
                           </List>
                         ) : null}
-                        {lokasi.length === 0 ?
-                        <>
-                          <Text color="orange" fontSize="x-small">{`Holistay tersedia di ${alllokasi.length} kota`}</Text> 
-                          <Flex>
-                              {alllokasi.map(item => {
+                        {lokasi.length === 0 ? (
+                          <>
+                            <Text
+                              color='orange'
+                              fontSize='x-small'
+                            >{`Holistay tersedia di ${alllokasi.length} kota`}</Text>
+                            <Flex>
+                              {alllokasi.map((item) => {
                                 return (
-                                      <UnorderedList>
-                                        <ListItem fontSize="xx-small" >{item.city}</ListItem>
-                                      </UnorderedList>
-                                    )
-                                  })}
-                          </Flex>
-                        </>
-                          : null
-                        }
+                                  <UnorderedList>
+                                    <ListItem fontSize='xx-small'>
+                                      {item.city}
+                                    </ListItem>
+                                  </UnorderedList>
+                                );
+                              })}
+                            </Flex>
+                          </>
+                        ) : null}
                       </Box>
                     </Center>
                   </TabPanel>

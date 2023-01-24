@@ -24,6 +24,14 @@ const RegisterAsTenant = async (req, res) => {
       });
     }
 
+    if (KTPNumber.length !== 16) {
+      res.status(500);
+      res.send({
+        status: false,
+        message: 'KTP Number must be 16 digits',
+      });
+    }
+
     const extensionName = path.extname(ktp.name);
     const allowedExtension = ['.png', '.jpg', '.jpeg', '.webp'];
 

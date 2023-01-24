@@ -18,7 +18,7 @@ import useAuth from '../../hooks/useAuth';
 export default function RegisterWelcome() {
   const { auth } = useAuth();
   const location = useLocation();
-  const blobColor = useColorModeValue('red.50', 'red.400');
+  const blobColor = useColorModeValue('teal.50', 'teal.400');
 
   return auth?.isTenant === true ? (
     <Navigate to={'/tenant/dashboard'} state={{ from: location }} replace />
@@ -33,10 +33,10 @@ export default function RegisterWelcome() {
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             lineHeight={1.1}
-            fontWeight={600}
+            fontWeight={700}
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
           >
-            <Text as={'span'} color={'red.400'}>
+            <Text as={'span'} color={'orange.400'}>
               Verify your Hosting account
             </Text>
           </Heading>
@@ -65,9 +65,9 @@ export default function RegisterWelcome() {
               size={'lg'}
               fontWeight={'normal'}
               px={6}
-              colorScheme={'red'}
-              bg={'red.400'}
-              _hover={{ bg: 'red.500' }}
+              colorScheme={'teal'}
+              bg={'teal.400'}
+              _hover={{ bg: 'teal.500' }}
             >
               <Link to={'/verify-tenant'}>Get started</Link>
             </Button>
