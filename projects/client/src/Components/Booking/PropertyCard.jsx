@@ -54,8 +54,6 @@ function PropertyCard({ day, setDay }) {
     getData();
   }, [isloading]);
 
-  console.log(data);
-
   return isloading ? (
     <Skeleton isLoaded={true}> </Skeleton>
   ) : (

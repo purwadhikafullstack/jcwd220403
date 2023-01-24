@@ -58,7 +58,7 @@ function GuestList({
             </PopoverHeader>
             <PopoverBody>
               <FormControl>
-                <Stack>
+                <Stack spacing={9} mb={5} mt={5}>
                   <HStack className='adults' justifyContent={'space-between'}>
                     <FormLabel>Adults</FormLabel>
                     <HStack>
@@ -73,7 +73,10 @@ function GuestList({
                     </HStack>
                   </HStack>
                   <HStack className='children' justifyContent={'space-between'}>
-                    <FormLabel>Children</FormLabel>
+                    <Stack spacing={0}>
+                      <FormLabel>Children</FormLabel>
+                      <Text fontSize={9}>Age 2-12</Text>
+                    </Stack>
                     <HStack>
                       <Button
                         onClick={() => setChildren('decrement')}
@@ -88,7 +91,10 @@ function GuestList({
                     </HStack>
                   </HStack>
                   <HStack className='infant' justifyContent={'space-between'}>
-                    <FormLabel>Infant</FormLabel>
+                    <Stack spacing={0}>
+                      <FormLabel>Infant</FormLabel>
+                      <Text fontSize={9}>Under 2</Text>
+                    </Stack>
                     <HStack>
                       <Button
                         onClick={() => setInfant('decrement')}

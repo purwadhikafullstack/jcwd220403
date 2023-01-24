@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
           'Aktif',
           'Selesai'
         ),
+        defaultValue: 'Menunggu Pembayaran',
         allowNull: false,
       },
       isReminded: {

@@ -1,21 +1,35 @@
 const database = require('../../models');
 const transaction = database.transaction;
 
-const getTransactionById = async (req, res) => {
+const getTransactionByRoomId = async (req, res) => {
   try {
     const { roomId } = req.params;
 
     const getTansactions = await transaction.findAll({
+      attributes: ['checkIn', 'checkOut'],
       where: { roomId },
     });
 
-    const dates = getTansactions.map((item) => [item.checkIn, item.checkOut]);
-
-    res.status(200).send(dates);
+    res.status(200).send(getTansactions);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
   }
 };
 
-module.exports = { getTransactionById };
+const getTransactionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const getTansactions = await transaction.findOne({
+      where: { id },
+    });
+
+    res.status(200).send(getTansactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { getTransactionByRoomId, getTransactionById };

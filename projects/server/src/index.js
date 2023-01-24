@@ -15,6 +15,8 @@ const {
   RegisterAsTenant,
   pagesRouters,
   roomsRouters,
+  transactionRouters,
+  privateTransactionRouters,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -50,12 +52,16 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
+//routes that don't need token
 app.use(refresh);
 app.use(logout);
 
+app.use(transactionRouters);
 app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
+//routes that don't need token
+
 // app.use(express.static("./public/propertyPicture"))
 // app.use(express.static(join(__dirname, "../public/propertyPicture")));
 
@@ -76,7 +82,7 @@ app.use(
 app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
-app.use(tenantRouters);
+app.use(privateTransactionRouters);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
@@ -130,4 +136,4 @@ app.listen(PORT, (err) => {
   }
 });
 
-database.sequelize.sync({ alter: true });
+// database.sequelize.sync({ alter: true });

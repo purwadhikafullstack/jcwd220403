@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   guest.init(
     {
-      adult: DataTypes.INTEGER,
-      children: DataTypes.INTEGER,
-      infant: DataTypes.INTEGER,
+      adult: { type: DataTypes.INTEGER, allowNull: false },
+      children: { type: DataTypes.INTEGER, allowNull: false },
+      infant: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
       sequelize,
