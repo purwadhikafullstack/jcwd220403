@@ -68,7 +68,6 @@ module.exports = {
   updateProfile: async (req, res) => {
     try {
       const { fullName, gender, birthdate, id } = req.body;
-      console.log(req.body);
       await user.update(
         { fullName, gender, birthdate },
         {
@@ -101,13 +100,6 @@ module.exports = {
 
       if (!allowedExtension.includes(extensionName))
         throw 'Invalid image extension';
-
-      // const filename =
-      //   'PIMG' +
-      //   '-' +
-      //   Date.now() +
-      //   Math.round(Math.random() * 100000) +
-      //   extensionName;
 
       const filename = `avatar${userId}${extensionName}`;
 

@@ -50,6 +50,7 @@ function DetailPage() {
       // setTimeout(() => {
       setIsloading(false);
       // }, 1000);
+      console.log(res.data)
     } catch (err) {
       console.log(err);
     }

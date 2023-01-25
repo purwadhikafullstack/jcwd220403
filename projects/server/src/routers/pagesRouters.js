@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const {pagesControllers, tenantControllers} = require("../controllers")
+const {pagesControllers, tenantControllers, tenantTransaction} = require("../controllers")
 
 router.post('/api/landingpage', pagesControllers.landingPage);
 router.post('/api/detail/property/:id', pagesControllers.getById);

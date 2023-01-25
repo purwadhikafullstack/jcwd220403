@@ -63,7 +63,7 @@ app.use(transactionRouters);
 app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
-app.use(tenantTransactionRouter);
+// app.use(tenantTransactionRouter);
 
 //routes that don't need token END
 
@@ -87,6 +87,8 @@ app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
 //routes that need token END
 //device detection END
+app.use(tenantRouters);
+app.use(tenantTransactionRouter)
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

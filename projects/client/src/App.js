@@ -19,11 +19,13 @@ import BeTenant from './Pages/Tenant/BeTenant';
 import Dashboard from './Pages/Tenant/Dashboard';
 import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
+import 'animate.css';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import Category from './Components/Category';
 import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
+import TransactionUser from './Pages/Tenant/TransactionUser';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +121,10 @@ const router = createBrowserRouter([
                   {
                     path: 'dashboard',
                     element: <Dashboard />,
+                  },
+                  {
+                    path: 'dashboard/transaction',
+                    element: <TransactionUser />,
                   },
                   {
                     path: 'add-property',

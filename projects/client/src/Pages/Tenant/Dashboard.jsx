@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import {
   Box, Tabs, TabList, TabPanels, Tab, TabPanel,
   Avatar, Heading, Flex, Center, Button, Skeleton, Spacer,
-  Text, Image, Icon, MenuButton, Tag, SkeletonCircle, SkeletonText
+  Text, Image, SkeletonCircle, SkeletonText
 
 } from "@chakra-ui/react"
-import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import EmptyDashboard from '../../Components/ComponentBeTenant/EmptyDashboard';
 import DashboardOne from '../../Components/ComponentBeTenant/ComponentDashboardOne';
@@ -20,6 +19,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import createImage from "../../Assets/create-data.jpg"
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import TransactionUser from '../../Components/Tenant/Transaction/TransactionUser';
 
 const Dashboard = () => {
   const dispatch = useDispatch()
@@ -120,6 +120,7 @@ const Dashboard = () => {
             <Tab>Property Detail</Tab>
             <Tab>Room Detail</Tab>
             <Tab>Create More Property</Tab>
+            <Tab>Transaction</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -138,6 +139,9 @@ const Dashboard = () => {
                   <Button colorScheme="blue" variant="outline" marginTop="10px">Create Property!</Button>
                 </Link>
               </Center>
+            </TabPanel>
+            <TabPanel>
+              <TransactionUser />
             </TabPanel>
           </TabPanels>
         </Tabs>
