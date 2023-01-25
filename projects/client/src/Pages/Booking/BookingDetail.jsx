@@ -146,7 +146,6 @@ export default function BookingDetail() {
                 <Button
                   colorScheme={'orange'}
                   w={'full'}
-                  // color={'teal.400'}
                   onClick={submitBookingForm}
                   disabled={disableSubmitBtn}
                 >
