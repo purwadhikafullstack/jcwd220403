@@ -1,5 +1,6 @@
 const database = require('../../models');
 const transaction = database.transaction;
+const { Op } = require('sequelize');
 
 const getTransactionByRoomId = async (req, res) => {
   try {
@@ -7,7 +8,17 @@ const getTransactionByRoomId = async (req, res) => {
 
     const getTansactions = await transaction.findAll({
       attributes: ['checkIn', 'checkOut'],
-      where: { roomId },
+      where: {
+        [Op.and]: [
+          { roomId },
+          {
+            [Op.and]: [
+              { transactionStatus: { [Op.ne]: 'Gagal' } },
+              { transactionStatus: { [Op.ne]: 'Dibatalkan' } },
+            ],
+          },
+        ],
+      },
     });
 
     res.status(200).send(getTansactions);
