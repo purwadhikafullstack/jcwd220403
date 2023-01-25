@@ -1,6 +1,7 @@
 :root {
   --primary-color: orange;
   --secondary-color: teal;
+  --third-color: aliceBlue;
 }
 .react-calendar {
   /* width: 400px; */
@@ -68,10 +69,10 @@ abbr[title] {
   color: white;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: #f8f8fa;
+  background-color: yellow;
 }
 .react-calendar__tile--range {
-  background: #f8f8fa;
+  background: var(--third-color);
   color: var(--secondary-color);
   border-radius: 0;
 }

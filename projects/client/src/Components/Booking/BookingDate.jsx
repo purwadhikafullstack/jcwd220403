@@ -11,6 +11,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   Button,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import Calendar from 'react-calendar';
@@ -23,21 +24,54 @@ import { useState } from 'react';
 function BookingDate({ inputDate, setInputDate }) {
   const params = useParams();
   const [dateRange, setDateRange] = useState([]);
+  const [checkInDates, setCheckInDates] = useState([]);
+  const [checkOutDates, setCheckOutDates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [seed, setSeed] = useState(1);
+
+  const reset = () => {
+    setSeed(Math.random());
+    setInputDate(undefined);
+  };
 
   const getPastTrasactionDates = async () => {
     try {
       const res = await axios.get(`/transaction/room/${params.roomId}`);
       const data = res.data;
       setDateRange(data);
-      console.log(dateRange);
+      setCheckInDates(data.map((d) => d.checkIn));
+      setCheckOutDates(data.map((d) => d.checkOut));
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
+  function dateComparisonCheckIn(a, b) {
+    const date1 = new Date(a);
+    const date2 = new Date(b);
+
+    return date1 - date2;
+  }
+  function dateComparisonCheckOut(a, b) {
+    const date1 = new Date(a);
+    const date2 = new Date(b);
+
+    return date1 - date2;
+  }
+
   const disableDates = ({ date }) => {
+    if (inputDate) {
+      const after = checkInDates.filter((d) => new Date(d) > inputDate[0]);
+      const before = checkOutDates.filter((d) => new Date(d) < inputDate[0]);
+      const afterSort = after.sort(dateComparisonCheckIn);
+      const beforeSort = before.sort(dateComparisonCheckOut);
+      return (
+        date < new Date(beforeSort.pop()) ||
+        date > new Date(afterSort.shift()) ||
+        date <= inputDate[0]
+      );
+    }
     return dateRange
       .map((d) => date >= new Date(d.checkIn) && date <= new Date(d.checkOut))
       .includes(true);
@@ -48,13 +82,13 @@ function BookingDate({ inputDate, setInputDate }) {
   }, [loading]);
 
   return (
-    <Stack spacing={6}>
+    <Stack spacing={6} key={seed}>
       <Heading size={'lg'}>Your Trip</Heading>
       <HStack justifyContent={'space-between'}>
         <Heading size={'md'}>Dates</Heading>
         <Popover>
           <PopoverTrigger>
-            <Button>Edit</Button>
+            <Button colorScheme={'teal'}>Edit</Button>
           </PopoverTrigger>
           <PopoverContent minW='400px'>
             <PopoverArrow />
@@ -65,11 +99,10 @@ function BookingDate({ inputDate, setInputDate }) {
             <PopoverBody>
               <Calendar
                 selectRange={true}
+                allowPartialRange={true}
                 tileDisabled={disableDates}
                 onChange={setInputDate}
-                // defaultValue={date}
                 minDate={new Date()}
-                // showDoubleView={true}
                 nextLabel='>'
                 nextAriaLabel='Go to next month'
                 next2Label={null}
@@ -85,29 +118,26 @@ function BookingDate({ inputDate, setInputDate }) {
               pb={4}
               gap={5}
             >
-              <Button
-                colorScheme='teal'
-                onClick={() => setInputDate(undefined)}
-              >
+              <Button colorScheme='teal' onClick={reset}>
                 Clear date
               </Button>
             </PopoverFooter>
           </PopoverContent>
         </Popover>
       </HStack>
-      <div>
-        {!Array.isArray(inputDate) ||
-        !inputDate.length ||
-        inputDate === undefined ? (
-          <p>Add date</p>
-        ) : (
-          <p>
-            <span>Check in:</span> {inputDate[0].toDateString()}
-            &nbsp;|&nbsp;
-            <span>Check out:</span> {inputDate[1].toDateString()}
-          </p>
-        )}
-      </div>
+      {inputDate === undefined && <Text>Add your trip dates</Text>}
+      {inputDate?.length === 1 && (
+        <Text>
+          <b>Check in: </b> {inputDate[0].toDateString()}
+        </Text>
+      )}
+      {inputDate?.length > 1 && (
+        <Text>
+          <b>Check in: </b>
+          {inputDate[0].toDateString()} | <b>Check out: </b>
+          {inputDate[1].toDateString()}
+        </Text>
+      )}
     </Stack>
   );
 }

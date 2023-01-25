@@ -1,12 +1,4 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import PaymentMethods from '../../Components/Payment/PaymentMethods';
 import TransactionCard from '../../Components/Payment/TransactionCard';
 
@@ -25,19 +17,16 @@ export default function SplitScreen() {
             </Text>
           </Heading>
           <PaymentMethods />
-          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-            <Button
-              rounded={'full'}
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}
-            >
-              Create Project
-            </Button>
-            <Button rounded={'full'}>How It Works</Button>
-          </Stack>
+          <Button
+            rounded={'full'}
+            bg={'blue.400'}
+            color={'white'}
+            _hover={{
+              bg: 'blue.500',
+            }}
+          >
+            Confirm and Pay
+          </Button>
         </Stack>
       </Flex>
       <Flex flex={1}>

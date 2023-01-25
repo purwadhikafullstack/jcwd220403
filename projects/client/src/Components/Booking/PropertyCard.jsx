@@ -42,7 +42,7 @@ function PropertyCard({ day, setDay }) {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`/detail/property/${params.propertyId}`);
+      const res = await axios.get(`/property/detail/${params.propertyId}`);
       setData(res.data);
       setIsloading(false);
     } catch (err) {
@@ -70,7 +70,7 @@ function PropertyCard({ day, setDay }) {
           />
           <Stack mt='6' spacing='3'>
             <Heading size='lg'>{data.name}</Heading>
-            <Heading size='sm'>{data.rooms[params.index].name}</Heading>
+            <Heading size='sm'>{data.rooms[0].name}</Heading>
             <Divider />
 
             <Heading size='md'>Price Details</Heading>

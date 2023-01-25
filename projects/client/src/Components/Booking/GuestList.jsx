@@ -48,7 +48,7 @@ function GuestList({
         <Heading size={'md'}>Guests</Heading>
         <Popover>
           <PopoverTrigger>
-            <Button>Edit</Button>
+            <Button colorScheme={'teal'}>Edit</Button>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />

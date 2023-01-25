@@ -9,6 +9,7 @@ const pagesRouters = require('./pagesRouters');
 const roomsRouters = require('./roomsRouters');
 const transactionRouters = require('./transaction/transactionRouters');
 const privateTransactionRouters = require('./transaction/privateTransactionRouters');
+const propertyRouters = require('./property/propertyRouters');
 
 module.exports = {
   userRouters,
@@ -22,4 +23,5 @@ module.exports = {
   tenantTransactionRouter,
   transactionRouters,
   privateTransactionRouters,
+  propertyRouters,
 };

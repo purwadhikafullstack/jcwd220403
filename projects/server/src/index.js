@@ -18,6 +18,7 @@ const {
   tenantTransactionRouter,
   transactionRouters,
   privateTransactionRouters,
+  propertyRouters,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -57,15 +58,14 @@ app.use(cookieParser());
 app.use(refresh);
 app.use(logout);
 
+app.use(propertyRouters);
 app.use(transactionRouters);
 app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
 app.use(tenantTransactionRouter);
-//routes that don't need token END
 
-// app.use(express.static("./public/propertyPicture"))
-// app.use(express.static(join(__dirname, "../public/propertyPicture")));
+//routes that don't need token END
 
 //device detection START
 app.use(middlewareDetect);

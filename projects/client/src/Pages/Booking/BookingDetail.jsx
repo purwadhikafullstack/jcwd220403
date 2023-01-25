@@ -15,7 +15,6 @@ import { useNavigate, Navigate, useParams, Link } from 'react-router-dom';
 import BookingPolicy from '../../Components/Booking/BookingPolicy';
 import BookingDate from '../../Components/Booking/BookingDate';
 import GuestList from '../../Components/Booking/GuestList';
-import LoginToBook from '../../Components/Booking/LoginToBook';
 import PropertyCard from '../../Components/Booking/PropertyCard';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
@@ -36,7 +35,7 @@ export default function BookingDetail() {
   const [submittedData, setSubmittedData] = useState();
 
   const numberOfDays = () => {
-    date !== undefined
+    date !== undefined && date[1]
       ? setDay(
           Math.floor(
             (date[1].getTime() - date[0].getTime()) / (1000 * 3600 * 24)
@@ -140,18 +139,18 @@ export default function BookingDetail() {
             totalGuest={totalGuest}
           />
           <Divider />
-          {/* <LoginToBook /> */}
           <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
             {auth?.accessToken ? (
               <Stack spacing={6}>
                 <BookingPolicy />
                 <Button
+                  colorScheme={'orange'}
                   w={'full'}
-                  color={'teal.400'}
+                  // color={'teal.400'}
                   onClick={submitBookingForm}
                   disabled={disableSubmitBtn}
                 >
-                  Confirm and Pay
+                  Choose Payment Method
                 </Button>
               </Stack>
             ) : (
