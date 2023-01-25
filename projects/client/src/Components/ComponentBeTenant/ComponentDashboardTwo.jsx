@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import {
-    Box, Flex, Text, Icon, useDisclosure,
+    Box, Flex, Text, Icon, useDisclosure, Center,
     Modal, ModalBody, ModalOverlay, ModalFooter, ModalCloseButton, ModalContent,
     ModalHeader, Button, Input, FormControl, FormLabel, FormHelperText, Spinner,
     useToast, Image, Drawer, DrawerBody, DrawerCloseButton, DrawerOverlay, DrawerContent,
     DrawerHeader, DrawerFooter, Heading, Stack, Divider, Card, CardBody, CardFooter,
-    Tabs, TabList, TabPanels, Tab, TabPanel
+    Tabs, TabList, TabPanels, Tab, TabPanel, Stat, AlertDialogCloseButton,
+    StatLabel,
+    StatNumber,
+    StatHelpText,
+    StatArrow,
+    StatGroup,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
 } from "@chakra-ui/react"
 import axios from '../../api/axios'
 // import axios from "axios"
@@ -30,7 +41,7 @@ const ComponentDashboardTwo = () => {
     const dispatch = useDispatch()
     const [propertyId, setPropertyId] = useState(null)
     const [isOpenDrawer, setIsOpenDrawer] = useState(false)
-    const [imageForSLider , setImageForSlider] = useState([])
+    const [imageForSLider, setImageForSlider] = useState([])
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
@@ -57,20 +68,26 @@ const ComponentDashboardTwo = () => {
     const [imageUrl, setImageUrl] = useState(null)
     const [dataImages, setDataImages] = useState()
     const [data, setData] = useState()
+    const [highSeasonActive, setHighSeasonActive] = useState(false)
+    console.log(data)
 
     //for delete data
     const toast = useToast()
     // const axiosPrivate = useAxiosPrivate();
+
+    //for deskripsi
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
 
 
 
     const getDataRoom = async () => {
         try {
             const response = await axios.get(`/getAllDataRooms/${auth.tenantId}`)
-             response.data.forEach(property => {
+            response.data.forEach(property => {
                 property.rooms.forEach(room => {
                     if (room.picture) {
-                      room.images.push({picture: room.picture})
+                        room.images.push({ picture: room.picture })
                     }
                 })
             })
@@ -528,12 +545,51 @@ const ComponentDashboardTwo = () => {
                                                         <Text fontSize="xl" fontWeight="bold">
                                                             {room.name}
                                                         </Text>
-                                                        <Text color="gray.600" mt={1}>
-                                                            {room.description}
+                                                        <Text color="gray.600" mt={1} onClick={onOpen} cursor="pointer" textAlign="left">
+                                                            {room.description.substring(0, 100)}
+                                                            {room.description.length > 100 && "..."}
+                                                            <AlertDialog
+                                                                motionPreset='slideInBottom'
+                                                                leastDestructiveRef={cancelRef}
+                                                                onClose={onClose}
+                                                                isOpen={isOpen}
+                                                                isCentered
+                                                            >
+                                                                <AlertDialogOverlay />
+                                                                <AlertDialogContent>
+                                                                    <AlertDialogCloseButton />
+                                                                    <AlertDialogBody>
+                                                                        {room.description}
+                                                                    </AlertDialogBody>
+                                                                </AlertDialogContent>
+                                                            </AlertDialog>
                                                         </Text>
-                                                        <Text mt={2} fontSize="lg" fontWeight="bold" color="teal.500">
+                                                        <Box>
+                                                            {room.highSeasons && room.highSeasons.map(item => {
+                                                                if (new Date(item.start_date) <= new Date() && new Date(item.end_date) > new Date()) {
+                                                                    return (
+                                                                        <Box textAlign="center" marginTop="10px">
+                                                                            <Stat>
+                                                                                <StatLabel>High Season!</StatLabel>
+                                                                                <StatNumber>Rp. {item.price}</StatNumber>
+                                                                                <StatHelpText>
+                                                                                    <StatArrow type='increase' />
+                                                                                    {(((item.price - room.price) / room.price) * 100).toFixed(2)} %
+                                                                                </StatHelpText>
+                                                                            </Stat>
+                                                                        </Box>
+                                                                    )
+                                                                } else {
+                                                                    return null
+                                                                }
+                                                            })}
+                                                            {room.highSeasons && room.highSeasons.filter(item => new Date(item.start_date) 
+                                                            <= new Date() && new Date(item.end_date) > new Date()).length === 0 && (
+                                                                <Text mt={2} fontSize="lg" fontWeight="bold" color="teal.500">
                                                             Rp.{room.price}
                                                         </Text>
+                                                            )}
+                                                        </Box>
                                                     </Box>
                                                 </Flex>
                                             </Box>
