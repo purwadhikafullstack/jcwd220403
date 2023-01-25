@@ -18,9 +18,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   unavailableDates.init(
     {
-      date: {
+      start_date: {
         type: DataTypes.DATE,
+        allowNull: false
       },
+      end_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      disableRoom: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
     },
     {
       sequelize,

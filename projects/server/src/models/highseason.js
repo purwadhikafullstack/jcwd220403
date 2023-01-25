@@ -18,11 +18,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   highSeason.init(
     {
-      description: DataTypes.STRING,
-      date: {
+      start_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: false
       },
+      end_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      price : {
+        allowNull: false, 
+        type: DataTypes.INTEGER
+      }
     },
     {
       sequelize,

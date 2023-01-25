@@ -5,33 +5,31 @@ import {
     ModalFooter, Input, Spinner
 } from "@chakra-ui/react"
 import { useDispatch, useSelector } from "react-redux"
-import { closeModal } from '../../Redux/ModalSlice'
+import { closeModal } from '../../Redux/DeleteProperty'
 import { isDeleteData } from '../../Redux/DoneCreatePropertiesSlice'
 import { isDeletePropertyData } from '../../Redux/DoneCreatePropertiesSlice'
 import axios from "../../api/axios"
-import useAuth from '../../hooks/useAuth'
-
+// import axios from "axios"
 
 const DeleteProperty = () => {
     const dispatch = useDispatch()
-    const isOpen = useSelector((state) => state.ModalSlice.isOpen)
-    const name = useSelector(state => state.PropertySlice.value.name);
+    const isOpen = useSelector((state) => state.DeleteProperty.isOpen)
+    const property = useSelector((state) => state.DeleteProperty.property)
     const [input, setInput] = useState("")
     const [load, setLoad] = useState(false)
-    const validasi = `Delete Property ${name}`
-    const { auth } = useAuth();
+    const validasi = property && `Delete Property ${property.name}`
 
 
     const deleteProperty = async () => {
         try {
-            await axios.delete(`/deleteproperty/${auth.tenantId}`)
+            await axios.delete(`/deleteproperty/${property.id}`)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)
                 dispatch(isDeleteData())
                 dispatch(isDeletePropertyData())
                 window.location.reload()
-            }, 2000)
+            }, 3000)
         } catch (err) {
             console.log(err)
         }

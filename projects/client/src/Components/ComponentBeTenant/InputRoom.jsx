@@ -1,20 +1,9 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Text,
-  Center,
-  FormControl,
-  FormLabel,
-  Input,
-  FormHelperText,
-  Spinner,
-  Button,
-  useMediaQuery,
-  useBreakpointValue,
-} from '@chakra-ui/react';
-import axios from '../../api/axios';
-import { BsCheckLg } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react'
+import { Box, Text, Center, FormControl, FormLabel, Input, FormHelperText, Spinner, Button, useMediaQuery, useBreakpointValue } from "@chakra-ui/react"
+import axios from "../../api/axios"
+// import axios from "axios"
+import { BsCheckLg } from "react-icons/bs"
+import { useDispatch } from "react-redux"
 import { submitClickedToFalse } from '../../Redux/ButtonSlice';
 import { motion } from 'framer-motion';
 import useAuth from '../../hooks/useAuth';
@@ -44,36 +33,35 @@ const InputRoom = () => {
     setPicture(e.target.files[0]);
   };
 
-  const handleSubmit = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('description', description);
-      formData.append('price', price);
-      formData.append('file', picture);
-      formData.append('tenantId', auth.tenantId);
+    const handleSubmit = async () => {
+        try {
+            const formData = new FormData()
+            formData.append('name', name)
+            formData.append('description', description)
+            formData.append('price', price)
+            formData.append('file', picture)
 
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    withCredentials: true
+                }
+            }
 
-      await axios.post('/room', formData, config, {
-        withCredentials: true,
-      });
-
-      setLoad(true);
-      setTimeout(() => {
-        setLoad(false);
-        setChecklist(true);
-        dispatch(submitClickedToFalse());
-      }, 3000);
-    } catch (err) {
-      console.log(err);
-      if (err.response) {
-        setErrorMsg(err.response.data);
-      }
+            await axios.post(`/roomOnBeTenant/${auth.tenantId}`, formData, config)
+            
+            setLoad(true)
+            setTimeout(() => {
+                setLoad(false)
+                setChecklist(true)
+                dispatch(submitClickedToFalse())
+            }, 3000)
+        } catch (err) {
+            console.log(err)
+            if (err.response) {
+                setErrorMsg(err.response.data)
+            }
+        }
     }
   };
   return (

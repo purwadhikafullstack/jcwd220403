@@ -12,7 +12,8 @@ import {
   Spinner,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../api/axios';
 import { useDispatch } from 'react-redux';
 import { submitClickedToFalse } from '../../Redux/ButtonSlice';
 import { BsCheckLg } from 'react-icons/bs';
@@ -62,7 +63,7 @@ const InputCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosPrivate.post('/category', {
+      await axios.post('/category', {
         country,
         province,
         city,

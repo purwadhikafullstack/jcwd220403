@@ -2,20 +2,24 @@ import React, { useState } from 'react'
 import {
   Box, Tabs, TabList, TabPanels, Tab, TabPanel,
   Avatar, Heading, Flex, Center, Button, Skeleton, Spacer,
-  Text
+  Text, Image, Icon, MenuButton, Tag
 
 } from "@chakra-ui/react"
+import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import EmptyDashboard from '../../Components/ComponentBeTenant/EmptyDashboard';
 import DashboardOne from '../../Components/ComponentBeTenant/ComponentDashboardOne';
 import ComponentDashboardTwo from '../../Components/ComponentBeTenant/ComponentDashboardTwo';
 import DeleteProperty from "../../Components/ComponentBeTenant/DeleteProperty"
-import { openModal } from '../../Redux/ModalSlice';
+import { openModal } from '../../Redux/DeleteProperty';
 import { useDispatch } from "react-redux"
 import axios from "../../api/axios"
+// import axios from "axios"
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import createImage from "../../Assets/create-data.jpg"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Dashboard = () => {
   const dispatch = useDispatch()
@@ -23,6 +27,7 @@ const Dashboard = () => {
   const { auth } = useAuth();
   const tenantId = auth.tenantId
   const [load, setLoad] = useState(false)
+  // const axiosPrivate = useAxiosPrivate();
 
   //get dataa nanti di hapus
 
@@ -32,7 +37,7 @@ const Dashboard = () => {
       const response = await axios.get(`/property/${tenantId}`)
       setData(response.data)
       setLoad(false)
-      if(!tenantId){
+      if (!tenantId) {
         setTimeout(() => {
           window.location.reload()
         }, 4000)
@@ -78,26 +83,54 @@ const Dashboard = () => {
               Tenant Dashboard
             </Heading>
             {/* avatar nanti masih di tembak nanti di ambil dari profile!!, foto masih di tembak!! */}
-            <Avatar name={auth.name} src='https://bit.ly/dan-abramov' />
+            {/* <Avatar name={auth.name} src='https://bit.ly/dan-abramov' /> */}
+            <Link to="/user">
+              <Box>
+                <Center>
+                  {/* {auth?.userPhoto ? (
+                    <Avatar
+                      size='md'
+                      name='A'
+                      bgColor='#FE9900'
+                      boxShadow="lg"
+                      borderBottom="3px solid gray"
+                      src={
+                        'http://localhost:2000/profilePicture/' +
+                        auth?.userPhoto
+                      }
+                    />
+                  ) : (
+                    <Avatar size='md' name={auth.name} bgColor='#FE9900' />
+                  )} */}
+                </Center>
+                <Text textAlign="center">{auth.name}</Text>
+              </Box>
+            </Link>
           </Flex>
         </Box>
         <Tabs variant="enclosed">
           <TabList>
             <Tab>Property Detail</Tab>
             <Tab>Room Detail</Tab>
+            <Tab>Create More Property</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <DashboardOne />
-              <Box boxShadow="md" p={4}>
-                <Center>
-                  <Button textAlign="center" backgroundColor="red.400" color="white" onClick={() => dispatch(openModal())}>Delete Property</Button>
-                </Center>
-                <DeleteProperty />
-              </Box>
             </TabPanel>
             <TabPanel>
               <ComponentDashboardTwo />
+            </TabPanel>
+            <TabPanel>
+              <Box margin="auto" width="350px">
+                <Image src={createImage} width="auto" />
+              </Box>
+              <Text textAlign="center" fontSize="lg">Do you want to add property to the holistay again?</Text>
+              <Center>
+                <Link to="/tenant/add-property">
+                  <Button colorScheme="blue" variant="outline" marginTop="10px">Create Property!</Button>
+                </Link>
+              </Center>
             </TabPanel>
           </TabPanels>
         </Tabs>

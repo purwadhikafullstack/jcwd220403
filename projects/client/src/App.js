@@ -18,7 +18,6 @@ import RequireTenantRole from './Components/RequireTenantRole';
 import BeTenant from './Pages/Tenant/BeTenant';
 import Dashboard from './Pages/Tenant/Dashboard';
 import DetailPages from './Pages/DetailPage';
-import AlertSuccess from './Components/AlertSuccess';
 import './Styles/swall.css';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -65,7 +64,6 @@ const router = createBrowserRouter([
               <Category key={1} />,
               <HomeCard key={2} />,
               <Footer key={3} />,
-              <AlertSuccess key={4} />,
             ],
           },
 

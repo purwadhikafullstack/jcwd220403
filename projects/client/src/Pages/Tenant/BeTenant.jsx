@@ -14,7 +14,6 @@ import {
 import NavBarTenant from '../../Components/NavBarTenant';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { openModal } from '../../Redux/ModalSlice';
 import { isDoneCreate } from '../../Redux/DoneCreatePropertiesSlice';
 
 //component untuk memenuhi page Betenant
@@ -41,7 +40,6 @@ function BeTenant() {
   function handleNextClick() {
     if (currentStep > 5) {
       setPulserLoader(false);
-      dispatch(openModal());
       dispatch(isDoneCreate());
       const timer = setTimeout(() => {
         navigate('/');

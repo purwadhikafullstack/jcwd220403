@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { closeDrawerForMorePicture, setPicture, resetPicture } from '../../Redux/MorePictureProperty'
 import axios from "../../api/axios"
+// import axios from "axios"
 import useAuth from '../../hooks/useAuth'
 import { AiOutlineCloudUpload } from "react-icons/ai"
 import { useEffect } from 'react'
@@ -48,9 +49,7 @@ const InputMorePictureProperty = () => {
             const formData = new FormData()
             formData.append('file', picture)
 
-            await axios.post(`/createMorePictureProperty/${auth.tenantId}`, formData, {
-                withCredentials: true
-            })
+            await axios.post(`/createMorePictureProperty/${auth.tenantId}`, formData)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)

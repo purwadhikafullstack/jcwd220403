@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 import ButtonSlice from "./ButtonSlice"
-import ModalSlice from "./ModalSlice"
-import PropertySlice from "./PropertySlice"
+import DeleteProperty from "./DeleteProperty"
 import DoneCreatePropertiesSlice from "./DoneCreatePropertiesSlice"
 import MorePictureProperty from "./MorePictureProperty"
 import CertainDate from "./CertainDate"
@@ -10,8 +9,7 @@ import CertainDate from "./CertainDate"
 export default configureStore({
     reducer: {
         ButtonSlice,
-        ModalSlice,
-        PropertySlice,
+        DeleteProperty,
         DoneCreatePropertiesSlice,
         MorePictureProperty,
         CertainDate,

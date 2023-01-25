@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux';
 import { submitClicked } from '../../Redux/ButtonSlice';
 import { BsCheckLg } from 'react-icons/bs';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import axios from '../../api/axios';
 
 const InputFasility = () => {
   const [clickedItem, setClickedItem] = useState([]);
@@ -38,7 +39,7 @@ const InputFasility = () => {
       const DataFacilityString = clickedItem
         .map((facility) => facility.title)
         .join(', ');
-      await axiosPrivate.post('http://localhost:2000/api/betenant', {
+      await axios.post('/betenant', {
         name: DataFacilityString,
       });
       setLoad(true);
