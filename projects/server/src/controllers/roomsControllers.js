@@ -53,6 +53,9 @@ module.exports = {
             if (startDateHighSeason.includes(new Date(start_date).toString()) === true &&
                 endDateHighSeason.includes(new Date(end_date).toString()) === true)
                 throw "Room high seasons is detacted, please first delete the high seasons room"
+            if (startDateHighSeason.includes(new Date(start_date).toString()) === true ||
+                endDateHighSeason.includes(new Date(end_date).toString()) === true)
+                throw "Room high seasons is detacted, please first delete the high seasons room"
 
             await database.unavailableDates.create({
                 start_date,
@@ -67,14 +70,14 @@ module.exports = {
         }
     },
     deleteDisableCertainDate: async (req, res) => {
-        try{
+        try {
             await database.unavailableDates.destroy({
-                where : {
-                    id : req.params.id
+                where: {
+                    id: req.params.id
                 }
             })
             res.status(200).send("unavaible Dates deleted")
-        }catch(err){
+        } catch (err) {
             console.log(err)
             res.status(404).send(err)
         }
@@ -104,6 +107,10 @@ module.exports = {
                 endDateDisable.includes(new Date(end_date).toString()) === true)
                 throw "Room disable is detacted, please first delete the disabled room"
 
+            if (startDateDisable.includes(new Date(start_date).toString()) === true ||
+                endDateDisable.includes(new Date(end_date).toString()) === true)
+                throw "Room disable is detacted, please first delete the disabled room"
+
             await database.highSeason.create({
                 start_date,
                 end_date,
@@ -117,14 +124,14 @@ module.exports = {
         }
     },
     deleteHighSeaason: async (req, res) => {
-        try{
+        try {
             await database.highSeason.destroy({
                 where: {
-                    id : req.params.id
+                    id: req.params.id
                 }
             })
             res.status(200).send("high season deleted")
-        }catch(err){
+        } catch (err) {
             console.log(err)
             res.status(401).send(err)
         }
