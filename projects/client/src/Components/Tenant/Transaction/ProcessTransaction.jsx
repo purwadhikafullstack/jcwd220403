@@ -25,7 +25,7 @@ import {
   import { SearchIcon } from '@chakra-ui/icons';
   import { BiFilter } from 'react-icons/bi';
   
-  function SuccesTransaction() {
+  function ProcesTransaction() {
     const [isloading, setIsloading] = useState(true);
     const { auth } = useAuth();
     const [data, setData] = useState([])
@@ -34,7 +34,7 @@ import {
   
     const getData = async () => {
       try {
-        const res = await axiosPrivate.get(`/transactions/tenant/${auth?.tenantId}/Sukses`);
+        const res = await axiosPrivate.get(`/transactions/tenant/${auth?.tenantId}/Diproses`);
         setData(res.data)
         setIsloading(false);
       } catch (err) {
@@ -110,7 +110,7 @@ import {
                 <Center>
                     <TableContainer w="88vw">
                         <Table variant='simple'>
-                            <TableCaption>Holistay Transactions Users</TableCaption>
+                            <TableCaption>{data.length === 0 ? "No Item" : "Holistay Transactions Users"}</TableCaption>
                             <Thead>
                             <Tr>
                                 <Th>Check In</Th>
@@ -147,5 +147,5 @@ import {
     );
   }
   
-  export default SuccesTransaction;
+  export default ProcesTransaction;
   

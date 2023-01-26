@@ -7,5 +7,6 @@ router.get('/api/transactions/tenant/:tenantId/:status', tenantTransaction.trans
 
 
 router.post('/api/transactions/accept', tenantTransaction.acceptTransaction);
+router.post('/api/transactions/reject', tenantTransaction.rejectTransaction);
 
 module.exports = router;

@@ -30,7 +30,7 @@ import {
   import useAuth from '../../../hooks/useAuth';
   import WaitPayment from './WaitPayment';
 import DoneTransaction from './DoneTransaction';
-import SuccesTransaction from './SuccsesTransaction';
+import ProcesTransaction from './ProcessTransaction';
 import AktifTransaction from './AktifTransaction';
 import { IoAlarmOutline, IoBusinessOutline, IoCalendarOutline, IoFolderOpenOutline, IoListOutline } from "react-icons/io5";
 import { BiShow, BiHide } from "react-icons/bi";
@@ -89,14 +89,14 @@ import { BiShow, BiHide } from "react-icons/bi";
                                     </Text>
                                 </Box>
                             </Flex>
-                            <Flex bgColor="white" mt="2" p="4" borderRadius="3xl" boxShadow="base" onClick={() => setActive("Sukses")}  >
-                                <Circle bgColor={active === "Sukses" ? "green.100" : "gray.50"} p="3">
+                            <Flex bgColor="white" mt="2" p="4" borderRadius="3xl" boxShadow="base" onClick={() => setActive("Diproses")}  >
+                                <Circle bgColor={active === "Diproses" ? "green.100" : "gray.50"} p="3">
                                     <Icon w={5} h={5} as={IoCalendarOutline}/>
                                 </Circle>
                                 <Box ml="4">
-                                    <Text fontSize="small" color="gray.500" >Sukses</Text>
+                                    <Text fontSize="small" color="gray.500" >Diproses</Text>
                                     <Text color="green" fontSize="md" fontWeight="bold" >
-                                        {data[data.findIndex(item => item.transactionStatus === "Sukses")] ? data[data.findIndex(item => item.transactionStatus === "Sukses")].Count : 0} Transaksi
+                                        {data[data.findIndex(item => item.transactionStatus === "Diproses")] ? data[data.findIndex(item => item.transactionStatus === "Diproses")].Count : 0} Transaksi
                                     </Text>
                                 </Box>
                             </Flex>
@@ -125,7 +125,7 @@ import { BiShow, BiHide } from "react-icons/bi";
                         </>
                         : null
                         }
-                        {active === "Menunggu Konfirmasi Pembayaran" ? <WaitPayment/> : active === "Sukses" ? <SuccesTransaction/> : active === "Aktif" ? <AktifTransaction/> : <DoneTransaction />}
+                        {active === "Menunggu Konfirmasi Pembayaran" ? <WaitPayment/> : active === "Diproses" ? <ProcesTransaction/> : active === "Aktif" ? <AktifTransaction/> : <DoneTransaction />}
                     </Box>
                         <Drawer
                             isOpen={isOpen}
@@ -146,10 +146,10 @@ import { BiShow, BiHide } from "react-icons/bi";
                                             Menunggu Konfirmasi Pembayaran
                                         </Text>
                                     </Flex>
-                                    <Flex h="40px" align="center" borderRight={active === "Sukses" ? "4px" : "none"} borderRightColor={active === "Sukses" ? "green" : "black"} color={active === "Sukses" ? "green" : "black"} w="70vw"
-                                    onClick={() => setActive("Sukses")} >
+                                    <Flex h="40px" align="center" borderRight={active === "Diproses" ? "4px" : "none"} borderRightColor={active === "Diproses" ? "green" : "black"} color={active === "Diproses" ? "green" : "black"} w="70vw"
+                                    onClick={() => setActive("Diproses")} >
                                         <Text fontSize="sm">
-                                            Sukses
+                                            Diproses
                                         </Text>
                                     </Flex>
                                     <Flex h="40px" align="center" borderRight={active === "Aktif" ? "4px" : "none"} borderRightColor={active === "Aktif" ? "green" : "black"} color={active === "Aktif" ? "green" : "black"} w="70vw"
@@ -187,9 +187,9 @@ import { BiShow, BiHide } from "react-icons/bi";
                                 </VStack>
                                 <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center">
                                     <Heading color="orange">
-                                        {data[data.findIndex(item => item.transactionStatus === "Sukses")] ? data[data.findIndex(item => item.transactionStatus === "Sukses")].Count : 0}
+                                        {data[data.findIndex(item => item.transactionStatus === "Diproses")] ? data[data.findIndex(item => item.transactionStatus === "Diproses")].Count : 0}
                                     </Heading>
-                                    <Text fontSize="small" fontWeight="bold">Sukses</Text>
+                                    <Text fontSize="small" fontWeight="bold">Diproses</Text>
                                 </VStack>
                                 <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center">
                                     <Heading color="orange">
@@ -209,8 +209,8 @@ import { BiShow, BiHide } from "react-icons/bi";
                                     <Tab onClick={() => setActive("Menunggu Konfirmasi Pembayaran")}>                                
                                         <Button size="sm" borderRadius="3xl" colorScheme={active === "Menunggu Konfirmasi Pembayaran" ? "orange" : "gray"} >Menunggu Konfirmasi Pembayaran</Button>
                                     </Tab>
-                                    <Tab onClick={() => setActive("Sukses")}>
-                                        <Button size="sm" borderRadius="3xl" colorScheme={active === "Sukses" ? "orange" : "gray"} >Sukses</Button>
+                                    <Tab onClick={() => setActive("Diproses")}>
+                                        <Button size="sm" borderRadius="3xl" colorScheme={active === "Diproses" ? "orange" : "gray"} >Diproses</Button>
                                     </Tab>
                                     <Tab onClick={() => setActive("Aktif")}>
                                         <Button size="sm" borderRadius="3xl" colorScheme={active === "Aktif" ? "orange" : "gray"} >Aktif</Button>
@@ -224,7 +224,7 @@ import { BiShow, BiHide } from "react-icons/bi";
                                         <WaitPayment />
                                     </TabPanel>
                                     <TabPanel>
-                                        <SuccesTransaction/>
+                                        <ProcesTransaction/>
                                     </TabPanel>
                                     <TabPanel>
                                         <AktifTransaction />

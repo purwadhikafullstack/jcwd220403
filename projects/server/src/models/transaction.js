@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
           'Menunggu Konfirmasi Pembayaran',
           'Dibatalkan',
           'Gagal',
-          'Sukses',
+          'Diproses',
           'Aktif',
           'Selesai'
         ),

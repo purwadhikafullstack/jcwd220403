@@ -64,7 +64,7 @@ import {
             </Flex>
             <TableContainer w="88vw">
                 <Table variant='simple'>
-                    <TableCaption>Holistay Transactions Users</TableCaption>
+                    <TableCaption>{data.length === 0 ? "No Item" : "Holistay Transactions Users"}</TableCaption>
                     <Thead>
                     <Tr>
                         <Th>Id</Th>

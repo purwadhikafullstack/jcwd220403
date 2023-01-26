@@ -136,7 +136,7 @@ module.exports = {
                 });
 
             await database.transaction.update(
-                { transactionStatus: "Sukses" },
+                { transactionStatus: "Diproses" },
                 {
                     where: {
                         id: data.id,
@@ -144,7 +144,24 @@ module.exports = {
                 }
                 );
 
-            res.status(200).send("Success Confirm")
+            res.status(201).send("Success Confirm")
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    }, rejectTransaction: async (req, res) => {
+        const {id} = req.body
+        try{
+            await database.transaction.update(
+                { transactionStatus: "Dibatalkan" },
+                {
+                    where: {
+                        id,
+                    },
+                }
+                );
+
+            res.status(201).send("Success Confirm")
         }catch(err){
             console.log(err)
             res.status(404).send(err)

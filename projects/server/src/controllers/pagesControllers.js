@@ -22,15 +22,17 @@ module.exports = {
                                             [Op.and]: [
                                                 {
                                                     checkIn: {[Op.lte]: state ? state[0].startDate : new Date()},
-                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()}
+                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
                                                 }
                                             ]
                                         },
                                         {
                                             [Op.and]: [
                                                 {
-                                                    checkIn: {[Op.lt]: state ? state[0].endDate : new Date()},
-                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()}
+                                                    checkIn: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
                                                 }
                                             ]
                                         },
@@ -95,15 +97,17 @@ module.exports = {
                                             [Op.and]: [
                                                 {
                                                     checkIn: {[Op.lte]: state ? state[0].startDate : new Date()},
-                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()}
+                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
                                                 }
                                             ]
                                         },
                                         {
                                             [Op.and]: [
                                                 {
-                                                    checkIn: {[Op.lt]: state ? state[0].endDate : new Date()},
-                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()}
+                                                    checkIn: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
                                                 }
                                             ]
                                         },

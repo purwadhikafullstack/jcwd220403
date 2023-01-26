@@ -84,6 +84,47 @@ import { BiFilter } from 'react-icons/bi';
           })
     }
 
+    const onReject = async (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `You want to reject transaction with id ${id}`,
+            icon: 'warning',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Reject it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonColor: '#FE9900',
+            reverseButtons: true,
+        }).then( async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    Swal.fire({
+                        title: 'Loading ..',
+                        html: 'Reject Transaction In Progress',
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                        })
+                    const res = await axiosPrivate.post('/transactions/reject', {id}) 
+                    Swal.fire(
+                        'SUCCESS !',
+                        `${res.data}`,
+                        'success'
+                    )   
+                } catch (err) {
+                console.log(err);
+                }
+                 
+            }
+          })
+    }
+
       useEffect(() => {
           getData()
       }, [])
@@ -134,10 +175,10 @@ import { BiFilter } from 'react-icons/bi';
                                         </Box>
                                         
                                     </Td>
-                                    <Td>
-                                        <Flex>
+                                    <Td justifyContent="center">
+                                        <Flex justify="space-between" w="16">
                                             <Icon as={IoCheckmarkDoneCircleOutline} w={8} h={8} color='green.500' cursor="pointer" onClick={() => onAccept(item)}/>
-                                            <Icon as={IoCloseCircleOutline} w={8} h={8} color='red.500' cursor="pointer"/>
+                                            <Icon as={IoCloseCircleOutline} w={8} h={8} color='red.500' cursor="pointer" onClick={() => onReject(item.id)}/>
                                         </Flex>
                                     </Td>
                                 </Tr>
@@ -179,7 +220,7 @@ import { BiFilter } from 'react-icons/bi';
                                         <Td>
                                             <Flex>
                                                <Icon as={IoCheckmarkDoneCircleOutline} w={8} h={8} color='green.500' cursor="pointer" onClick={() => onAccept(item)}/>
-                                               <Icon as={IoCloseCircleOutline} w={8} h={8} color='red.500' cursor="pointer"/>
+                                               <Icon as={IoCloseCircleOutline} w={8} h={8} color='red.500' cursor="pointer" onClick={() => onReject(item.id)}/>
                                             </Flex>
                                         </Td>
                                     </Tr>
