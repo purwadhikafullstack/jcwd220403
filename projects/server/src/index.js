@@ -91,7 +91,7 @@ app.use(paymentRouters);
 //routes that need token END
 //device detection END
 app.use(tenantRouters);
-app.use(tenantTransactionRouter)
+app.use(tenantTransactionRouter);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
