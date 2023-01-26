@@ -41,7 +41,7 @@ const addTransaction = async (req, res) => {
     });
 
     res.status(200).send({
-      message: 'transaction success',
+      message: 'Transaction success',
       roomDetail: newTransaction,
       guestList: newGuestList,
     });
