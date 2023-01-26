@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
 const { tenantControllers } = require('../controllers');
-const { multerUpload } = require('../middlewares/multerProperty');
-const { roomUpload } = require('../middlewares/multerRoom');
+const { multerUpload } = require("../middlewares/multerProperty")
+const { roomUpload } = require("../middlewares/multerRoom")
 
 router.get('/', (req, res) => {
   res.status(200).send('home');
@@ -37,9 +37,6 @@ router.patch('/api/editroom/:id',roomUpload.single('file'), tenantControllers.up
 router.delete('/api/deleteproperty/:id', tenantControllers.deleteAllDataProperty);
 router.delete('/api/deleteroom/:id', tenantControllers.deleteDataRooms);
 router.delete('/api/deleteroomimage/:id', tenantControllers.deleteRoomImages);
-router.delete(
-  '/api/deletepropertyimage/:id',
-  tenantControllers.deletePropertyImage
-);
+router.delete('/api/deletepropertyimage/:id', tenantControllers.deletePropertyImage);
 
 module.exports = router;

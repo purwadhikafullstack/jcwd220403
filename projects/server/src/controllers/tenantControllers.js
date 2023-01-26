@@ -1,304 +1,99 @@
-const database = require('../models');
-const axios = require('axios');
-const { sequelize } = require('../models');
-const jwt = require('jsonwebtoken');
+const database = require("../models")
+const axios = require("axios")
+const { sequelize } = require("../models")
+const jwt = require("jsonwebtoken")
 
 module.exports = {
-  CreateFastility: async (req, res) => {
-    try {
-      await database.facility.create(req.body);
-      res.status(201).send('Fasility Created');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  CreatePropertys: async (req, res) => {
-    try {
-      const { name, description, tenantId } = req.body;
-
-      if (!name) {
-        return res.status(401).send('Name is required');
-      }
-      if (!description) {
-        return res.status(401).send('Description is required');
-      }
-      if (description.length > 500) {
-        return res
-          .status(401)
-          .send('Description is required and must be less than 500 characters');
-      }
-      if (!req.file) {
-        return res.status(401).send('Picture is required');
-      }
-      const CategoryId = await database.category.findOne({
-        order: [['id', 'DESC']],
-      });
-
-      const newProperty = await database.property.create({
-        name: name,
-        description: description,
-        picture: req.file.filename,
-        tenantId: tenantId,
-        categoryId: CategoryId.id,
-      });
-      //add facilities to the property
-      const latestFacility = await database.facility.findOne({
-        order: [['id', 'DESC']],
-      });
-      const latestFacilityId = latestFacility.id;
-      await database.propertyFacility.create({
-        facilityId: latestFacilityId,
-        propertyId: newProperty.id,
-      });
-      res.status(200).send('propertyCreated');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  CreateCategory: async (req, res) => {
-    try {
-      const { country, province, city } = req.body;
-
-      //validasi untuk country, province, city
-      if (!country) throw 'Country is required';
-      if (!province) throw 'Province is required';
-      if (!city) throw 'City is required';
-
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(country))
-        throw 'Country must start with an uppercase letter';
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(province))
-        throw 'Province must start with an uppercase letter';
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(city))
-        throw 'City must start with an uppercase letter';
-
-      //everything for location detail
-      const address = `${city}, ${province}, ${country}`;
-      const API_KEY = process.env.GEOCODE_API_KEY;
-      const responses = await axios.get(
-        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
-          address
-        )}&key=${API_KEY}`
-      );
-      const data = responses.data;
-      const location = data.results[0].geometry;
-      const lat = location.lat;
-      const lng = location.lng;
-      const result = [lat, lng];
-      // ---------------------------------------------------------------------------
-
-      const response = await database.category.create({
-        country: country,
-        province: province,
-        city: city,
-        locationDetail: { type: 'Point', coordinates: result },
-      });
-      res.status(200).send(response);
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  createRoomData: async (req, res) => {
-    try {
-      const { name, description, price, tenantId } = req.body;
-      const allowedTypes = [
-        'image/jpg',
-        'image/jpeg',
-        'image/png',
-        'image/webp',
-      ];
-
-      if (!name) throw 'Name is required';
-      if (!description) throw 'Description is required';
-      if (!price) throw 'Price is required';
-      if (description.length > 300)
-        throw 'Description is required and must be less than 500 characters';
-
-      if (!req.file) {
-        return res.status(401).send('Picture is required');
-      }
-      if (!allowedTypes.includes(req.file.mimetype)) {
-        return res
-          .status(401)
-          .send('Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.');
-      }
-
-      // Check file size
-      if (req.file.size > 5000000) {
-        // 5000000 bytes = 5MB
-        return res
-          .status(401)
-          .send('File size exceeds the allowed limit of 5MB.');
-      }
-
-      const getPropertyId = await database.property.findOne({
-        where: {
-          tenantId: tenantId,
-        },
-        raw: true,
-      });
-
-      await database.room.create({
-        name: name,
-        description: description,
-        price: price,
-        picture: req.file.filename,
-        propertyId: getPropertyId.id,
-      });
-      res.status(200).send('Room created');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  createManyImageinRoom: async (req, res) => {
-    try {
-      const allowedTypes = [
-        'image/jpg',
-        'image/jpeg',
-        'image/png',
-        'image/webp',
-      ];
-
-      if (!req.file) {
-        return res.status(401).send('Picture is required');
-      }
-      if (!allowedTypes.includes(req.file.mimetype)) {
-        return res
-          .status(401)
-          .send('Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.');
-      }
-
-      // Check file size
-      if (req.file.size > 5000000) {
-        // 5000000 bytes = 5MB
-        return res
-          .status(401)
-          .send('File size exceeds the allowed limit of 5MB.');
-      }
-      await database.image.create({
-        name: req.file.filename,
-        type: req.file.mimetype,
-        size: req.file.size,
-        path: req.file.path,
-        roomId: req.body.roomId,
-      });
-      res.status(200).send('More picture success!');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  createMorePictureProperty: async (req, res) => {
-    try {
-      const allowedTypes = [
-        'image/jpg',
-        'image/jpeg',
-        'image/png',
-        'image/webp',
-      ];
-
-      if (!req.file) {
-        return res.status(401).send('Picture is required');
-      }
-      if (!allowedTypes.includes(req.file.mimetype)) {
-        return res
-          .status(401)
-          .send('Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.');
-      }
-
-      // Check file size
-      if (req.file.size > 5000000) {
-        // 5000000 bytes = 5MB
-        return res
-          .status(401)
-          .send('File size exceeds the allowed limit of 5MB.');
-      }
-      const getPropertyId = await database.property.findOne({
-        where: {
-          tenantId: req.params.tenantId,
-        },
-        raw: true,
-      });
-      await database.propertypicture.create({
-        name: req.file.filename,
-        type: req.file.mimetype,
-        size: req.file.size,
-        path: req.file.path,
-        propertyId: getPropertyId.id,
-      });
-      res.status(200).send('More picture on propertypicture success!');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  updatePictureProperty: async (req, res) => {
-    try {
-      if (!req.file) throw 'Picture is required';
-      await database.property.update(
-        {
-          picture: req.file.filename,
-        },
-        {
-          where: {
-            tenantId: req.params.tenantId,
-          },
+    CreateFastility: async (req, res) => {
+        try {
+            await database.facility.create(req.body)
+            res.status(201).send("Fasility Created")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
         }
-      );
-      res.status(200).send('Edited!');
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  updateNameProperty: async (req, res) => {
-    try {
-      const { name } = req.body;
-      if (!name) {
-        return res.status(401).send('Name is Required');
-      }
-      await database.property.update(
-        {
-          name: name,
-        },
-        {
-          where: {
-            tenantId: req.params.tenantId,
-          },
-        }
-      );
-      res.status(200).send('Name edited!');
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
-  },
-  updateFacility: async (req, res) => {
-    try {
-      const { name } = req.body;
+    },
+    CreatePropertys: async (req, res) => {
+        try {
+            const { name, description, tenantId } = req.body
 
-      const data = await database.property.findOne({
-        where: { tenantId: req.params.tenantId },
-        include: [
-          {
-            model: database.facility,
-            through: { attributes: [] },
-          },
-        ],
-      });
-      if (!name) {
-        return res.status(401).send('Facility is Required');
-      }
-      await database.facility.update(
-        {
-          name: name,
-        },
-        {
-          where: {
-            id: data.id,
-          },
+            if (!name) {
+                return res.status(401).send('Name is required')
+            }
+            if (!description) {
+                return res.status(401).send('Description is required')
+            }
+            if (description.length > 500) {
+                return res.status(401).send('Description is required and must be less than 500 characters')
+            }
+            if (!req.file) {
+                return res.status(401).send("Picture is required")
+            }
+            const CategoryId = await database.category.findOne({
+                order: [['id', 'DESC']]
+            })
+
+            const newProperty = await database.property.create({
+                name: name,
+                description: description,
+                picture: req.file.filename,
+                tenantId: tenantId,
+                categoryId: CategoryId.id
+            })
+            //add facilities to the property
+            const latestFacility = await database.facility.findOne({
+                order: [['id', 'DESC']]
+            });
+            const latestFacilityId = latestFacility.id;
+            await database.propertyFacility.create({
+                facilityId: latestFacilityId,
+                propertyId: newProperty.id
+            })
+            res.status(200).send("propertyCreated")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    CreateCategory: async (req, res) => {
+        try {
+            const { country, province, city } = req.body
+
+            //validasi untuk country, province, city
+            if (!country) throw "Country is required"
+            if (!province) throw "Province is required"
+            if (!city) throw "City is required"
+
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(country)) throw "Country must start with an uppercase letter"
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(province)) throw "Province must start with an uppercase letter"
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(city)) throw "City must start with an uppercase letter"
+
+
+            //everything for location detail
+            const address = `${city}, ${province}, ${country}`
+            const API_KEY = process.env.GEOCODE_API_KEY;
+            const responses = await axios.get(
+                `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+                    address
+                )}&key=${API_KEY}`
+            );
+            const data = responses.data;
+            const location = data.results[0].geometry;
+            const lat = location.lat
+            const lng = location.lng
+            const result = [lat, lng];
+            // ---------------------------------------------------------------------------
+
+            const response = await database.category.create({
+                country: country,
+                province: province,
+                city: city,
+                locationDetail: { type: 'Point', coordinates: result }
+            })
+            res.status(200).send(response)
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
         }
     },
     createRoomData: async (req, res) => {
@@ -323,19 +118,6 @@ module.exports = {
                 return res.status(401).send("File size exceeds the allowed limit of 5MB.")
             }
 
-            const getPropertyId = await database.property.findOne({
-                where : {
-                    tenantId : req.params.tenantId
-                },
-                order: [['id', 'DESC']]
-            })
-
-            if(getPropertyId.length > 1){
-                propertyId = getPropertyId[0].id + 1
-            } else {
-                propertyId = getPropertyId.id
-            }
-
             await database.room.create({
                 name: name,
                 description: description,
@@ -355,33 +137,10 @@ module.exports = {
             const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
             let propertyId;
 
-            if (!req.file) {
-                return res.status(401).send("Picture is required")
-            }
-            if (!allowedTypes.includes(req.file.mimetype)) {
-                return res.status(401).send("Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.")
-            }
-
-            // Check file size
-            if (req.file.size > 5000000) { // 5000000 bytes = 5MB
-                return res.status(401).send("File size exceeds the allowed limit of 5MB.")
-            }
-            await database.image.create({
-                name: req.file.filename,
-                type: req.file.mimetype,
-                size: req.file.size,
-                path: req.file.path,
-                roomId: req.body.roomId
-            })
-            res.status(200).send("More picture success!")
-        } catch (err) {
-            console.log(err)
-            res.status(404).send(err)
-        }
-    },
-    createMorePictureProperty: async (req, res) => {
-        try {
-            const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
+            if (!name) throw "Name is required"
+            if (!description) throw "Description is required"
+            if (!price) throw "Price is required"
+            if (description.length > 300) throw 'Description is required and must be less than 500 characters'
 
             if (!req.file) {
                 return res.status(401).send("Picture is required")
@@ -419,53 +178,67 @@ module.exports = {
             console.log(err)
             res.status(404).send(err)
         }
-      );
-      res.status(200).send('Description updated');
-    } catch (err) {
-      console.log(err);
-      res.status(401).send(err);
-    }
-  },
-  updateLocationDetail: async (req, res) => {
-    try {
-      const { country, province, city } = req.body;
+    },
+    createManyImageinRoom: async (req, res) => {
+        try {
+            const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
 
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(country))
-        throw 'Country must start with an uppercase letter';
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(province))
-        throw 'Province must start with an uppercase letter';
-      if (!/^[A-Z][a-zA-Z\s]*$/.test(city))
-        throw 'City must start with an uppercase letter';
+            if (!req.file) {
+                return res.status(401).send("Picture is required")
+            }
+            if (!allowedTypes.includes(req.file.mimetype)) {
+                return res.status(401).send("Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.")
+            }
 
-      const data = await database.property.findOne({
-        where: { tenantId: req.params.tenantId },
-        include: [{ model: database.category }],
-      });
+            // Check file size
+            if (req.file.size > 5000000) { // 5000000 bytes = 5MB
+                return res.status(401).send("File size exceeds the allowed limit of 5MB.")
+            }
+            await database.image.create({
+                name: req.file.filename,
+                type: req.file.mimetype,
+                size: req.file.size,
+                path: req.file.path,
+                roomId: req.body.roomId
+            })
+            res.status(200).send("More picture success!")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    createMorePictureProperty: async (req, res) => {
+        try {
+            const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
 
-      const address = `${city}, ${province}, ${country}`;
-      const API_KEY = process.env.GEOCODE_API_KEY;
-      const responses = await axios.get(
-        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
-          address
-        )}&key=${API_KEY}`
-      );
-      const dataGeocode = responses.data;
-      const location = dataGeocode.results[0].geometry;
-      const lat = location.lat;
-      const lng = location.lng;
-      const result = [lat, lng];
+            if (!req.file) {
+                return res.status(401).send("Picture is required")
+            }
+            if (!allowedTypes.includes(req.file.mimetype)) {
+                return res.status(401).send("Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.")
+            }
 
-      await database.category.update(
-        {
-          country: country,
-          province: province,
-          city: city,
-          locationDetail: { type: 'Point', coordinates: result },
-        },
-        {
-          where: {
-            id: data.id,
-          },
+            // Check file size
+            if (req.file.size > 5000000) { // 5000000 bytes = 5MB
+                return res.status(401).send("File size exceeds the allowed limit of 5MB.")
+            }
+            const getPropertyId = await database.property.findOne({
+                where: {
+                    tenantId: req.params.tenantId
+                },
+                raw: true
+            })
+            await database.propertypicture.create({
+                name: req.file.filename,
+                type: req.file.mimetype,
+                size: req.file.size,
+                path: req.file.path,
+                propertyId: getPropertyId.id
+            })
+            res.status(200).send("More picture on propertypicture success!")
+        } catch (err) {
+            console.log(err)
+            res.status(404).send(err)
         }
     },
     updatePictureProperty: async (req, res) => {
@@ -553,11 +326,9 @@ module.exports = {
         try {
             const { country, province, city } = req.body
 
-      if (!allowedTypes.includes(req.file.mimetype)) {
-        return res
-          .status(401)
-          .send('Invalid file type. Only JPG, JPEG, WEBP and PNG are allowed.');
-      }
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(country)) throw "Country must start with an uppercase letter"
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(province)) throw "Province must start with an uppercase letter"
+            if (!/^[A-Z][a-zA-Z\s]*$/.test(city)) throw "City must start with an uppercase letter"
 
             const address = `${city}, ${province}, ${country}`
             const API_KEY = process.env.GEOCODE_API_KEY;

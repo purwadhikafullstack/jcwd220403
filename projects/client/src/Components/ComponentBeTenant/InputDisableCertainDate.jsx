@@ -278,10 +278,6 @@ const InputDisableCertainDate = () => {
     }
 
     //eveything for responsive
-    const [isMobile] = useMediaQuery('(max-width: 481px)');
-    const [isTablet] = useMediaQuery('(max-width: 868px) and (min-width: 481px)');
-    const [large] = useMediaQuery(`(min-width: 819px)`)
-
     const flexDirection = useBreakpointValue({
         base: 'column',
         md: 'column',
@@ -317,7 +313,7 @@ const InputDisableCertainDate = () => {
                     <DrawerBody>
                         <Flex flexDirection={flexDirection}>
                             <Box width={widthCalendarComponent}>
-                                <Flex mb={4}>
+                                <Flex mb={4} className="room-calendar-container">
                                     {option === "disable" ? (
                                         <Box width="100%" textAlign="center">
                                             <Calendar
@@ -331,6 +327,7 @@ const InputDisableCertainDate = () => {
                                                     }
                                                 }}
                                                 tileDisabled={({ date }) => disableData.map(d => date >= new Date(d.start_date) && date <= new Date(d.end_date)).includes(true)}
+                                                
                                             />
                                         </Box>
                                     ) : (
@@ -346,6 +343,7 @@ const InputDisableCertainDate = () => {
                                                     }
                                                 }}
                                                 tileDisabled={({ date }) => highSeasonsData.map(d => date >= new Date(d.start_date) && date <= new Date(d.end_date)).includes(true)}
+                                                
                                             />
                                         </Box>
                                     )}

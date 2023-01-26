@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {
   Box, Tabs, TabList, TabPanels, Tab, TabPanel,
   Avatar, Heading, Flex, Center, Button, Skeleton, Spacer,
-  Text, Image, Icon, MenuButton, Tag
+  Text, Image, Icon, MenuButton, Tag, SkeletonCircle, SkeletonText
 
 } from "@chakra-ui/react"
 import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
@@ -36,12 +36,15 @@ const Dashboard = () => {
       setLoad(true)
       const response = await axios.get(`/property/${tenantId}`)
       setData(response.data)
-      setLoad(false)
-      if (!tenantId) {
-        setTimeout(() => {
-          window.location.reload()
-        }, 4000)
-      }
+
+      // if (!tenantId) {
+      //   setTimeout(() => {
+      //     window.location.reload()
+      //   }, 4000)
+      // }
+      setTimeout(() => {
+        setLoad(false)
+      }, 3000)
     } catch (err) {
       console.log(err)
     }
@@ -52,24 +55,28 @@ const Dashboard = () => {
 
   const Loading = () => {
     return (
-      <Box p={6}>
-        <Box>
-          <Flex>
-            <Skeleton height='30px' width="100px" marginTop="10px" />
-            <Spacer />
-            <Skeleton height='30px' width="100px" marginTop="10px" />
-          </Flex>
-        </Box>
-        <Box>
-          <Flex>
-            <Skeleton height='300px' width="550px" marginTop="10px" />
-            <Spacer />
-            <Skeleton height='300px' width="550px" marginTop="10px" />
-          </Flex>
-        </Box>
-        <Box>
-          <Skeleton height='300px' marginTop="10px" />
-        </Box>
+      <Box padding='6' boxShadow='lg' bg='white'>
+        <Flex marginTop="25px">
+          <Skeleton width="15%" height="30px" borderRadius="10px" />
+          <Skeleton width="20%" height="30px" ml={10} borderRadius="10px" />
+          <Spacer />
+          <SkeletonCircle size='10' flex="end" />
+        </Flex>
+        <Skeleton width="100%" height="5px" marginTop="65px" />
+        <Flex marginTop="5px" gap="10px">
+          <Skeleton width="15%" height="15px" borderRadius="10px" />
+          <Skeleton width="15%" height="15px" borderRadius="10px" />
+          <Skeleton width="15%" height="15px" borderRadius="10px" />
+        </Flex>
+        <Skeleton width="10%" height="15px" borderRadius="10px" marginTop="25px" />
+        <Flex gap="20px" alignItems="center">
+          <Skeleton width="12%" height="15px" borderRadius="10px" marginTop="25px" />
+          <SkeletonCircle size="5" />
+        </Flex>
+        <Flex marginTop="20px" gap="50px">
+          <Skeleton width="50%" height="220px" />
+        <SkeletonText mt='4' noOfLines={8} spacing='4' skeletonHeight='2' width="30%" />
+        </Flex>
       </Box>
     )
   }
@@ -87,7 +94,7 @@ const Dashboard = () => {
             <Link to="/user">
               <Box>
                 <Center>
-                  {/* {auth?.userPhoto ? (
+                  {auth?.userPhoto ? (
                     <Avatar
                       size='md'
                       name='A'
@@ -101,7 +108,7 @@ const Dashboard = () => {
                     />
                   ) : (
                     <Avatar size='md' name={auth.name} bgColor='#FE9900' />
-                  )} */}
+                  )}
                 </Center>
                 <Text textAlign="center">{auth.name}</Text>
               </Box>
@@ -141,7 +148,7 @@ const Dashboard = () => {
   return (
     <Box>
       <Box>
-        {tenantId ?
+        {load ? <Loading /> :
           data !== null && data.length > 0 ? (
             <ComponentDashboard />
           ) : (
@@ -154,9 +161,8 @@ const Dashboard = () => {
               </Text>
             </Box>
           )
-          :
-          <Loading />
         }
+      
       </Box>
     </Box>
   )

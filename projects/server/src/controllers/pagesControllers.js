@@ -58,7 +58,7 @@ module.exports = {
                         [Op.and]: [
                             {
                                 'rooms.transactions.id': null,
-                                'rooms.availability': true
+                                // 'rooms.availability': true
                             }
                         ]
                     }
