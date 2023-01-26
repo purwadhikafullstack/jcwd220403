@@ -25,6 +25,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import Category from './Components/Category';
 import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
+import PaymentInstruction from './Pages/Payment/PaymentInstruction';
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
                 path: '/payment/:transactionId',
                 element: <PaymentPage />,
               },
+              {
+                path: '/payment/:transactionId/:paymentMethodId',
+                element: <PaymentInstruction />,
+              },
             ],
           },
         ],
@@ -101,6 +106,7 @@ const router = createBrowserRouter([
         children: [
           {
             element: <HostHome />,
+            errorElement: <ErrorPage />,
             children: [
               {
                 path: '/register-tenant',

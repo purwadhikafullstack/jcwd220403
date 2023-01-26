@@ -1,4 +1,11 @@
-import { Heading, Select, Stack, Text } from '@chakra-ui/react';
+import {
+  Heading,
+  Select,
+  Stack,
+  Alert,
+  AlertIcon,
+  AlertDescription,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
 import Transfer from './Transfer/Transfer';
@@ -12,8 +19,8 @@ function PaymentMethods({ data }) {
     <Stack gap='20px'>
       <Heading size='md'>Payment Method</Heading>
       <Select
-        placeholder='Select Payment method'
-        size={'xl'}
+        height={'60px'}
+        placeholder='Select payment method'
         defaultValue={choosenOption}
         onChange={(option) => setChoosenOption(option.target.value)}
       >
@@ -23,7 +30,18 @@ function PaymentMethods({ data }) {
         <option value='alfamart'>Alfamart</option>
       </Select>
 
-      {choosenOption === '' && <Text>Select your payment method</Text>}
+      {choosenOption === '' && (
+        <Alert
+          status='info'
+          variant='subtle'
+          color={'blue'}
+          borderRadius={10}
+          height='90px'
+        >
+          <AlertIcon />
+          <AlertDescription>Select your payment method</AlertDescription>
+        </Alert>
+      )}
       {choosenOption === 'credit' && <Credit />}
       {choosenOption === 'transfer' && <Transfer data={data} />}
       {choosenOption === 'indomaret' && <Indomaret />}

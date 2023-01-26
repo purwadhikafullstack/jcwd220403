@@ -19,9 +19,9 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
           >
             <Radio
               size='md'
-              value='bri'
+              value='1'
               marginLeft='20px'
-              checked={destinationAccount === 'bri'}
+              checked={destinationAccount === '1'}
               onChange={(e) => {
                 setDestinationAccount(e.target.value);
               }}
@@ -39,7 +39,7 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
             ></Box>
           </Box>
           <Box
-            className='mandiri'
+            className='bni'
             border='1px'
             borderColor='gray.200'
             height={20}
@@ -50,21 +50,21 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
           >
             <Radio
               size='md'
-              value='mandiri'
+              value='2'
               marginLeft='20px'
-              checked={destinationAccount === 'mandiri'}
+              checked={destinationAccount === '2'}
               onChange={(e) => {
                 setDestinationAccount(e.target.value);
               }}
             >
-              Mandiri Transfer
+              BNI Transfer
             </Radio>
             <Box
               height='75px'
               width='200px'
               display='flex'
-              backgroundImage="url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-download.com%2Fwp-content%2Fuploads%2F2016%2F06%2FBank_Mandiri_logo_white_bg.png&f=1&nofb=1&ipt=12706c61fe6b8ea5413efaae823406f0406df5172bb9f8935a90c4f19bdedbf0&ipo=images')"
-              backgroundSize='100px'
+              backgroundImage="url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F-y-qqDgzromg%2FUZrlU5NwDAI%2FAAAAAAAAC08%2FOzk2gFsg5cA%2Fs1600%2FLogo%2BBNI%2B~%2BKuwarasanku%2B(2).jpeg&f=1&nofb=1&ipt=63ba8f014a1461586c6804be5cccb2b16b714b2f5267c1f99088263dbb0f2780&ipo=images')"
+              backgroundSize='80px'
               backgroundRepeat='no-repeat'
               backgroundPosition='center'
             ></Box>
@@ -81,9 +81,9 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
           >
             <Radio
               size='md'
-              value='bca'
+              value='3'
               marginLeft='20px'
-              checked={destinationAccount === 'bca'}
+              checked={destinationAccount === '3'}
               onChange={(e) => {
                 setDestinationAccount(e.target.value);
               }}
@@ -101,7 +101,7 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
             ></Box>
           </Box>
           <Box
-            className='bni'
+            className='mandiri'
             border='1px'
             borderColor='gray.200'
             height={20}
@@ -112,21 +112,21 @@ function DestinationAccount({ destinationAccount, setDestinationAccount }) {
           >
             <Radio
               size='md'
-              value='bni'
+              value='4'
               marginLeft='20px'
-              checked={destinationAccount === 'bni'}
+              checked={destinationAccount === '4'}
               onChange={(e) => {
                 setDestinationAccount(e.target.value);
               }}
             >
-              BNI Transfer
+              Mandiri Transfer
             </Radio>
             <Box
               height='75px'
               width='200px'
               display='flex'
-              backgroundImage="url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F-y-qqDgzromg%2FUZrlU5NwDAI%2FAAAAAAAAC08%2FOzk2gFsg5cA%2Fs1600%2FLogo%2BBNI%2B~%2BKuwarasanku%2B(2).jpeg&f=1&nofb=1&ipt=63ba8f014a1461586c6804be5cccb2b16b714b2f5267c1f99088263dbb0f2780&ipo=images')"
-              backgroundSize='80px'
+              backgroundImage="url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-download.com%2Fwp-content%2Fuploads%2F2016%2F06%2FBank_Mandiri_logo_white_bg.png&f=1&nofb=1&ipt=12706c61fe6b8ea5413efaae823406f0406df5172bb9f8935a90c4f19bdedbf0&ipo=images')"
+              backgroundSize='100px'
               backgroundRepeat='no-repeat'
               backgroundPosition='center'
             ></Box>

@@ -19,6 +19,7 @@ const {
   transactionRouters,
   privateTransactionRouters,
   propertyRouters,
+  paymentRouters,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -33,9 +34,10 @@ const corsOptions = {
     callback(new Error('Not allowed by CORS'));
   },
 };
+
 app.use(
   cors(corsOptions)
-  // cors()
+  // cors();
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
@@ -85,6 +87,7 @@ app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
+app.use(paymentRouters);
 //routes that need token END
 //device detection END
 

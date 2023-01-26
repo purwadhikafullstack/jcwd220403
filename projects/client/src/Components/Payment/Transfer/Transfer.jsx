@@ -9,6 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import DestinationAccount from './DestinationAccount';
 export default function Transfer({ data }) {
   const [destinationAccount, setDestinationAccount] = useState();
@@ -33,9 +34,6 @@ export default function Transfer({ data }) {
 
   return (
     <Stack gap={10}>
-      <Heading size={'md'} marginTop='20px'>
-        Bank Transfer
-      </Heading>
       <Alert status='info' variant='subtle' color={'blue'} borderRadius={10}>
         <AlertIcon />
         <AlertDescription>
@@ -56,7 +54,12 @@ export default function Transfer({ data }) {
           <Text>{priceInCurrency()}</Text>
         </Stack>
       </Box>
-      <Button colorScheme='teal'>Pay with Bank Transfer</Button>
+      <Button colorScheme='teal'>
+        {/* <Link to={`/payment/${data[0].id}/process`}> */}
+        <Link to={`/payment/${data[0].id}/${destinationAccount}`}>
+          Pay with Bank Transfer
+        </Link>
+      </Button>
     </Stack>
   );
 }

@@ -1,8 +1,6 @@
 const database = require('../../models');
 const { sequelize } = require('../../models');
 const transaction = database.transaction;
-const room = database.room;
-const guest = database.guest;
 const { Op, QueryTypes } = require('sequelize');
 
 const getTransactionByRoomId = async (req, res) => {
@@ -37,7 +35,7 @@ const getTransactionById = async (req, res) => {
 
     const getTansactions = await sequelize.query(
       `select 
-          t.id, t.transactionStatus, t.userId, t.checkIn, t.checkOut, r.propertyId, p.name as property_name, r.name as room_name, r.price, r.picture, sum(g.adult + g.children + g.infant) as total_guest 
+          t.id, t.transactionStatus, t.userId, t.checkIn, t.checkOut, r.propertyId, p.name as property_name, r.name as room_name, r.price, r.picture, sum(g.adult + g.children + g.infant) as total_guest, t.createdAt 
       from transactions as t 
       join guests as g 
       on t.id = g.transactionId
