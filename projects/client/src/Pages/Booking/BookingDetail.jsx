@@ -33,6 +33,7 @@ export default function BookingDetail() {
   const [date, setDate] = useState();
   const [day, setDay] = useState(0);
   const [submittedData, setSubmittedData] = useState();
+  const userId = auth.userId;
 
   const numberOfDays = () => {
     date !== undefined && date[1]
@@ -60,7 +61,6 @@ export default function BookingDetail() {
     setDisableSubmitBtn(true);
     try {
       const data = new FormData();
-      const userId = auth.userId;
       data.append('userId', userId);
       data.append('roomId', params.roomId);
       data.append('checkIn', date[0].toISOString().slice(0, 10));
@@ -75,7 +75,7 @@ export default function BookingDetail() {
           pending: 'Booking on progress...',
           success: {
             render({ data }) {
-              return `Success,  ${data.data.message}`;
+              return `${data.data.message}`;
             },
           },
           error: {
@@ -86,14 +86,22 @@ export default function BookingDetail() {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
-      console.log(toastify);
       setSubmittedData(toastify.data.roomDetail.id);
+      setDisableSubmitBtn(false);
+      handleRedirect();
     } catch (error) {
       console.log(error);
+      toast.error('error: please check your data', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
     }
-    setDisableSubmitBtn(false);
-    console.log(submittedData);
-    handleRedirect();
   };
 
   useEffect(() => {
@@ -146,7 +154,6 @@ export default function BookingDetail() {
                 <Button
                   colorScheme={'orange'}
                   w={'full'}
-                  // color={'teal.400'}
                   onClick={submitBookingForm}
                   disabled={disableSubmitBtn}
                 >

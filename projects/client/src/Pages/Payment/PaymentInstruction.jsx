@@ -6,13 +6,13 @@ import {
   Divider,
   Skeleton,
 } from '@chakra-ui/react';
-import PaymentMethods from '../../Components/Payment/PaymentMethods';
 import TransactionCard from '../../Components/Payment/TransactionCard';
 import axios from '../../api/axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import BankTransfer from '../../Components/Payment/PaymentInstruction/BankTransfer';
 
-export default function PaymentPage() {
+export default function PaymentInstruction() {
   const [data, setData] = useState([]);
   const [isloading, setIsloading] = useState(true);
   const params = useParams();
@@ -44,11 +44,11 @@ export default function PaymentPage() {
           <Stack spacing={6} w={'full'} maxW={'xl'}>
             <Heading fontSize={'3xl'}>
               <Text color={'teal.400'} as={'span'}>
-                Payment{' '}
+                Payment Instructions
               </Text>
             </Heading>
             <Divider />
-            <PaymentMethods data={data} />
+            <BankTransfer data={data} />
           </Stack>
         </Flex>
         <Flex

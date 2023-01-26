@@ -26,6 +26,7 @@ import Category from './Components/Category';
 import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
+import PaymentInstruction from './Pages/Payment/PaymentInstruction';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
                 path: '/payment/:transactionId',
                 element: <PaymentPage />,
               },
+              {
+                path: '/payment/:transactionId/:paymentMethodId',
+                element: <PaymentInstruction />,
+              },
             ],
           },
         ],
@@ -105,6 +110,7 @@ const router = createBrowserRouter([
         children: [
           {
             element: <HostHome />,
+            errorElement: <ErrorPage />,
             children: [
               {
                 path: '/register-tenant',
