@@ -9,10 +9,23 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import DestinationAccount from './DestinationAccount';
+import { ToastContainer, toast } from 'react-toastify';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+
 export default function Transfer({ data }) {
   const [destinationAccount, setDestinationAccount] = useState();
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const params = useParams();
+
+  function handleRedirect() {
+    setInterval(() => {
+      setSubmitSuccess(true);
+    }, 3000);
+  }
 
   const totalDay = () => {
     return Math.floor(
@@ -22,18 +35,64 @@ export default function Transfer({ data }) {
     );
   };
 
-  function priceInCurrency() {
-    const price = data[0].price * totalDay();
+  const totalPrice = data[0].price * totalDay();
 
+  function priceInCurrency() {
     let priceInRupiah = Intl.NumberFormat('id-ID', {
       currency: `IDR`,
       style: 'currency',
     });
-    return priceInRupiah.format(price);
+    return priceInRupiah.format(totalPrice);
   }
 
-  return (
-    <Stack gap={10}>
+  const submitPaymentMethod = async (e) => {
+    e.preventDefault();
+    setDisableSubmitBtn(true);
+    try {
+      const data = new FormData();
+      data.append('paymentMethodId', destinationAccount);
+      data.append('total', totalPrice);
+      const res = axiosPrivate.post(`/payment/${params.transactionId}`, data);
+      await toast.promise(
+        res,
+        {
+          pending: 'Booking on progress...',
+          success: {
+            render({ data }) {
+              return `${data.data.message}`;
+            },
+          },
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
+        },
+        { position: toast.POSITION.TOP_CENTER }
+      );
+
+      setDisableSubmitBtn(false);
+      handleRedirect();
+    } catch (error) {
+      console.log(error);
+      toast.error('error: please check your data', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+    }
+  };
+
+  return submitSuccess ? (
+    <Navigate to={`/payment/${params.transactionId}/${destinationAccount}`} />
+  ) : (
+    <Stack gap={2}>
+      <ToastContainer />
       <Alert status='info' variant='subtle' color={'blue'} borderRadius={10}>
         <AlertIcon />
         <AlertDescription>
@@ -54,11 +113,12 @@ export default function Transfer({ data }) {
           <Text>{priceInCurrency()}</Text>
         </Stack>
       </Box>
-      <Button colorScheme='teal'>
-        {/* <Link to={`/payment/${data[0].id}/process`}> */}
-        <Link to={`/payment/${data[0].id}/${destinationAccount}`}>
-          Pay with Bank Transfer
-        </Link>
+      <Button
+        colorScheme='teal'
+        onClick={submitPaymentMethod}
+        disabled={disableSubmitBtn}
+      >
+        Pay with Bank Transfer
       </Button>
     </Stack>
   );

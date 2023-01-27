@@ -17,7 +17,11 @@ const addPayment = async (req, res) => {
       total,
     });
 
-    res.status(200).send(addPayment);
+    res.status(200).send({
+      message:
+        'Payment method succesfully added, please check your transaction instruction',
+      data: addPayment,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
