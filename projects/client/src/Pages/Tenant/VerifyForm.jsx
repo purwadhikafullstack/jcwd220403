@@ -71,10 +71,10 @@ export default function VerifyForm() {
       const toastData = await toast.promise(
         res,
         {
-          pending: 'Login on progress...',
+          pending: 'Sending data...',
           success: {
             render({ data }) {
-              return `Success,  ${data.data.message}`;
+              return `${data.data.message}`;
             },
           },
           error: {

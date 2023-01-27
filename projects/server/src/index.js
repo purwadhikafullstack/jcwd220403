@@ -37,7 +37,7 @@ const corsOptions = {
 
 app.use(
   cors(corsOptions)
-  // cors();
+  // cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
@@ -76,22 +76,21 @@ app.use(
   fileUpload({
     createParentPath: true,
     limits: {
-      fileSize: 1024 * 1024, // 1 MB
+      fileSize: 2 * 1024 * 1024, // 2 MB
     },
     abortOnLimit: true,
   })
 );
-
 //routes that need token START
 app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
 app.use(paymentRouters);
-//routes that need token END
-//device detection END
 app.use(tenantRouters);
 app.use(tenantTransactionRouter);
+//routes that need token END
+//device detection END
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

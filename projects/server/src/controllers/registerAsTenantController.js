@@ -1,9 +1,10 @@
 const path = require('path');
 const database = require('../models');
 const tenant = database.tenant;
+const checkKTP = require('../middlewares/checkKTP');
 
 const RegisterAsTenant = async (req, res) => {
-  const { KTPNumber, userId } = req.body;
+  const { KTPNumber, userId, autoDetect } = req.body;
   const ktp = req.files.KTPPhoto;
 
   const findTenant = await tenant.findOne({
@@ -36,7 +37,7 @@ const RegisterAsTenant = async (req, res) => {
     const allowedExtension = ['.png', '.jpg', '.jpeg', '.webp'];
 
     if (!allowedExtension.includes(extensionName)) {
-      res.status(500);
+      res.status(422);
       res.send({
         status: false,
         message: 'Invalid image extension',
@@ -51,22 +52,34 @@ const RegisterAsTenant = async (req, res) => {
       userId,
     });
 
-    console.log(newTenant);
-
-    ktp.mv('./public/ktp/' + filename);
-
-    res.status(200);
-    res.send({
-      status: true,
-      message: 'file is uploaded',
-      data: {
-        KTPNumber,
-        tenantId: newTenant?.id,
-        name: ktp.name,
-        mimetype: ktp.mimetype,
-        size: ktp.size,
-      },
+    await ktp.mv('./public/ktp/' + filename, (err) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
     });
+
+    if (autoDetect) {
+      const check = await checkKTP(filename);
+      check == KTPNumber
+        ? res.status(200).send({ message: 'Automatic verification success' })
+        : res
+            .status(500)
+            .send({ message: 'Not a match, switch to manual verification' });
+    } else {
+      res.status(200);
+      res.send({
+        status: true,
+        message:
+          'Photo is successufully uploaded, please wait for manual verification by our staff',
+        data: {
+          KTPNumber,
+          tenantId: newTenant?.id,
+          name: ktp.name,
+          mimetype: ktp.mimetype,
+          size: ktp.size,
+        },
+      });
+    }
   }
 };
 
