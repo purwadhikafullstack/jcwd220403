@@ -92,8 +92,14 @@ function BookingDate({ inputDate, setInputDate }) {
           </PopoverTrigger>
           <PopoverContent minW='400px'>
             <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader bg={'teal.50'} paddingLeft='47%' fontWeight={'bold'}>
+            <PopoverCloseButton color={'white'} />
+            <PopoverHeader
+              bg={'teal.400'}
+              paddingLeft='47%'
+              fontWeight={'bold'}
+              borderRadius='4px'
+              color='white'
+            >
               Date
             </PopoverHeader>
             <PopoverBody>
