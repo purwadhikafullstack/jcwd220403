@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       tenant.belongsTo(models.user, {
         foreignKey: {
           allowNull: false,
-          // primaryKey: true,
         },
       });
       tenant.hasMany(models.property);
@@ -49,6 +48,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
-  // tenant.removeAttribute('id');
   return tenant;
 };

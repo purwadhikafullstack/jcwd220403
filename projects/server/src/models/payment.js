@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'payment',
+      indexes: [
+        {
+          unique: false,
+          fields: ['createdAt'],
+        },
+      ],
     }
   );
   return payment;

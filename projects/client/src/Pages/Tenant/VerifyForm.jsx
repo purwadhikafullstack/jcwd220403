@@ -140,7 +140,7 @@ export default function VerifyForm() {
                 <Input
                   className='file-selector-verify'
                   type={'file'}
-                  accept={'image/*'}
+                  accept='image/png, image/jpeg, image/jpg, image/webp'
                   // sx={{
                   //   '::file-selector-button': {
                   //     height: 10,
