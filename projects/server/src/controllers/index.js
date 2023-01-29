@@ -13,6 +13,7 @@ const privateTransactionControllers = require('./transaction/privateTransactionC
 const registerAsTenantController = require('./registerAsTenantController');
 const propertyControllers = require('./property/propertyControllers');
 const paymentController = require('./transaction/paymentController');
+const paymentMethodControllers = require('./transaction/paymentMethodControllers');
 
 module.exports = {
   authControllers,
@@ -30,4 +31,5 @@ module.exports = {
   registerAsTenantController,
   propertyControllers,
   paymentController,
+  paymentMethodControllers,
 };

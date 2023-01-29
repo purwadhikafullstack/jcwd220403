@@ -20,6 +20,7 @@ const {
   privateTransactionRouters,
   propertyRouters,
   paymentRouters,
+  paymentMethodRouter,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -65,6 +66,7 @@ app.use(transactionRouters);
 app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
+app.use(paymentMethodRouter);
 // app.use(tenantTransactionRouter);
 
 //routes that don't need token END

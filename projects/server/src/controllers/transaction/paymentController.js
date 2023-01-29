@@ -1,5 +1,6 @@
 const database = require('../../models');
 const path = require('path');
+const { sequelize } = require('../../models');
 const payment = database.payment;
 
 const addPayment = async (req, res) => {
@@ -16,6 +17,17 @@ const addPayment = async (req, res) => {
       paymentMethodId,
       total,
     });
+
+    await sequelize.query(`
+    CREATE EVENT payment_${addPayment.id}
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 MINUTE
+    DO
+    UPDATE transactions JOIN payments
+    ON transactions.id = payments.transactionId 
+    SET transactions.transactionStatus = 
+    IF(now()>payments.createdAt, 'Gagal', 'Menunggu Pembayaran' ) 
+    WHERE payments.id = ${addPayment.id};
+    `);
 
     res.status(200).send({
       message:
@@ -57,6 +69,10 @@ const uploadPaymentProof = async (req, res) => {
     { paymentProof: filename },
     { where: { transactionId } }
   );
+
+  await sequelize.query(`
+  DROP EVENT IF EXISTS payment_${addPaymentProof.id};
+  `);
 
   await paymentProof.mv('./public/paymentProof/' + filename, (err) => {
     if (err) {
