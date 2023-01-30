@@ -26,7 +26,6 @@ export default function PaymentPage() {
       console.log(err);
     }
   };
-
   useEffect(() => {
     getData();
   }, [isloading]);

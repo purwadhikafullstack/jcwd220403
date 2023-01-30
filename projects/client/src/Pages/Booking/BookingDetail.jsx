@@ -162,8 +162,8 @@ export default function BookingDetail() {
               </Stack>
             ) : (
               <Stack w={'full'} spacing={5}>
-                <Button color={'teal.400'}>
-                  <Link to={'/login'}>Log in or sign up to book</Link>{' '}
+                <Button color={'teal.400'} onClick={() => navigate('/login')}>
+                  Log in or sign up to book
                 </Button>
               </Stack>
             )}

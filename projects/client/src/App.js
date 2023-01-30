@@ -27,6 +27,7 @@ import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
 import PaymentInstruction from './Pages/Payment/PaymentInstruction';
+import Trips from './Pages/Trips/Trips';
 
 const router = createBrowserRouter([
   {
@@ -87,8 +88,12 @@ const router = createBrowserRouter([
                 element: <PaymentPage />,
               },
               {
-                path: '/payment/:transactionId/:paymentMethodId',
+                path: '/payment/:transactionId/:paymentId/:paymentMethodId',
                 element: <PaymentInstruction />,
+              },
+              {
+                path: '/trips',
+                element: <Trips />,
               },
             ],
           },

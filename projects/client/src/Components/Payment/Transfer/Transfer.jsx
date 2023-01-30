@@ -16,6 +16,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 export default function Transfer({ data }) {
   const [destinationAccount, setDestinationAccount] = useState();
+  const [paymentData, setPaymentData] = useState();
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -53,7 +54,7 @@ export default function Transfer({ data }) {
       data.append('paymentMethodId', destinationAccount);
       data.append('total', totalPrice);
       const res = axiosPrivate.post(`/payment/${params.transactionId}`, data);
-      await toast.promise(
+      const toastify = await toast.promise(
         res,
         {
           pending: 'Booking on progress...',
@@ -72,6 +73,8 @@ export default function Transfer({ data }) {
       );
 
       setDisableSubmitBtn(false);
+      setPaymentData(toastify.data.data);
+
       handleRedirect();
     } catch (error) {
       console.log(error);
@@ -87,9 +90,10 @@ export default function Transfer({ data }) {
       });
     }
   };
-
   return submitSuccess ? (
-    <Navigate to={`/payment/${params.transactionId}/${destinationAccount}`} />
+    <Navigate
+      to={`/payment/${params.transactionId}/${paymentData.id}/${destinationAccount}`}
+    />
   ) : (
     <Stack gap={2}>
       <ToastContainer />

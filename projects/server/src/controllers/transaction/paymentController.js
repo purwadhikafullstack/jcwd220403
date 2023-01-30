@@ -20,7 +20,7 @@ const addPayment = async (req, res) => {
 
     await sequelize.query(`
     CREATE EVENT payment_${addPayment.id}
-    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 MINUTE
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 HOUR
     DO
     UPDATE transactions JOIN payments
     ON transactions.id = payments.transactionId 
@@ -87,4 +87,23 @@ const uploadPaymentProof = async (req, res) => {
   });
 };
 
-module.exports = { addPayment, uploadPaymentProof };
+const getPayment = async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+
+    const paymentData = await payment.findOne({
+      where: { id: paymentId },
+    });
+
+    res.status(200).send(paymentData);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
+const testPay = async (req, res) => {
+  res.status(200).send('test');
+};
+
+module.exports = { addPayment, uploadPaymentProof, getPayment, testPay };

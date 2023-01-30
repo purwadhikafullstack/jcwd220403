@@ -11,10 +11,21 @@ import {
   Divider,
   FormControl,
   FormLabel,
+  Skeleton,
 } from '@chakra-ui/react';
-// import { useState } from 'react';
+import { useState } from 'react';
+import axios from '../../../api/axios';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import Timer from './Timer';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+
 export default function BankTransfer({ data }) {
-  // const [destinationAccount, setDestinationAccount] = useState();
+  const axiosPrivate = useAxiosPrivate();
+  const [bank, setBank] = useState();
+  const [payment, setPayment] = useState();
+  const [loading, setLoading] = useState(true);
+  const params = useParams();
   const totalDay = () => {
     return Math.floor(
       (new Date(data[0].checkOut).getTime() -
@@ -22,6 +33,51 @@ export default function BankTransfer({ data }) {
         (1000 * 3600 * 24)
     );
   };
+  const getpaymentData = async () => {
+    try {
+      const data = await axiosPrivate.get(`/payment/${params.paymentId}`);
+      setPayment(data.data);
+      console.log(payment);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBankData = async () => {
+    try {
+      const res = await axios.get(
+        `payment/paymentMethod/${params.paymentMethodId}`
+      );
+      setBank(res.data);
+      await getpaymentData();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const addPaymentProof = async () => {
+  //   try {
+  //     const data = new FormData();
+  //     const paymentProofData = await axiosPrivate.post(
+  //       `/payment/${params.transactionId}/verification`,
+  //       data
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  console.log(payment);
+
+  useEffect(() => {
+    getBankData();
+    getpaymentData();
+    // const getData = async () => {
+    //   await getBankData();
+    //   await getpaymentData();
+    // };
+    // getData();
+  }, [loading]);
 
   function priceInCurrency() {
     const price = data[0].price * totalDay();
@@ -33,7 +89,9 @@ export default function BankTransfer({ data }) {
     return priceInRupiah.format(price);
   }
 
-  return (
+  return loading ? (
+    <Skeleton height='200px' width='200px'></Skeleton>
+  ) : (
     <Stack gap={10}>
       <Alert status='info' variant='subtle' color={'blue'} borderRadius={10}>
         <AlertIcon />
@@ -42,20 +100,7 @@ export default function BankTransfer({ data }) {
         </AlertDescription>
       </Alert>
 
-      <Box>
-        <Heading size='md' mb='15px'>
-          Make A Payment Before
-        </Heading>
-        <Box
-          border='1px'
-          borderRadius='5px'
-          padding='10px'
-          borderColor='lightgray'
-        >
-          <Text>Today 05:22 PM</Text>
-          <Text fontSize='10px'>Complete your payment within 2 hours</Text>
-        </Box>
-      </Box>
+      <Timer payment={payment} />
 
       <Box>
         <Heading size='md' mb='15px'>
@@ -68,20 +113,20 @@ export default function BankTransfer({ data }) {
           borderColor='lightgray'
         >
           <Stack direction='row' justifyContent='space-between'>
-            <Text>BRI</Text>
+            <Text>Bank: {bank.method}</Text>
             <Box
               height='40px'
               width='40px'
               display='flex'
-              backgroundImage="url('http://4.bp.blogspot.com/-tceaeWKDv00/UNhHf_6AdZI/AAAAAAAAERE/hR3lYKZxCiQ/s1600/Logo+Bank+BRI.jpg')"
+              backgroundImage={`url('http://localhost:2000/BankLogo/${bank.logo}')`}
               backgroundSize='contain'
               backgroundRepeat='no-repeat'
               backgroundPosition='top'
             ></Box>
           </Stack>
           <Stack marginBottom='10px'>
-            <Text>Account Number: 1120 01 000057 30 5</Text>
-            <Text>Account Holder Name: PT. Holistay</Text>
+            <Text>Account Number: {bank.accountNumber}</Text>
+            <Text>Account Holder Name: {bank.accountHolderName}</Text>
           </Stack>
           <Divider />
           <Text marginBottom='10px' marginTop='10px'>
@@ -112,7 +157,7 @@ export default function BankTransfer({ data }) {
               type={'file'}
               accept={'image/*'}
             ></Input>
-            <Text color={'red'}>error message</Text>
+            {/* <Text color={'red'}>error message</Text> */}
           </FormControl>
           <Text fontSize='10px'>
             Once your payment is confirmed we will send your e-ticket to your

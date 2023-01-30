@@ -7,5 +7,7 @@ router.post(
   '/api/payment/:transactionId/verification',
   paymentController.uploadPaymentProof
 );
+router.get('/api/payment/:paymentId', paymentController.getPayment);
+router.get('/api/testpay', paymentController.testPay);
 
 module.exports = router;
