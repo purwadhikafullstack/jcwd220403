@@ -53,7 +53,7 @@ const RegisterAsTenant = async (req, res) => {
 
     console.log(newTenant);
 
-    ktp.mv('./public/ktp/' + filename);
+    ktp.mv('./src/public/ktp/' + filename);
 
     res.status(200);
     res.send({

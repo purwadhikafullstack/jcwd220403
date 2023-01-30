@@ -26,6 +26,7 @@ import Category from './Components/Category';
 import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
+import ReportPages from './Pages/Tenant/Report';
 
 const router = createBrowserRouter([
   {
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
                   {
                     path: 'dashboard/transaction',
                     element: <TransactionUser />,
+                  },
+                  {
+                    path: 'dashboard/report',
+                    element: <ReportPages />,
                   },
                   {
                     path: 'add-property',

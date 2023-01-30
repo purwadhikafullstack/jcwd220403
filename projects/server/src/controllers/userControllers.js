@@ -114,7 +114,7 @@ module.exports = {
         }
       );
 
-      fileUploaded.mv('./Public/profilePicture/' + filename);
+      fileUploaded.mv('./src/Public/profilePicture/' + filename);
       res.status(200).send({
         massage: 'Update Profile Picture Success',
       });

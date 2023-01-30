@@ -47,7 +47,7 @@ module.exports = {
         try{
             const response = await database.transaction.findAll({
                 attributes: ['transactionStatus', [Sequelize.fn('Count', Sequelize.col('transactionStatus')), 'Count']],
-                where: {'transactionStatus': ['Menunggu Konfirmasi Pembayaran', 'Sukses', 'Aktif', 'Selesai']},
+                where: {'transactionStatus': ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']},
                 include: 
                 [
                     {
@@ -93,7 +93,7 @@ module.exports = {
             var milis = new Date();
             milis = milis.getTime();
 
-            var pdfPath = path.join('./Public/pdf', `${"Invoice"}-${"Ilham Hidayatulloh"}-${milis}.pdf`);
+            var pdfPath = path.join('./src/Public/pdf', `${"Invoice"}-${"Ilham Hidayatulloh"}-${milis}.pdf`);
 
             var options = {
                 format: 'A4',
@@ -162,6 +162,87 @@ module.exports = {
                 );
 
             res.status(201).send("Success Confirm")
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    getTransaction: async (req, res) => {
+        const { tenantId } = req.params
+        try{
+            const response = await database.transaction.findAll({
+                attributes: ['id', ['checkIn', 'from'], ['checkOut', 'to'], 'transactionStatus', [Sequelize.fn('concat', Sequelize.col('transaction.id'),' - ',Sequelize.col('user.fullName'),' - ', Sequelize.col('room.name')), 'title'], [Sequelize.fn("MONTH", Sequelize.col("transaction.checkIn")), "month"]],
+                include: 
+                [
+                    {
+                        model: database.room,
+                        attributes: ['name', 'price'],
+                        include: [{
+                            model: database.property,
+                            attributes: ['tenantId', 'name'],
+                        }]
+                    },
+                    {
+                        model: database.user,
+                        attributes: ['fullName', 'email']
+                    }
+                ],
+                having: {
+                    [Op.and]: [
+                        {'room.property.tenantId': tenantId },
+                        {'transactionStatus' : ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']}
+                    ]
+                },
+            })
+            
+            res.status(201).send(response)
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    getDataChart: async (req, res) => {
+        const { tenantId, curentYear } = req.params
+        const result = [
+            {Bulan: "Januari"},
+            {Bulan: "Februari"},
+            {Bulan: "Maret"},
+            {Bulan: "April"},
+            {Bulan: "Mei"},
+            {Bulan: "Juni"},
+            {Bulan: "Juli"},
+            {Bulan: "Agustus"},
+            {Bulan: "September"},
+            {Bulan: "Oktober"},
+            {Bulan: "November"},
+            {Bulan: "Desember"},
+        ]
+        try{
+            const response = await database.transaction.findAll({
+                attributes: ['transactionStatus', [Sequelize.fn('Count', Sequelize.col('transaction.id', 'transactionStatus')), 'Count'],
+                 [Sequelize.fn("MONTH", Sequelize.col("transaction.checkIn")), "month"], [Sequelize.fn("YEAR", Sequelize.col("transaction.checkIn")), "year"]
+                ],
+                include: 
+                [
+                    {
+                        model: database.room,
+                        attributes: [],
+                        required: true,
+                        include: [{
+                            model: database.property,
+                            attributes: [],
+                            where: {'tenantId': tenantId}
+                        }]
+                    }
+                ],
+                group: ['transactionStatus', 'month', 'year'],
+                having: {'year': curentYear},
+
+            })
+            response.map(item => result[item.dataValues.month - 1][item.dataValues.transactionStatus]= item.dataValues.Count)
+            const chart = result.filter(item => Object.keys(item).length > 1)
+            
+            res.status(201).send(chart)
         }catch(err){
             console.log(err)
             res.status(404).send(err)

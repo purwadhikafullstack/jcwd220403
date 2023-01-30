@@ -4,16 +4,12 @@ import {
     useMediaQuery,
     Box,
     Flex,
-    VStack,
-    Heading,
     Button,
     Tabs,
     TabList,
     Tab,
     TabPanels,
     TabPanel,
-    Stack,
-    HStack,
     Circle,
     Icon,
     Drawer,
@@ -34,6 +30,7 @@ import ProcesTransaction from './ProcessTransaction';
 import AktifTransaction from './AktifTransaction';
 import { IoAlarmOutline, IoBusinessOutline, IoCalendarOutline, IoFolderOpenOutline, IoListOutline } from "react-icons/io5";
 import { BiShow, BiHide } from "react-icons/bi";
+import ChartLine from '../Report/ChartLine';
   
   function TransactionUser() {
     const [isloading, setIsloading] = useState(true);
@@ -178,31 +175,51 @@ import { BiShow, BiHide } from "react-icons/bi";
                     <Center>
                         <Box w="90vw">
                             <Text fontWeight="bold" mt="2" >Transactions Overview</Text>
-                            <Flex h="15vh" justify="space-between">
-                                <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center" >
-                                    <Heading color="orange">
-                                        {data[data.findIndex(item => item.transactionStatus === "Menunggu Konfirmasi Pembayaran")] ? data[data.findIndex(item => item.transactionStatus === "Menunggu Konfirmasi Pembayaran")].Count : 0}
-                                    </Heading>
-                                    <Text fontSize="small" fontWeight="bold">Menunggu Konfirmasi Pembayaran</Text>
-                                </VStack>
-                                <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center">
-                                    <Heading color="orange">
-                                        {data[data.findIndex(item => item.transactionStatus === "Diproses")] ? data[data.findIndex(item => item.transactionStatus === "Diproses")].Count : 0}
-                                    </Heading>
-                                    <Text fontSize="small" fontWeight="bold">Diproses</Text>
-                                </VStack>
-                                <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center">
-                                    <Heading color="orange">
-                                        {data[data.findIndex(item => item.transactionStatus === "Aktif")] ? data[data.findIndex(item => item.transactionStatus === "Aktif")].Count : 0}
-                                    </Heading>
-                                    <Text fontSize="small" fontWeight="bold">Aktif</Text>
-                                </VStack>
-                                <VStack w='22%' borderRadius="2xl" bgColor="white" boxShadow="base" justify="center">
-                                    <Heading color="orange">
-                                        {data[data.findIndex(item => item.transactionStatus === "Selesai")] ? data[data.findIndex(item => item.transactionStatus === "Selesai")].Count : 0 }
-                                        </Heading>
-                                    <Text fontSize="small" fontWeight="bold">Selesai</Text>
-                                </VStack>
+                            <Flex h="15vh" justify="space-between" align="center">
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                    <Circle size="14" bgColor={active === "Menunggu Konfirmasi Pembayaran" ? "orange.100" : "gray.50"}>
+                                        <Icon w={8} h={8} as={IoAlarmOutline}/>
+                                    </Circle>
+                                    <Box ml="4">
+                                        <Text fontSize="small" color="gray.500" >Menunggu Konfirmasi Pembayaran</Text>
+                                        <Text color="orange" fontSize="md" fontWeight="bold" >
+                                            {data[data.findIndex(item => item.transactionStatus === "Menunggu Konfirmasi Pembayaran")] ? data[data.findIndex(item => item.transactionStatus === "Menunggu Konfirmasi Pembayaran")].Count : 0} Transaksi
+                                        </Text>
+                                    </Box>
+                                </Flex>
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                    <Circle size="14" bgColor={active === "Diproses" ? "orange.100" : "gray.50"} p="3">
+                                        <Icon w={8} h={8} as={IoCalendarOutline}/>
+                                    </Circle>
+                                    <Box ml="4">
+                                        <Text fontSize="small" color="gray.500" >Diproses</Text>
+                                        <Text color="orange" fontSize="md" fontWeight="bold" >
+                                            {data[data.findIndex(item => item.transactionStatus === "Diproses")] ? data[data.findIndex(item => item.transactionStatus === "Diproses")].Count : 0} Transaksi
+                                        </Text>
+                                    </Box>
+                                </Flex>
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                    <Circle size="14" bgColor={active === "Aktif" ? "orange.100" : "gray.50"} p="3">
+                                        <Icon w={8} h={8} as={IoBusinessOutline}/>
+                                    </Circle>
+                                    <Box ml="4">
+                                        <Text fontSize="small" color="gray.500" >Aktif</Text>
+                                        <Text color="orange" fontSize="md" fontWeight="bold" >
+                                            {data[data.findIndex(item => item.transactionStatus === "Aktif")] ? data[data.findIndex(item => item.transactionStatus === "Aktif")].Count : 0} Transaksi
+                                        </Text>
+                                    </Box>
+                                </Flex>
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                    <Circle size="14" bgColor={active === "Selesai" ? "orange.100" : "gray.50"} p="3">
+                                        <Icon w={8} h={8} as={IoFolderOpenOutline}/>
+                                    </Circle>
+                                    <Box ml="4">
+                                        <Text fontSize="small" color="gray.500" >Selesai</Text>
+                                        <Text color="orange" fontSize="md" fontWeight="bold" >
+                                            {data[data.findIndex(item => item.transactionStatus === "Selesai")] ? data[data.findIndex(item => item.transactionStatus === "Selesai")].Count : 0} Transaksi
+                                        </Text>
+                                    </Box>
+                                </Flex>
                             </Flex>
                             <Tabs size="sm" mt="8" colorScheme="orange"  >
                                 <TabList>
