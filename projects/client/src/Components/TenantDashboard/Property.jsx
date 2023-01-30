@@ -4,6 +4,7 @@ import { RiDashboardFill } from "react-icons/ri"
 import { BsListUl } from "react-icons/bs"
 import { RxDividerVertical } from "react-icons/rx"
 import { AiOutlineDown } from "react-icons/ai"
+import { Link } from "react-router-dom"
 
 //import component
 import CardProperty from './CardProperty'
@@ -21,13 +22,13 @@ const Property = () => {
 
     const flexDisplay = useBreakpointValue({
         base: "none",
-        md:"block",
-        lg:"block"
+        md: "block",
+        lg: "block"
     })
     const justifyContent = useBreakpointValue({
         base: "center",
-        md:"",
-        lg:""
+        md: "",
+        lg: ""
     })
 
     return (
@@ -65,7 +66,7 @@ const Property = () => {
                                         width="25px" textAlign="center" color={indexAcctive === 2 ? "white" : "#c6c6c6"}>2</Box>
                                 </Flex>
                             </Box>
-                            <Divider borderColor="#c6c6c6" orientation='vertical' marginLeft="5px"/>
+                            <Divider borderColor="#c6c6c6" orientation='vertical' marginLeft="5px" />
                         </Flex>
                         <Flex gap="5px" alignItems="center" marginLeft="5px" cursor="pointer" onClick={() => setIndexAcctive(3)}>
                             <Text color={indexAcctive === 3 ? "black" : "#c6c6c6"}>Draft</Text>
@@ -79,16 +80,15 @@ const Property = () => {
                     </Flex>
                 </Box>
                 <Box border="2px solid #ededed" borderRadius="10px" width="max-content" marginTop="10px" marginLeft="10px" display={flexDisplay}>
-                    <Flex p={2} justifyContent="center" alignItems="center">
-                        <Flex alignItems="center" gap="5px">
-                            <Text color="#999999" fontFamily="sans-serif">Show as</Text>
-                            <Icon as={RiDashboardFill} color="#176dc8" boxSize="20px" />
-                            <Text color="#575758" fontWeight="bold" fontSize="sans-serif">Grid</Text>
-                            <Icon as={RxDividerVertical} color="#999999" boxSize="20px" />
-                            <Icon as={BsListUl} boxSize="20px" />
-                            <Text color="#999999" fontFamily="sans-serif">List</Text>
+                    <Link to='/tenant/add-property'>
+                        <Flex p={2} justifyContent="center" alignItems="center" cursor="pointer">
+                            <Flex alignItems="center" gap="5px" textAlign="center">
+                                <Text color="#999999" fontFamily="sans-serif">More</Text>
+                                <Text color="#575758" fontWeight="bold" fontSize="sans-serif">Property</Text>
+                                <Icon as={RiDashboardFill} color="#176dc8" boxSize="25px" />
+                            </Flex>
                         </Flex>
-                    </Flex>
+                    </Link>
                 </Box>
                 <Spacer display={flexDisplay} />
                 <Box border="2px solid #ededed" borderRadius="10px" width="max-content" marginTop="10px" >
