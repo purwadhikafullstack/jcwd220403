@@ -28,6 +28,8 @@ import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
 import ReportPages from './Pages/Tenant/Report';
 
+
+import DashboardTenant from './Pages/Tenant/DashboardTenant';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -121,7 +123,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: 'dashboard',
-                    element: <Dashboard />,
+                    element: <DashboardTenant />,
                   },
                   {
                     path: 'dashboard/transaction',
