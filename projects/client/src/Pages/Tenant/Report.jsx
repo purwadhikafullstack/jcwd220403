@@ -1,8 +1,9 @@
 import { Box, Center, Flex, Text, useMediaQuery } from '@chakra-ui/react'
 import React from 'react'
-import MyBookingCalendar from '../../Components/Tenant/Report/CalenderAgenda'
+// import MyBookingCalendar from '../../Components/Tenant/Report/CalenderAgenda'
 // import AgendaCalender from '../../Components/Tenant/Report/CalenderAgenda'
-import ChartLine from '../../Components/Tenant/Report/ChartLine'
+// import ChartLine from '../../Components/Tenant/Report/ChartLine'
+import TableReport from '../../Components/Tenant/Report/Table'
 
 const ReportPages = () => {
     const [isMobile] = useMediaQuery('(max-width: 481px)');
@@ -11,15 +12,17 @@ const ReportPages = () => {
             {isMobile ? 
             <Center>
                 <Box w="100vw">
-                    <MyBookingCalendar/>
-                    <ChartLine/>
+                    {/* <MyBookingCalendar/>
+                    <ChartLine/> */}
+                    <TableReport/>
                 </Box>
             </Center>
             :
             <Center>
                 <Flex w="100vw" justify="space-evenly">
-                    <MyBookingCalendar/>
-                    <ChartLine/>
+                    {/* <MyBookingCalendar/>
+                    <ChartLine/> */}
+                    <TableReport/>
                 </Flex>
             </Center>
             }

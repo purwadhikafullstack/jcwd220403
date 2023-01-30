@@ -8,18 +8,23 @@ const { Op, Sequelize } = require("sequelize");
 
 module.exports = {
     reportTransactions: async (req, res) => {
-        const {tenantId, search, order, order_direction, limit, start, end, page} = req.query
-        const startedDate = new Date(start);
-        const endDate = new Date(end);
+        const {tenantId, search, order, order_direction, limit, start, end, page, transactionStatus} = req.query
+        const startedDate = start ? new Date(start) : null
+        const endDate = end ? new Date(end) : new Date(start)
         const offset = (page * limit) - limit
-        console.log(offset)
         console.log(req.query)
         try{
 
-            const totalRows = await database.transaction.findAll({
-                attributes: [[Sequelize.fn('Count', Sequelize.col('room.property.tenantId')), 'Count']],
+            const rows = await database.transaction.count({
                 where: { 
-                    checkIn: {[Op.between]: [startedDate, endDate]}
+                    [Op.and]: [
+                        {
+                            checkIn: startedDate ? {[Op.between]: [startedDate, endDate]} : {[Op.not]: null} 
+                        },
+                        {
+                            transactionStatus:  transactionStatus ? transactionStatus : {[Op.not]: null} 
+                        }
+                    ]
                 },
                 include: 
                 [
@@ -32,17 +37,35 @@ module.exports = {
                             attributes: [],
                             where: {'tenantId': tenantId}
                         }]
+                    },
+                    {
+                        model: database.user,
+                        attributes: ['fullName', 'email'],
+                        where: {
+                            fullName: search ? {
+                                [Op.like]: "%" + search + "%"
+                            } : {[Op.not]: null} 
+                        }
                     }
                 ],
                 group: ['room.property.tenantId'],
             })
 
-            // const totalPage = Math.ceil(totalRows[0].Count / limit);
+            const totalRows = rows[0] ? rows[0].count : 0
+            const totalPage = Math.ceil(totalRows / limit);
+            console.log(totalPage)
               
-            const response = await database.transaction.findAll({
+            const data = await database.transaction.findAll({
                 attributes: ['id', 'checkIn', 'checkOut', 'transactionStatus'],
                 where: { 
-                    checkIn: {[Op.between]: [startedDate, endDate]}
+                    [Op.and]: [
+                        {
+                            checkIn: startedDate ? {[Op.between]: [startedDate, endDate]} : {[Op.not]: null} 
+                        },
+                        {
+                            transactionStatus:  transactionStatus ? transactionStatus : {[Op.not]: null} 
+                        }
+                    ]
                 },
                 include: 
                 [
@@ -52,11 +75,16 @@ module.exports = {
                         include: [{
                             model: database.property,
                             attributes: ['tenantId', 'name'],
-                        }]
+                        }],
                     },
                     {
                         model: database.user,
-                        attributes: ['fullName', 'email']
+                        attributes: ['fullName', 'email'],
+                        where: {
+                            fullName: search ? {
+                                [Op.like]: "%" + search + "%"
+                            } : {[Op.not]: null} 
+                        }
                     }
                 ],
                 having: {
@@ -65,6 +93,9 @@ module.exports = {
                     ]
                 },
                 order: [
+                    order === "name" ? [{ model: database.room }, order, order_direction] : 
+                    order === "price" ? [{ model: database.room }, order, order_direction] : 
+                    order === "fullName" ? [{ model: database.user }, order, order_direction] : 
                     [order, order_direction]
                 ],
                 limit: [+limit],
@@ -73,9 +104,9 @@ module.exports = {
             
             res.status(201).send(
                 { 
-                    response,
-                    totalRows: totalRows[0],
-                    // totalPage
+                    totalRows,
+                    totalPage,
+                    data
                 } 
             )
         }catch(err){
