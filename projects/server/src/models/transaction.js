@@ -55,6 +55,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'transaction',
+      indexes: [
+        {
+          unique: false,
+          fields: ['transactionStatus'],
+        },
+      ],
     }
   );
   return transaction;

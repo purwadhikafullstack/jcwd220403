@@ -19,6 +19,8 @@ const {
   transactionRouters,
   privateTransactionRouters,
   propertyRouters,
+  paymentRouters,
+  paymentMethodRouter,
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
@@ -33,6 +35,7 @@ const corsOptions = {
     callback(new Error('Not allowed by CORS'));
   },
 };
+
 app.use(
   cors(corsOptions)
   // cors()
@@ -63,6 +66,7 @@ app.use(transactionRouters);
 app.use(tenantRouters);
 app.use(pagesRouters);
 app.use(roomsRouters);
+app.use(paymentMethodRouter);
 // app.use(tenantTransactionRouter);
 
 //routes that don't need token END
@@ -79,16 +83,16 @@ app.use(
     abortOnLimit: true,
   })
 );
-
 //routes that need token START
 app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
+app.use(paymentRouters);
+app.use(tenantRouters);
+app.use(tenantTransactionRouter);
 //routes that need token END
 //device detection END
-app.use(tenantRouters);
-app.use(tenantTransactionRouter)
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

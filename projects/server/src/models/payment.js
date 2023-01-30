@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+      payment.belongsTo(models.paymentMethod, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
   }
   payment.init(
@@ -24,12 +29,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       paymentProof: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
       sequelize,
       modelName: 'payment',
+      indexes: [
+        {
+          unique: false,
+          fields: ['createdAt'],
+        },
+      ],
     }
   );
   return payment;

@@ -27,9 +27,10 @@ import BookingDetail from './Pages/Booking/BookingDetail';
 import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
 import ReportPages from './Pages/Tenant/Report';
-
-
+import PaymentInstruction from './Pages/Payment/PaymentInstruction';
+import Trips from './Pages/Trips/Trips';
 import DashboardTenant from './Pages/Tenant/DashboardTenant';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -77,11 +78,6 @@ const router = createBrowserRouter([
             path: '/book/:propertyId/:index/:roomId',
             element: <BookingDetail />,
           },
-
-          {
-            path: '/book/:propertyId/:index/:roomId',
-            element: <BookingDetail />,
-          },
           {
             element: <RequireAuth />,
             children: [
@@ -92,6 +88,14 @@ const router = createBrowserRouter([
               {
                 path: '/payment/:transactionId',
                 element: <PaymentPage />,
+              },
+              {
+                path: '/payment/:transactionId/:paymentId/:paymentMethodId',
+                element: <PaymentInstruction />,
+              },
+              {
+                path: '/trips',
+                element: <Trips />,
               },
             ],
           },
@@ -108,6 +112,7 @@ const router = createBrowserRouter([
         children: [
           {
             element: <HostHome />,
+            errorElement: <ErrorPage />,
             children: [
               {
                 path: '/register-tenant',

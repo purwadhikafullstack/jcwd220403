@@ -7,12 +7,13 @@ const RegisterAsTenant = require('./registerAsTenantController');
 const tenantTransaction = require('./transactionTenantControllers');
 const pagesControllers = require('./pagesControllers');
 const roomControllers = require('./roomsControllers');
-const paymentContoller = require('./transaction/paymentController');
+const paymentController = require('./transaction/paymentController');
 const transactionControllers = require('./transaction/transactionControllers');
 const privateTransactionControllers = require('./transaction/privateTransactionControllers');
 const registerAsTenantController = require('./registerAsTenantController');
 const propertyControllers = require('./property/propertyControllers');
 const reportControllers = require('./reportControllers');
+const paymentMethodControllers = require('./transaction/paymentMethodControllers');
 
 module.exports = {
   authControllers,
@@ -24,10 +25,11 @@ module.exports = {
   pagesControllers,
   roomControllers,
   tenantTransaction,
-  paymentContoller,
   transactionControllers,
   privateTransactionControllers,
   registerAsTenantController,
   propertyControllers,
   reportControllers,
+  paymentController,
+  paymentMethodControllers,
 };

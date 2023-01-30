@@ -2,59 +2,75 @@ import React from 'react';
 import {
   Card,
   CardBody,
-  Image,
   Stack,
   Heading,
   Text,
-  Divider,
-  Skeleton,
-  HStack,
+  StackDivider,
+  Box,
+  Image,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import axios from '../../api/axios';
-import { useParams } from 'react-router-dom';
 
-function TransactionCard() {
-  const [data, setData] = useState([]);
-  const [isloading, setIsloading] = useState(true);
-  const params = useParams();
+import useAuth from '../../hooks/useAuth';
 
-  const getData = async () => {
-    try {
-      const res = await axios.get(`transaction/${params.transactionId}`);
-      setData(res.data);
-      setIsloading(false);
-    } catch (err) {
-      console.log(err);
-    }
+function TransactionCard({ data }) {
+  const { auth } = useAuth();
+
+  const totalDay = () => {
+    return Math.floor(
+      (new Date(data[0].checkOut).getTime() -
+        new Date(data[0].checkIn).getTime()) /
+        (1000 * 3600 * 24)
+    );
   };
 
-  useEffect(() => {
-    getData();
-  }, [isloading]);
+  return (
+    <Card
+      maxW='xl'
+      maxH='md'
+      boxShadow='xl'
+      direction={{ base: 'column', sm: 'row' }}
+      overflow='hidden'
+      variant='outline'
+    >
+      <Image
+        objectFit='cover'
+        maxW={{ base: '100%', sm: '200px' }}
+        src={'http://localhost:2000/roomPicture/' + data[0].picture}
+      ></Image>
 
-  return isloading ? (
-    <Skeleton isLoaded={true}> </Skeleton>
-  ) : (
-    <Skeleton isLoaded={!isloading}>
-      <Card maxW='xl'>
-        <CardBody>
-          <Text>Booking ID</Text>
-          <Stack mt='6' spacing='3'>
-            <Heading size='lg'>{data.id}</Heading>
-
-            <Divider />
-
-            <Heading size='md'>Booking Details</Heading>
-
-            <Divider />
-            <HStack justifyContent={'space-between'}>
-              <Heading size='md'>Guest</Heading>
-            </HStack>
-          </Stack>
-        </CardBody>
-      </Card>
-    </Skeleton>
+      <CardBody>
+        <Stack divider={<StackDivider />} spacing='4'>
+          <Box>
+            <Heading size='md' color='teal.400' textTransform='uppercase'>
+              Booking ID
+            </Heading>
+            <Text size='lg' mt='10px'>
+              {data[0].id}
+            </Text>
+          </Box>
+          <Box>
+            <Heading size='xs' color='teal.400' textTransform='uppercase'>
+              Booking Details
+            </Heading>
+            <Text pt='2' pb='2' fontSize='sm' fontWeight='bold'>
+              {data[0].property_name}
+            </Text>
+            <Text>Check in: {new Date(data[0].checkIn).toDateString()}</Text>
+            <Text>Stay for: {totalDay()} night(s)</Text>
+            <Text>Room: {data[0].room_name}</Text>
+          </Box>
+          <Box>
+            <Heading size='xs' color='teal.400' textTransform='uppercase'>
+              Guest
+            </Heading>
+            <Box mt='3'>
+              <Text>Booked by: {auth.name}</Text>
+              <Text>Total guest(s): {data[0].total_guest}</Text>
+            </Box>
+          </Box>
+        </Stack>
+      </CardBody>
+    </Card>
   );
 }
 

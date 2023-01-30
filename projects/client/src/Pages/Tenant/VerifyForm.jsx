@@ -71,10 +71,10 @@ export default function VerifyForm() {
       const toastData = await toast.promise(
         res,
         {
-          pending: 'Login on progress...',
+          pending: 'Sending data...',
           success: {
             render({ data }) {
-              return `Success,  ${data.data.message}`;
+              return `${data.data.message}`;
             },
           },
           error: {
@@ -140,7 +140,7 @@ export default function VerifyForm() {
                 <Input
                   className='file-selector-verify'
                   type={'file'}
-                  accept={'image/*'}
+                  accept='image/png, image/jpeg, image/jpg, image/webp'
                   // sx={{
                   //   '::file-selector-button': {
                   //     height: 10,
