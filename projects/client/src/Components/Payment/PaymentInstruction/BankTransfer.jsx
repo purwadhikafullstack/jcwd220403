@@ -25,6 +25,8 @@ export default function BankTransfer({ data }) {
   const [bank, setBank] = useState();
   const [payment, setPayment] = useState();
   const [loading, setLoading] = useState(true);
+  const [selectedFile, setSelectedFile] = useState();
+  const [errorMessageForFile, setErrorMessageForFile] = useState('');
   const params = useParams();
   const totalDay = () => {
     return Math.floor(
@@ -56,27 +58,33 @@ export default function BankTransfer({ data }) {
     }
   };
 
-  // const addPaymentProof = async () => {
-  //   try {
-  //     const data = new FormData();
-  //     const paymentProofData = await axiosPrivate.post(
-  //       `/payment/${params.transactionId}/verification`,
-  //       data
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  console.log(payment);
+  const handleFileInput = (e) => {
+    const file = e.target.files[0];
+    const MAX_FILE_SIZE = 1024 * 1024; //1M
+    if (file?.size > MAX_FILE_SIZE) {
+      setErrorMessageForFile('file is too large');
+      setSelectedFile();
+    } else {
+      setErrorMessageForFile('');
+      setSelectedFile(file);
+    }
+  };
+
+  const addPaymentProof = async () => {
+    try {
+      const data = new FormData();
+      const paymentProofData = await axiosPrivate.post(
+        `/payment/${params.transactionId}/verification`,
+        data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getBankData();
     getpaymentData();
-    // const getData = async () => {
-    //   await getBankData();
-    //   await getpaymentData();
-    // };
-    // getData();
   }, [loading]);
 
   function priceInCurrency() {
@@ -156,8 +164,9 @@ export default function BankTransfer({ data }) {
               className='file-selector-verify'
               type={'file'}
               accept={'image/*'}
+              onChange={(e) => handleFileInput(e)}
             ></Input>
-            {/* <Text color={'red'}>error message</Text> */}
+            <Text color={'red'}>{errorMessageForFile}</Text>
           </FormControl>
           <Text fontSize='10px'>
             Once your payment is confirmed we will send your e-ticket to your
