@@ -26,6 +26,7 @@ import TransactionUser from '../Tenant/Transaction/TransactionUser';
 //import component
 import Property from './Property';
 import Room from './Room';
+import ReportPages from '../../Pages/Tenant/Report';
 
 const SideBarDashboardAndRenderComponent = () => {
     const [activeIndex, setActiveIndex] = useState(1);
@@ -132,6 +133,13 @@ const SideBarDashboardAndRenderComponent = () => {
             return (
                 <Box>
                     <TransactionUser/> 
+                </Box>
+            )
+        }
+        else if (activeIndex === 6 || activeIndexFromMobile === 6){
+            return (
+                <Box>
+                    <ReportPages/> 
                 </Box>
             )
         }

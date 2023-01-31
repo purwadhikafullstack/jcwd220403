@@ -170,12 +170,12 @@ import ChartLine from '../Report/ChartLine';
                 
             </Box>
           ) : (
-            <Flex w="100vw">
-                <Box w="100vw" h="100vh" bgColor="gray.50">
+            <Flex >
+                <Box h="100vh">
                     <Center>
-                        <Box w="90vw">
-                            <Text fontWeight="bold" mt="2" >Transactions Overview</Text>
-                            <Flex h="15vh" justify="space-between" align="center">
+                        <Box >
+                            {/* <Text fontWeight="bold" mt="2" >Transactions Overview</Text> */}
+                            <Flex h="15vh" m="4" justify="space-between" align="center">
                                 <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
                                     <Circle size="14" bgColor={active === "Menunggu Konfirmasi Pembayaran" ? "orange.100" : "gray.50"}>
                                         <Icon w={8} h={8} as={IoAlarmOutline}/>

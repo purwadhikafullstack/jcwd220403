@@ -101,11 +101,50 @@ module.exports = {
                 limit: [+limit],
                 offset: [offset]
             })
+
+            const amount = await database.transaction.findAll({
+                attributes: [
+                    [Sequelize.fn('sum', Sequelize.col('room.price')), 'total_amount'],
+                  ],
+                where: { 
+                    [Op.and]: [
+                        {
+                            checkIn: startedDate ? {[Op.between]: [startedDate, endDate]} : {[Op.not]: null} 
+                        },
+                        {
+                            transactionStatus:  ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']
+                        }
+                    ]
+                },
+                include: 
+                [
+                    {
+                        model: database.room,
+                        attributes: [],
+                        include: [{
+                            model: database.property,
+                            attributes: [],
+                            where: {
+                                tenantId
+                            }
+                        }],
+                    },
+                ],
+                group: ['room.property.tenantId'],
+                having: {
+                    [Op.and]: [
+                        {'total_amount': {[Op.not]: null} },
+                    ]
+                },
+              });
+
+              const totalAmount = amount[0] ? +amount[0].dataValues.total_amount : 0
             
             res.status(201).send(
                 { 
                     totalRows,
                     totalPage,
+                    totalAmount,
                     data
                 } 
             )

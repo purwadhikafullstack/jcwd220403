@@ -107,7 +107,7 @@ import {
           ) : (
             <Box mt="4" bgColor="white" boxShadow="base" borderRadius="2xl">
                 <Center>
-                    <TableContainer w="88vw">
+                    <TableContainer w="80vw">
                         <Table variant='simple'>
                             <TableCaption>{data.length === 0 ? "No Item" : "Holistay Transactions Users"}</TableCaption>
                             <Thead>
