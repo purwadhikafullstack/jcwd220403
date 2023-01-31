@@ -12,7 +12,7 @@ function HomeCard() {
   const [currentData, setCurrentData] = useState();
   const [loading, setLoading] = useState(false);
   const { search } = useSearch();
-
+  
   const getdata = async () => {
     try {
       setLoading(true);

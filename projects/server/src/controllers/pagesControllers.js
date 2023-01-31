@@ -3,7 +3,7 @@ const { Op, Sequelize } = require("sequelize");
 
 module.exports = {
     landingPage: async (req, res) => {
-        const {lokasi, state} = req.body
+        const {lokasi, state, fasilitas} = req.body
         try{
             const response = await database.property.findAll({
                 attributes: ['id', 'name', 'description', 'picture'],
@@ -39,6 +39,31 @@ module.exports = {
                                     ],
                                 },
                             },
+                            { 
+                                model: database.unavailableDates,
+                                required: false,
+                                attributes: ['id'],
+                                where: {
+                                    [Op.or] : [
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                    ],
+                                },
+                            },
                         ],
                     },
                     { 
@@ -50,6 +75,15 @@ module.exports = {
                         model: database.propertypicture,
                         attributes: [[Sequelize.col('name'),'picture']]
                     },
+                    {
+                        model: database.facility,
+                        where: {
+                            name: fasilitas ? {
+                                [Op.like]: "%" + fasilitas + "%"
+                            } : {[Op.not]: null} 
+                        }
+
+                    },
                 ],
                 order: [
                     // ['id', 'ASC'],
@@ -60,7 +94,7 @@ module.exports = {
                         [Op.and]: [
                             {
                                 'rooms.transactions.id': null,
-                                // 'rooms.availability': true
+                                'rooms.unavailableDates.id': null,
                             }
                         ]
                     }

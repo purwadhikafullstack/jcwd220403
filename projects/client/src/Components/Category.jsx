@@ -11,6 +11,7 @@ import {
 import { CategorySliders } from '../Data/CategorySliders';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { AnimatePresence, motion } from 'framer-motion';
+import useSearch from '../hooks/useSeacrh';
 
 //untuk swipe di mobile
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,6 +22,7 @@ const Category = () => {
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const [isTablet] = useMediaQuery('(max-width: 868px) and (min-width: 481px)');
   const numCards = isTablet ? 6 : 10;
+  const { search, setSearch } = useSearch();
 
   const widht = useBreakpointValue({
     base: 'auto',
@@ -108,6 +110,7 @@ const Category = () => {
                     margin='15'
                     marginRight={MarginRight}
                     width='50px'
+                    onClick={() => setSearch({ ...search, fasilitas: item.title})}
                   >
                     <Center>
                       <Image src={item.img} width={widht} height='35px' />

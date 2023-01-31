@@ -28,8 +28,6 @@ import {
   Portal,
   PopoverContent,
   PopoverArrow,
-  PopoverHeader,
-  PopoverCloseButton,
   PopoverBody,
   Button,
   PopoverFooter,
@@ -37,22 +35,17 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  RadioGroup,
-  Stack,
-  Radio,
-  MenuOptionGroup,
-  MenuItemOption,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
-import { IoCaretUp, IoCaretDown, IoCloseOutline, IoCalendarOutline, IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
+import { IoCaretUp, IoCaretDown, IoCloseOutline, IoCalendarOutline } from "react-icons/io5";
 import { GrMoney } from "react-icons/gr";
 import { SearchIcon } from "@chakra-ui/icons";
 import { DateRange } from "react-date-range";
-import { addDays } from 'date-fns';
-import { BiCalendar, BiFilter, BiSort } from "react-icons/bi";
+import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from "react-icons/bs";
+import { BiSort } from "react-icons/bi";
+import { TbFilter, TbFilterOff } from "react-icons/tb";
 
 function TableReport() {
   const [isloading, setIsloading] = useState(true);
@@ -133,6 +126,8 @@ function TableReport() {
     }
   };
 
+  console.log(status)
+
   useEffect(() => {
     getData();
   }, [order_direction, order, search, status, limit, start, end, page]);
@@ -141,8 +136,8 @@ function TableReport() {
     <>
       <Center>
         {isMobile ? (
-          <Box w="90vw" mt="2" borderRadius="3xl" p="2" bgColor="white" boxShadow="base" >
-                <Flex Flex bgColor="white" mt="2" p="4" align="center" h="full"   >
+          <Box w="90vw" mt="2" mb="8" borderRadius="3xl" p="2" bgColor="white" boxShadow="base" >
+                <Flex Flex bgColor="white" mt="4" p="4" align="center" h="full" >
                     <Circle boxShadow="lg" size="16" bgColor="orange.100">
                         <Icon w={8} h={8} as={GrMoney}/>
                     </Circle>
@@ -201,14 +196,14 @@ function TableReport() {
                     </Popover>
                     </Box>                    
                 </Flex>
-
                 <Flex m="4" w="80vw" justify="space-evenly" align="center">
-                    <InputGroup bgColor="gray.50" boxShadow="base" w="80%"  borderRadius="3xl" overflow="hidden">
+                <InputGroup bgColor="gray.50" boxShadow="base" w="70%" size="sm"  borderRadius="3xl" overflow="hidden">
                         <InputLeftElement
                         pointerEvents='none'
                         children={<SearchIcon />}
                         />
-                        <Input borderRadius="3xl" placeholder='Search ..' fontSize="small" type="text" />
+                        <Input borderRadius="3xl" placeholder='Search User' value={search} onChange={(e) => {setSearch(e.target.value); setPage(1)}} fontSize="small" type="text" />
+                        { search ? <InputRightElement onClick={() => setSearch('')} children={<Icon cursor="pointer" as={IoCloseOutline}/>}/> : null}
                     </InputGroup>
                     <Menu>
                         <MenuButton >
@@ -216,24 +211,56 @@ function TableReport() {
                         </MenuButton>
                         <MenuList>
                             {head.map(item => {
-                                <MenuItem>{item.label}</MenuItem>
+                                return (
+                                <MenuItem onClick={() => {setOrder(item.name); setPage(1)}}>{item.label}</MenuItem>
+                                )
                             })}
                         </MenuList>
                     </Menu>
-                </Flex>
+                    {status === '' ? 
+                    <Menu>
+                        <MenuButton >
+                            <Icon as={TbFilter} />
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem onClick={() => {setStatus('Menunggu Konfirmasi Pembayaran'); setPage(1)}}>Menunggu Konfirmasi Pembayaran</MenuItem>
+                            <MenuItem onClick={() => {setStatus('Diproses'); setPage(1)}}>Diproses</MenuItem>
+                            <MenuItem onClick={() => {setStatus('Aktif'); setPage(1)}}>Aktif</MenuItem>
+                            <MenuItem onClick={() => {setStatus('Selesai'); setPage(1)}}>Selesai</MenuItem>
+                            <MenuItem onClick={() => {setStatus('Gagal'); setPage(1)}}>Gagal</MenuItem>
+                        </MenuList>
+                    </Menu>
+                    : <Icon as={TbFilterOff} onClick={() => {setStatus(''); setPage(1)}} />
+                    }
 
-                
+                    <Menu>
+                        <MenuButton fontSize="x-small" alignSelf="center" >
+                            {limit}
+                            <Icon as={IoCaretDown} />
+                        </MenuButton>
+                        <MenuList fontSize="x-small" >
+                            <MenuItem onClick={() => {setLimit(2); setPage(1)}}>2</MenuItem>
+                            <MenuItem onClick={() => {setLimit(10); setPage(1)}}>10</MenuItem>
+                            <MenuItem onClick={() => {setLimit(100); setPage(1)}}>100</MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Flex>
                 <TableContainer w="88vw">
                     <Table variant='simple'>
                         <TableCaption>{data.length === 0 ? "No Item" : "Holistay Transactions Users"}</TableCaption>
                         <Thead>
                         <Tr>
-                            {/* <Th>Detail</Th> */}
-                            <Th>Detail Transaction</Th>
-                            <Th>Benefit</Th>
+                            <Th>
+                                Detail Transaction
+                                { order === "price" ? null : <TagRightIcon as={ order_direction === "ASC" ? BsSortAlphaUpAlt : BsSortAlphaDownAlt} onClick={() => setOrder_direction(order_direction === "ASC" ? "DESC" : "ASC")}/>}
+                            </Th>
+                            <Th>
+                                Benefit
+                                { order !== "price" ? null : <TagRightIcon as={ order_direction === "ASC" ? BsSortAlphaUpAlt : BsSortAlphaDownAlt} onClick={() => setOrder_direction(order_direction === "ASC" ? "DESC" : "ASC")}/>}
+                            </Th>
                         </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody fontFamily="serif" >
                         {data.map(item => {
                             return(
                                 <Tr>
@@ -263,6 +290,15 @@ function TableReport() {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <Flex w="full" justify="center" align="center">
+                {pages.length === 1 ? null : pages.map(item => {
+                    return (
+                        <Circle bgColor={page === item ? "orange" : "gray.100"} onClick={() => setPage(item)} cursor="pointer" boxShadow="base" m="0.5" fontSize="small" justify="center" w="7" p="1" >
+                            {item}
+                        </Circle>
+                    )
+                })}
+              </Flex>
             </Box>
         ) : (
           <Box mt="4" bgColor="white" boxShadow="base" pb="5" borderRadius="2xl">
@@ -361,7 +397,7 @@ function TableReport() {
                                 <Th textAlign="center" cursor="pointer" onClick={() => ordering(item.name, order_direction)}>
                                     {item.label}
                                     { order === item.name ? <TagRightIcon as={ order_direction === 'ASC' ? IoCaretUp : IoCaretDown}/> : null}
-                                    </Th>
+                                </Th>
                             )
                         })}
                     </Tr>
