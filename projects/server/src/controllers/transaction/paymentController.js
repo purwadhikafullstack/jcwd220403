@@ -20,7 +20,7 @@ const addPayment = async (req, res) => {
 
     await sequelize.query(`
     CREATE EVENT payment_${addPayment.id}
-    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 MINUTE
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 HOUR
     DO
     UPDATE transactions JOIN payments
     ON transactions.id = payments.transactionId 
@@ -82,7 +82,7 @@ const uploadPaymentProof = async (req, res) => {
 
   res.status(200).send({
     message:
-      'file is successfully uploaded, please wait for the verification process',
+      'File is successfully uploaded, please wait for the verification process',
     data: addPaymentProof,
   });
 };

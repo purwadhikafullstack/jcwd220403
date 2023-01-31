@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Timer from './Timer';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function BankTransfer({ data }) {
   const axiosPrivate = useAxiosPrivate();
@@ -27,6 +28,7 @@ export default function BankTransfer({ data }) {
   const [loading, setLoading] = useState(true);
   const [selectedFile, setSelectedFile] = useState();
   const [errorMessageForFile, setErrorMessageForFile] = useState('');
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const params = useParams();
   const totalDay = () => {
     return Math.floor(
@@ -35,6 +37,7 @@ export default function BankTransfer({ data }) {
         (1000 * 3600 * 24)
     );
   };
+
   const getpaymentData = async () => {
     try {
       const data = await axiosPrivate.get(`/payment/${params.paymentId}`);
@@ -69,16 +72,37 @@ export default function BankTransfer({ data }) {
     }
   };
 
-  const addPaymentProof = async () => {
+  const submitPaymentProof = async (e) => {
+    e.preventDefault();
+    setDisableSubmitBtn(true);
     try {
       const data = new FormData();
-      const paymentProofData = await axiosPrivate.post(
+      data.append('paymentProof', selectedFile);
+      const paymentProofData = axiosPrivate.post(
         `/payment/${params.transactionId}/verification`,
         data
+      );
+      await toast.promise(
+        paymentProofData,
+        {
+          pending: 'Sending payment proof...',
+          success: {
+            render({ data }) {
+              return `${data.data.message}`;
+            },
+          },
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
+        },
+        { position: toast.POSITION.TOP_CENTER }
       );
     } catch (error) {
       console.log(error);
     }
+    setDisableSubmitBtn(false);
   };
 
   useEffect(() => {
@@ -100,6 +124,7 @@ export default function BankTransfer({ data }) {
     <Skeleton height='200px' width='200px'></Skeleton>
   ) : (
     <Stack gap={10}>
+      <ToastContainer />
       <Alert status='info' variant='subtle' color={'blue'} borderRadius={10}>
         <AlertIcon />
         <AlertDescription>
@@ -173,8 +198,13 @@ export default function BankTransfer({ data }) {
           </Text>
         </Box>
       </Box>
-
-      <Button colorScheme='teal'>I Have Completed Payment</Button>
+      <Button
+        colorScheme='teal'
+        onClick={submitPaymentProof}
+        disabled={disableSubmitBtn}
+      >
+        I Have Completed Payment
+      </Button>
     </Stack>
   );
 }
