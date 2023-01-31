@@ -16,7 +16,7 @@ import RegisterWelcome from './Pages/Tenant/RegisterWelcome';
 import VerifyForm from './Pages/Tenant/VerifyForm';
 import RequireTenantRole from './Components/RequireTenantRole';
 import BeTenant from './Pages/Tenant/BeTenant';
-import Dashboard from './Pages/Tenant/Dashboard';
+// import Dashboard from './Pages/Tenant/Dashboard';
 import DetailPages from './Pages/DetailPage';
 import './Styles/swall.css';
 import 'animate.css';

@@ -20,7 +20,7 @@ const addPayment = async (req, res) => {
 
     await sequelize.query(`
     CREATE EVENT payment_${addPayment.id}
-    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 HOUR
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 MINUTE
     DO
     UPDATE transactions JOIN payments
     ON transactions.id = payments.transactionId 

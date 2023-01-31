@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useNavigate, Navigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
 import BookingPolicy from '../../Components/Booking/BookingPolicy';
 import BookingDate from '../../Components/Booking/BookingDate';
 import GuestList from '../../Components/Booking/GuestList';
@@ -19,6 +19,7 @@ import PropertyCard from '../../Components/Booking/PropertyCard';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
+import toISOLocal from '../../hooks/useLocalISOString';
 
 export default function BookingDetail() {
   const params = useParams();
@@ -63,8 +64,8 @@ export default function BookingDetail() {
       const data = new FormData();
       data.append('userId', userId);
       data.append('roomId', params.roomId);
-      data.append('checkIn', date[0].toISOString().slice(0, 10));
-      data.append('checkOut', date[1].toISOString().slice(0, 10));
+      data.append('checkIn', toISOLocal(date[0]).slice(0, 10));
+      data.append('checkOut', toISOLocal(date[1]).slice(0, 10));
       data.append('adultGuest', adultGuest);
       data.append('childrenGuest', childrenGuest);
       data.append('infantGuest', infantGuest);
@@ -107,6 +108,10 @@ export default function BookingDetail() {
   useEffect(() => {
     numberOfDays();
   }, [date]);
+
+  // console.log(date[0]);
+  // console.log(toISOLocal(date[0]).slice(0, 10));
+  // console.log(toISOLocal(date[1]).slice(0, 10));
 
   return submitSuccess ? (
     <Navigate to={`/payment/${submittedData}`} />
