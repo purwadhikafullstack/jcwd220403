@@ -53,10 +53,10 @@ const addTransaction = async (req, res) => {
 
 const getuserTransaction = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { userId } = req.params;
 
     const transactions = await transaction.findAll({
-      where: { userId: id },
+      where: { userId },
     });
 
     res.status(200).send(transactions);
