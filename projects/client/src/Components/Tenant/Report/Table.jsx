@@ -225,9 +225,8 @@ function TableReport() {
                         <MenuList>
                             <MenuItem onClick={() => {setStatus('Menunggu Konfirmasi Pembayaran'); setPage(1)}}>Menunggu Konfirmasi Pembayaran</MenuItem>
                             <MenuItem onClick={() => {setStatus('Diproses'); setPage(1)}}>Diproses</MenuItem>
-                            <MenuItem onClick={() => {setStatus('Aktif'); setPage(1)}}>Aktif</MenuItem>
-                            <MenuItem onClick={() => {setStatus('Selesai'); setPage(1)}}>Selesai</MenuItem>
                             <MenuItem onClick={() => {setStatus('Gagal'); setPage(1)}}>Gagal</MenuItem>
+                            <MenuItem onClick={() => {setStatus('Dibatalkan'); setPage(1)}}>Dibatalkan</MenuItem>
                         </MenuList>
                     </Menu>
                     : <Icon as={TbFilterOff} onClick={() => {setStatus(''); setPage(1)}} />
@@ -377,9 +376,8 @@ function TableReport() {
                         <option value={''}>Get All</option>
                         <option value={'Menunggu Konfirmasi Pembayaran'}>Menunggu Konfirmasi Pembayaran</option>
                         <option value={'Diproses'}>Diproses</option>
-                        <option value={'Aktif'}>Aktif</option>
-                        <option value={'Selesai'}>Selesai</option>
                         <option value={'Gagal'}>Gagal</option>
+                        <option value={'Dibatalkan'}>Dibatalkan</option>
                     </Select>
                     <Select boxShadow="base" bgColor="gray.50" ml="3" onChange={(e) => {setLimit(e.target.value); setPage(1)}} defaultValue={10} size="sm" w="5vw" borderRadius="2xl">
                         <option value={10}>10</option>

@@ -148,6 +148,31 @@ module.exports = {
                                     ],
                                 },
                             },
+                            { 
+                                model: database.unavailableDates,
+                                required: false,
+                                attributes: ['id'],
+                                where: {
+                                    [Op.or] : [
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                    ],
+                                },
+                            },
                             {
                                 model: database.image,
                             }

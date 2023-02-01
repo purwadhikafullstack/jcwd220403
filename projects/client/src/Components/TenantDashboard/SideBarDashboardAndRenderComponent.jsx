@@ -27,6 +27,9 @@ import TransactionUser from '../Tenant/Transaction/TransactionUser';
 import Property from './Property';
 import Room from './Room';
 import ReportPages from '../../Pages/Tenant/Report';
+import ChartLine from '../Tenant/Report/ChartLine';
+import AgendaCalender from '../Tenant/Report/CalenderAgenda';
+import DashboardHomeTenant from '../../Pages/Tenant/DashboardHomeTenant';
 
 const SideBarDashboardAndRenderComponent = () => {
     const [activeIndex, setActiveIndex] = useState(1);
@@ -112,9 +115,9 @@ const SideBarDashboardAndRenderComponent = () => {
     const RenderComponent = () => {
         if (activeIndex === 0 || activeIndexFromMobile === 0) {
             return (
-                <Text>
-                    ini component dashboard
-                </Text>
+                <Box>
+                    <DashboardHomeTenant/>
+                </Box>
             )
         } else if (activeIndex === 1 || activeIndexFromMobile === 1) {
             return (

@@ -112,7 +112,7 @@ module.exports = {
                             checkIn: startedDate ? {[Op.between]: [startedDate, endDate]} : {[Op.not]: null} 
                         },
                         {
-                            transactionStatus:  ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']
+                            transactionStatus:  ['Menunggu Konfirmasi Pembayaran', 'Diproses']
                         }
                     ]
                 },

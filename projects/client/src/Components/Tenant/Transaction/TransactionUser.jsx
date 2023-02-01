@@ -24,13 +24,12 @@ import {
   import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
   import Swal from 'sweetalert2';
   import useAuth from '../../../hooks/useAuth';
-  import WaitPayment from './WaitPayment';
-import DoneTransaction from './DoneTransaction';
 import ProcesTransaction from './ProcessTransaction';
-import AktifTransaction from './AktifTransaction';
 import { IoAlarmOutline, IoBusinessOutline, IoCalendarOutline, IoFolderOpenOutline, IoListOutline } from "react-icons/io5";
 import { BiShow, BiHide } from "react-icons/bi";
 import ChartLine from '../Report/ChartLine';
+import WaitPaymentConfirm from './WaitPaymentConfirm';
+import WaitPayment from './WaitPayment';
   
   function TransactionUser() {
     const [isloading, setIsloading] = useState(true);
@@ -97,32 +96,21 @@ import ChartLine from '../Report/ChartLine';
                                     </Text>
                                 </Box>
                             </Flex>
-                            <Flex bgColor="white" mt="2" p="4" borderRadius="3xl" boxShadow="base" onClick={() => setActive("Aktif")}>
-                                <Circle bgColor={active === "Aktif" ? "green.100" : "gray.50"} p="3">
+                            <Flex bgColor="white" mt="2" p="4" borderRadius="3xl" boxShadow="base" onClick={() => setActive("Menunggu Pembayaran")}>
+                                <Circle bgColor={active === "Menunggu Pembayaran" ? "green.100" : "gray.50"} p="3">
                                     <Icon w={5} h={5} as={IoBusinessOutline}/>
                                 </Circle>
                                 <Box ml="4">
-                                    <Text fontSize="small" color="gray.500" >Aktif</Text>
+                                    <Text fontSize="small" color="gray.500" >Menunggu Pembayaran</Text>
                                     <Text color="green" fontSize="md" fontWeight="bold" >
-                                        {data[data.findIndex(item => item.transactionStatus === "Aktif")] ? data[data.findIndex(item => item.transactionStatus === "Aktif")].Count : 0} Transaksi
-                                    </Text>
-                                </Box>
-                            </Flex>
-                            <Flex bgColor="white" mt="2" mb="2" p="4" borderRadius="3xl" boxShadow="base" onClick={() => setActive("Selesai")}>
-                                <Circle bgColor={active === "Selesai" ? "green.100" : "gray.50"} p="3">
-                                    <Icon w={5} h={5} as={IoFolderOpenOutline}/>
-                                </Circle>
-                                <Box ml="4">
-                                    <Text fontSize="small" color="gray.500" >Selesai</Text>
-                                    <Text color="green" fontSize="md" fontWeight="bold" >
-                                        {data[data.findIndex(item => item.transactionStatus === "Selesai")] ? data[data.findIndex(item => item.transactionStatus === "Selesai")].Count : 0} Transaksi
+                                        {data[data.findIndex(item => item.transactionStatus === "Menunggu Pembayaran")] ? data[data.findIndex(item => item.transactionStatus === "Menunggu Pembayaran")].Count : 0} Transaksi
                                     </Text>
                                 </Box>
                             </Flex>
                         </>
                         : null
                         }
-                        {active === "Menunggu Konfirmasi Pembayaran" ? <WaitPayment/> : active === "Diproses" ? <ProcesTransaction/> : active === "Aktif" ? <AktifTransaction/> : <DoneTransaction />}
+                        {active === "Menunggu Konfirmasi Pembayaran" ? <WaitPaymentConfirm/> : active === "Diproses" ? <ProcesTransaction/> : <WaitPayment/>}
                     </Box>
                         <Drawer
                             isOpen={isOpen}
@@ -149,16 +137,10 @@ import ChartLine from '../Report/ChartLine';
                                             Diproses
                                         </Text>
                                     </Flex>
-                                    <Flex h="40px" align="center" borderRight={active === "Aktif" ? "4px" : "none"} borderRightColor={active === "Aktif" ? "green" : "black"} color={active === "Aktif" ? "green" : "black"} w="70vw"
-                                    onClick={() => setActive("Aktif")} >
+                                    <Flex h="40px" align="center" borderRight={active === "Menunggu Pembayaran" ? "4px" : "none"} borderRightColor={active === "Menunggu Pembayaran" ? "green" : "black"} color={active === "Menunggu Pembayaran" ? "green" : "black"} w="70vw"
+                                    onClick={() => setActive("Menunggu Pembayaran")} >
                                         <Text fontSize="sm">
-                                            Aktif
-                                        </Text>
-                                    </Flex>
-                                    <Flex h="40px" align="center" borderRight={active === "Selesai" ? "4px" : "none"} borderRightColor={active === "Selesai" ? "green" : "black"} color={active === "Selesai" ? "green" : "black"} w="70vw"
-                                    onClick={() => setActive("Selesai")} >
-                                        <Text fontSize="sm">
-                                            Selesai
+                                            Menunggu Pembayaran
                                         </Text>
                                     </Flex>
                                 </Box>
@@ -174,9 +156,8 @@ import ChartLine from '../Report/ChartLine';
                 <Box h="100vh">
                     <Center>
                         <Box >
-                            {/* <Text fontWeight="bold" mt="2" >Transactions Overview</Text> */}
                             <Flex h="15vh" m="4" justify="space-between" align="center">
-                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="30%" borderRadius="3xl" boxShadow="base" >
                                     <Circle size="14" bgColor={active === "Menunggu Konfirmasi Pembayaran" ? "orange.100" : "gray.50"}>
                                         <Icon w={8} h={8} as={IoAlarmOutline}/>
                                     </Circle>
@@ -187,7 +168,7 @@ import ChartLine from '../Report/ChartLine';
                                         </Text>
                                     </Box>
                                 </Flex>
-                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="30%" borderRadius="3xl" boxShadow="base" >
                                     <Circle size="14" bgColor={active === "Diproses" ? "orange.100" : "gray.50"} p="3">
                                         <Icon w={8} h={8} as={IoCalendarOutline}/>
                                     </Circle>
@@ -198,25 +179,14 @@ import ChartLine from '../Report/ChartLine';
                                         </Text>
                                     </Box>
                                 </Flex>
-                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
-                                    <Circle size="14" bgColor={active === "Aktif" ? "orange.100" : "gray.50"} p="3">
+                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="30%" borderRadius="3xl" boxShadow="base" >
+                                    <Circle size="14" bgColor={active === "Menunggu Pembayaran" ? "orange.100" : "gray.50"} p="3">
                                         <Icon w={8} h={8} as={IoBusinessOutline}/>
                                     </Circle>
                                     <Box ml="4">
-                                        <Text fontSize="small" color="gray.500" >Aktif</Text>
+                                        <Text fontSize="small" color="gray.500" >Menunggu Pembayaran</Text>
                                         <Text color="orange" fontSize="md" fontWeight="bold" >
-                                            {data[data.findIndex(item => item.transactionStatus === "Aktif")] ? data[data.findIndex(item => item.transactionStatus === "Aktif")].Count : 0} Transaksi
-                                        </Text>
-                                    </Box>
-                                </Flex>
-                                <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="22%" borderRadius="3xl" boxShadow="base" >
-                                    <Circle size="14" bgColor={active === "Selesai" ? "orange.100" : "gray.50"} p="3">
-                                        <Icon w={8} h={8} as={IoFolderOpenOutline}/>
-                                    </Circle>
-                                    <Box ml="4">
-                                        <Text fontSize="small" color="gray.500" >Selesai</Text>
-                                        <Text color="orange" fontSize="md" fontWeight="bold" >
-                                            {data[data.findIndex(item => item.transactionStatus === "Selesai")] ? data[data.findIndex(item => item.transactionStatus === "Selesai")].Count : 0} Transaksi
+                                            {data[data.findIndex(item => item.transactionStatus === "Menunggu Pembayaran")] ? data[data.findIndex(item => item.transactionStatus === "Menunggu Pembayaran")].Count : 0} Transaksi
                                         </Text>
                                     </Box>
                                 </Flex>
@@ -229,25 +199,19 @@ import ChartLine from '../Report/ChartLine';
                                     <Tab onClick={() => setActive("Diproses")}>
                                         <Button size="sm" borderRadius="3xl" colorScheme={active === "Diproses" ? "orange" : "gray"} >Diproses</Button>
                                     </Tab>
-                                    <Tab onClick={() => setActive("Aktif")}>
-                                        <Button size="sm" borderRadius="3xl" colorScheme={active === "Aktif" ? "orange" : "gray"} >Aktif</Button>
-                                    </Tab>
-                                    <Tab onClick={() => setActive("Selesai")}>
-                                        <Button size="sm" borderRadius="3xl" colorScheme={active === "Selesai" ? "orange" : "gray"} >Selesai</Button>
+                                    <Tab onClick={() => setActive("Menunggu Pembayaran")}>
+                                        <Button size="sm" borderRadius="3xl" colorScheme={active === "Menunggu Pembayaran" ? "orange" : "gray"} >Menunggu Pembayaran</Button>
                                     </Tab>
                                 </TabList>
                                 <TabPanels>
                                     <TabPanel>
-                                        <WaitPayment />
+                                        <WaitPaymentConfirm />
                                     </TabPanel>
                                     <TabPanel>
                                         <ProcesTransaction/>
                                     </TabPanel>
                                     <TabPanel>
-                                        <AktifTransaction />
-                                    </TabPanel>
-                                    <TabPanel>
-                                        <DoneTransaction />
+                                        <WaitPayment />
                                     </TabPanel>
                                 </TabPanels>
                             </Tabs>

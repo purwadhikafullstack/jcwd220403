@@ -130,7 +130,7 @@ function DetailPage() {
                   w='full'
                   mt='2'
                   colorScheme='orange'
-                  disabled={state === search.state}
+                  isDisabled={state === search.state}
                   onClick={() => {
                     setSearch({ lokasi, state });
                     setIsloading(true);
@@ -191,7 +191,7 @@ function DetailPage() {
                         <Button
                           mt='2'
                           colorScheme='orange'
-                          disabled={item.transactions.length !== 0}
+                          isDisabled={item.transactions.length !== 0 || item.unavailableDates.length !== 0}
                           onClick={() =>
                             navigate(`/book/${data.id}/${i}/${item.id}`)
                           }
@@ -371,10 +371,10 @@ function DetailPage() {
                           <Button
                             mt='2'
                             colorScheme='orange'
-                            disabled={item.transactions.length !== 0}
                             onClick={() =>
                               navigate(`/book/${data.id}/${i}/${item.id}`)
                             }
+                            isDisabled={item.transactions.length !== 0 || item.unavailableDates.length !== 0}
                           >
                             Pesan sekarang
                           </Button>
@@ -405,7 +405,7 @@ function DetailPage() {
                     w='full'
                     mt='2'
                     colorScheme='orange'
-                    disabled={state === search.state}
+                    isDisabled={state === search.state}
                     onClick={() => {
                       setSearch({ lokasi, state });
                       setIsloading(true);

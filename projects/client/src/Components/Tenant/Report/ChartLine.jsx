@@ -64,7 +64,7 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
       <>
         {isMobile ? 
         <Center>
-            <Box fontSize={["xx-mall", "x-small", "small"]} mb="10" boxShadow="2xl" border="1px" height={600} w="95vw" borderRadius="3xl" overflow="scroll" >
+            <Box fontSize={["xx-mall", "x-small", "small"]} mb="10" boxShadow="base" height={600} w="95vw" borderRadius="3xl" overflow="scroll" >
             <Box m="5" mb="-5" p="4" >
                 <Text fontSize="md" fontWeight="bold">Transactions Stats</Text>
                 <Select mt="2" placeholder='Tahun' size="sm" w="30vw" borderRadius="2xl">
@@ -91,17 +91,17 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
                 <YAxis />
                 <Tooltip />
                 <Legend verticalAlign="top" height={80} />
-                <Bar dataKey="Menunggu Konfirmasi Pembayaran" stackId="a" fill="#0B9264" radius={10} />
-                <Bar dataKey="Diproses" stackId="a" fill="#DC6969" radius={10} />
-                <Bar dataKey="Aktif" stackId="a" fill="#FBB13C" radius={10} />
-                <Bar dataKey="Selesai" stackId="a" fill="#0B9264" radius={10} />
-                <Bar dataKey="Gagal" stackId="a" fill="#8884d8" radius={10} />
+                <Bar dataKey="Menunggu Konfirmasi Pembayaran" stackId="a" fill="#0B9264" />
+                <Bar dataKey="Diproses" stackId="a" fill="#DC6969" />
+                {/* <Bar dataKey="Aktif" stackId="a" fill="#FBB13C" /> */}
+                <Bar dataKey="Dibatalkan" stackId="a" fill="#0B9264" />
+                <Bar dataKey="Gagal" stackId="a" fill="#8884d8" />
                 </BarChart>
             </Box>
         </Center>
         
     :
-        <Box fontSize={["xx-mall", "x-small", "small"]}  border="1px" height={600} borderRadius="3xl" overflow="scroll" >
+        <Box fontSize={["xx-mall", "x-small", "small"]} boxShadow="base" height={600} borderRadius="3xl" overflow="scroll" >
             <Flex m="5" mb="-5" p="4" align="center" justify="space-between" >
                 <Text fontSize="md" fontWeight="bold">Transactions Stats</Text>
                 <Select onChange={(e) => setChart(e.target.value)} defaultValue="Bar" size="sm" w="10vw" borderRadius="2xl">
@@ -133,11 +133,10 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
                 <YAxis />
                 <Tooltip />
                 <Legend verticalAlign="top" height={36} />
-                <Bar dataKey="Menunggu Konfirmasi Pembayaran" stackId="a" fill="#0B9264" radius={10} />
-                <Bar dataKey="Diproses" stackId="a" fill="#DC6969" radius={10} />
-                <Bar dataKey="Aktif" stackId="a" fill="#FBB13C" radius={10} />
-                <Bar dataKey="Selesai" stackId="a" fill="#0B9264" radius={10} />
-                <Bar dataKey="Gagal" stackId="a" fill="#8884d8" radius={10} />
+                <Bar dataKey="Menunggu Konfirmasi Pembayaran" stackId="a" fill="#0B9264" />
+                <Bar dataKey="Diproses" stackId="a" fill="#DC6969" />
+                <Bar dataKey="Dibatalkan" stackId="a" fill="#0B9264" />
+                <Bar dataKey="Gagal" stackId="a" fill="#8884d8" />
                 </BarChart>
                 : null }
 
@@ -160,8 +159,8 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
                         <Legend verticalAlign="top" height={36} />
                         <Line type="monotone" dataKey="Menunggu Konfirmasi Pembayaran" stroke="#0B9264" label={<CustomizedLabel />} />
                         <Line type="monotone" dataKey="Diproses" stroke="#DC6969" />
-                        <Line type="monotone" dataKey="Aktif" stroke="#FBB13C" />
-                        <Line type="monotone" dataKey="Selesai" stroke="#0B9264" />
+                        {/* <Line type="monotone" dataKey="Aktif" stroke="#FBB13C" /> */}
+                        <Line type="monotone" dataKey="Dibatalkan" stroke="#0B9264" />
                         <Line type="monotone" dataKey="Gagal" stroke="#8884d8" />
                       </LineChart>
                       : null}

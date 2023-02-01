@@ -31,11 +31,11 @@ useEffect(() => {
     return (
         <Center>
             {isMobile ? 
-            <Box p="6" border="1px" borderColor="gray" mb="10" borderRadius="3xl" boxShadow="2xl" w="95vw" textAlign="center" fontSize="sm" fontFamily="sans-serif" overflow="scroll" >
+            <Box p="6" borderColor="gray" mb="10" borderRadius="3xl" boxShadow="base" w="95vw" textAlign="center" fontSize="sm" fontFamily="sans-serif" overflow="scroll" >
                 <Calendar events={data} />
             </Box>
             : 
-            <Box p="6" border="1px" borderColor="gray" mb="10" borderRadius="3xl" boxShadow="2xl" w="30vw" textAlign="center" fontSize="sm" fontFamily="sans-serif" overflow="scroll" >
+            <Box p="6" borderColor="gray" mb="10" borderRadius="3xl" boxShadow="base" w="30vw" textAlign="center" fontSize="sm" fontFamily="sans-serif" overflow="scroll" >
                 <Calendar events={data} />
             </Box>
         }

@@ -17,6 +17,8 @@ import {
     InputGroup,
     InputLeftElement,
     Flex,
+    Tag,
+    TagLabel,
   } from '@chakra-ui/react';
   import { useState, useEffect } from 'react';
   import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
@@ -69,7 +71,7 @@ import {
                      <Tr>
                          <Th>Id</Th>
                          <Th>Description</Th>
-                         <Th>Action</Th>
+                         <Th>Status</Th>
                      </Tr>
                      </Thead>
                      <Tbody>
@@ -88,15 +90,15 @@ import {
                                              year: 'numeric',
                                              })}
                                          </Text>
-                                         <Text fontSize="xx-small" >{item.transactionStatus}</Text>
                                      </Box>
                                      
                                  </Td>
                                  <Td>
-                                     <Flex>
-                                         {/* <Icon as={IoCheckmarkDoneCircleOutline} w={8} h={8} color='green.500' cursor="pointer" onClick={() => onAccept(item)}/>
-                                         <Icon as={IoCloseCircleOutline} w={8} h={8} color='red.500' cursor="pointer"/> */}
-                                     </Flex>
+                                    <Tag size="sm" borderRadius="3xl" bgColor="green" color="white">
+                                        <TagLabel fontSize="smaller" >
+                                            {item.transactionStatus}
+                                        </TagLabel>
+                                    </Tag>
                                  </Td>
                              </Tr>
                          )
@@ -117,7 +119,6 @@ import {
                                 <Th>Name Rooms</Th>
                                 <Th >User</Th>
                                 <Th>Status</Th>
-                                <Th>Action</Th>
                             </Tr>
                             </Thead>
                             <Tbody>
@@ -131,8 +132,13 @@ import {
                                             })}</Td>
                                         <Td>{item.room.name}</Td>
                                         <Td>{item.user.fullName}</Td>
-                                        <Td>{item.transactionStatus}</Td>
-                                        <Td><Button colorScheme="orange" size="xs" >Action</Button></Td>
+                                        <Td>
+                                            <Tag size="sm" borderRadius="3xl" bgColor="green" colorScheme="whiteAlpha">
+                                                <TagLabel fontSize="smaller" >
+                                                    {item.transactionStatus}
+                                                </TagLabel>
+                                            </Tag>
+                                        </Td>
                                     </Tr>
                                 )
                             })}
