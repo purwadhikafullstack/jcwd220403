@@ -34,7 +34,7 @@ import {
   
     const getData = async () => {
       try {
-        const res = await axiosPrivate.get(`/transactions/tenant/${auth?.tenantId}/Aktif`);
+        const res = await axiosPrivate.get(`/transactions/tenant/${auth?.tenantId}/Menunggu Pembayaran`);
         setData(res.data)
         setIsloading(false);
       } catch (err) {

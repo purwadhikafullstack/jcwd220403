@@ -47,7 +47,7 @@ module.exports = {
         try{
             const response = await database.transaction.findAll({
                 attributes: ['transactionStatus', [Sequelize.fn('Count', Sequelize.col('transactionStatus')), 'Count']],
-                where: {'transactionStatus': ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']},
+                where: {'transactionStatus': ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Menunggu Pembayaran']},
                 include: 
                 [
                     {
@@ -190,7 +190,7 @@ module.exports = {
                 having: {
                     [Op.and]: [
                         {'room.property.tenantId': tenantId },
-                        {'transactionStatus' : ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Aktif', 'Selesai']}
+                        {'transactionStatus' : ['Menunggu Konfirmasi Pembayaran', 'Diproses', 'Menunggu Pembayaran']}
                     ]
                 },
             })

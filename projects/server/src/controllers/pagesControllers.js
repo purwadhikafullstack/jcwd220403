@@ -75,14 +75,14 @@ module.exports = {
                         model: database.propertypicture,
                         attributes: [[Sequelize.col('name'),'picture']]
                     },
-                    {
+                    { 
                         model: database.facility,
+                        attributes: ['name'],
                         where: {
-                            name: fasilitas ? {
+                           name : fasilitas ? {
                                 [Op.like]: "%" + fasilitas + "%"
                             } : {[Op.not]: null} 
                         }
-
                     },
                 ],
                 order: [
@@ -101,12 +101,12 @@ module.exports = {
                 ],
             })
             
-            const data = response.map(item => {
-                const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
-                delete newData.picture;
-                return newData;
-            });
-            res.status(201).send(data)
+            // const data = response.map(item => {
+            //     const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
+            //     delete newData.picture;
+            //     return newData;
+            // });
+            res.status(201).send(response)
         }catch(err){
             console.log(err)
             res.status(404).send(err)
