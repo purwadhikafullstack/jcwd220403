@@ -301,19 +301,19 @@ const RoomCard = () => {
                         <Box position="relative" margin="0" p={1} height="70%">
                             <Skeleton isLoaded={!loadingData}>
                                 <Box>
-                                    <Carousel
+                                    {/* <Carousel
                                         autoPlay
                                         infiniteLoop
-                                        showArrows={true}>
+                                        showArrows={true}> */}
                                         {item.images && item.images.map((image, i) => (
                                             <Box key={i}>
-                                                <Image cursor="pointer" height="150px" objectFit="cover" borderRadius="5px" src={`http://localhost:2000/roomPicture/${image.picture}`} />
+                                                <Image cursor="pointer" height="150px" width="100%" objectFit="cover" borderRadius="5px" src={`http://localhost:2000/roomPicture/${image.picture}`} />
                                             </Box>
                                         ))}
-                                    </Carousel>
+                                    {/* </Carousel> */}
                                 </Box>
                             </Skeleton>
-                            <Box marginLeft="4">
+                            <Box marginLeft="4" marginTop="15px">
                                 <Flex gap="5px" alignItems="center" marginBottom="2px">
                                     <Skeleton isLoaded={!loadingData}>
                                         <Text fontWeight="bold" fontFamily="sans-serif">{item.name}</Text>

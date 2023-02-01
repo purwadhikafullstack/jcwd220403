@@ -24,6 +24,7 @@ import Slider from "react-slick";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { BsFilterRight } from "react-icons/bs"
+import useSearch from '../hooks/useSeacrh';
 
 const Category = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);

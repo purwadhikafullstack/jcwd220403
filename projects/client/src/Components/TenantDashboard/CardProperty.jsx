@@ -15,6 +15,7 @@ import { openDrawerForMorePicture } from '../../Redux/MorePictureProperty';
 import { FiEdit3 } from "react-icons/fi"
 import { RxDividerVertical } from "react-icons/rx"
 import { DataFasility } from "../../Data/DataFasility"
+import Slider from "react-slick";
 
 const CardProperty = () => {
     //for everything
@@ -354,10 +355,18 @@ const CardProperty = () => {
 
     //responsive
     const widthFontSize = useBreakpointValue({
-        base:"8px",
-        md : "10px",
-        lg:"12px"
+        base: "8px",
+        md: "10px",
+        lg: "12px"
     })
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      };
+
     return (
         <Box marginTop="10px">
             <Flex gap="10px" justifyContent="center" alignItems="center" flexWrap="wrap">
@@ -366,16 +375,18 @@ const CardProperty = () => {
                         <Box position="relative" margin="0" p={1} height="70%">
                             <Skeleton isLoaded={!loadingData}>
                                 <Box>
-                                    <Carousel
+                                    {/* <Carousel
                                         autoPlay
                                         infiniteLoop
-                                        showArrows={true}>
+                                        showArrows={true}> */}
+                                        {/* <Slider {...settings}> */}
                                         {item.propertypictures && item.propertypictures.map((image, i) => (
                                             <Box key={i}>
-                                                <Image cursor="pointer" height="150px" objectFit="cover" borderRadius="5px" style={{ filter: index === indexHover ? "brightness(30%)" : "none" }} src={`http://localhost:2000/propertyPicture/${image.picture}`} />
+                                                <Image cursor="pointer" height="150px" width="100%" objectFit="cover" borderRadius="5px" style={{ filter: index === indexHover ? "brightness(30%)" : "none" }} src={`http://localhost:2000/propertyPicture/${image.picture}`} />
                                             </Box>
                                         ))}
-                                    </Carousel>
+                                        {/* </Slider> */}
+                                  
                                     <Tooltip label="Change Picture?" fontSize="md" placement="top" openDelay={300} color="black" bg="white">
                                         <Button onClick={() => isOpenModalPicture(item)} style={{
                                             position: "absolute", top: "0", left: "0", right: "0", bottom: "0",
@@ -406,7 +417,7 @@ const CardProperty = () => {
                                     <InputMorePictureProperty />
                                 </Box>
                             </Skeleton>
-                            <Box marginLeft="4">
+                            <Box marginLeft="4" marginTop="20px">
                                 <Flex gap="5px" alignItems="center">
                                     <Skeleton isLoaded={!loadingData}>
                                         <Text fontWeight="bold" fontFamily="sans-serif">{item.name}</Text>
@@ -441,7 +452,7 @@ const CardProperty = () => {
                                 <Flex gap="5px" alignItems="center" color="#9a9a9a">
                                     <Skeleton isLoaded={!loadingData}>
                                         <Text fontSize="14px">
-                                        {item.category.country}, {item.category.province}, {item.category.city}
+                                            {item.category.country}, {item.category.province}, {item.category.city}
                                         </Text>
                                     </Skeleton>
                                     <SkeletonCircle isLoaded={!loadingData}>
@@ -503,14 +514,14 @@ const CardProperty = () => {
                                 <Flex marginTop="10px" alignItems="center">
                                     <Box bg="#d9efe4" width="70px" borderRadius="5px">
                                         <Skeleton isLoaded={!loadingData}>
-                                        <Text color="#539372" textAlign="center" fontWeight="bold" fontFamily="sans-serif">Active</Text>
+                                            <Text color="#539372" textAlign="center" fontWeight="bold" fontFamily="sans-serif">Active</Text>
                                         </Skeleton>
                                     </Box>
                                     <Skeleton isLoaded={!loadingData} marginLeft="5px">
-                                    <Text color="#a8a8a8" marginLeft="5px" fontSize={widthFontSize}>Updated Nov 29</Text>
+                                        <Text color="#a8a8a8" marginLeft="5px" fontSize={widthFontSize}>Updated Nov 29</Text>
                                     </Skeleton>
                                     <Skeleton isLoaded={!loadingData} marginLeft="5px">
-                                    <Text cursor="pointer" color="#5a93c9" marginLeft="20px" fontWeight="bold" onClick={() => openAlertDialogDesc(item)}>View Desc</Text>
+                                        <Text cursor="pointer" color="#5a93c9" marginLeft="20px" fontWeight="bold" onClick={() => openAlertDialogDesc(item)}>View Desc</Text>
                                     </Skeleton>
                                     <AlertDialog
                                         motionPreset='slideInBottom'
@@ -567,15 +578,15 @@ const CardProperty = () => {
                                 <Flex marginTop="10px" alignItems="center" justifyContent="center">
                                     <Flex flexDirection="column" alignItems="center">
                                         <Skeleton isLoaded={!loadingData}>
-                                        <Text color="#aeaeae">Views</Text>
-                                        <Text color="#3b3a3e" textAlign="center">560</Text>
+                                            <Text color="#aeaeae">Views</Text>
+                                            <Text color="#3b3a3e" textAlign="center">560</Text>
                                         </Skeleton>
                                     </Flex>
                                     <Icon as={RxDividerVertical} boxSize="40px" color="#eaeaea" />
                                     <Flex flexDirection="column" alignItems="center">
                                         <Skeleton isLoaded={!loadingData}>
-                                        <Text color="#6a9dc7" fontWeight="bold" cursor="pointer" onClick={() => openAlertDialogFacility(item)}>Facility</Text>
-                                        <Text color="#3b3a3e" textAlign="center">{countFacilities(item.facilities)}</Text>
+                                            <Text color="#6a9dc7" fontWeight="bold" cursor="pointer" onClick={() => openAlertDialogFacility(item)}>Facility</Text>
+                                            <Text color="#3b3a3e" textAlign="center">{countFacilities(item.facilities)}</Text>
                                         </Skeleton>
                                     </Flex>
                                     <AlertDialog
@@ -633,8 +644,8 @@ const CardProperty = () => {
                                     <Icon as={RxDividerVertical} boxSize="40px" color="#eaeaea" />
                                     <Flex flexDirection="column" alignItems="center">
                                         <Skeleton isLoaded={!loadingData}>
-                                        <Text color="#aeaeae">Desc</Text>
-                                        <Text color="#3b3a3e" textAlign="center">7</Text>
+                                            <Text color="#aeaeae">Desc</Text>
+                                            <Text color="#3b3a3e" textAlign="center">7</Text>
                                         </Skeleton>
                                     </Flex>
                                 </Flex>
