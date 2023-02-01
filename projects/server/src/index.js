@@ -5,6 +5,7 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const fileUpload = require('express-fileupload');
+const path = require("path");
 const verifyJWT = require('./middlewares/verifyJWT');
 const {
   authRouters,
@@ -26,7 +27,7 @@ const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/"];
+const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com"];
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {
@@ -35,6 +36,8 @@ const corsOptions = {
     callback(new Error('Not allowed by CORS'));
   },
 };
+
+app.use("/public", express.static(path.join(__dirname, "./Public")));
 
 app.use(
   cors(corsOptions)
@@ -46,6 +49,7 @@ app.use(
   //   ],
   // }
 );
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -128,7 +132,7 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = './Public';
+const clientPath = "../../client/build";
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page

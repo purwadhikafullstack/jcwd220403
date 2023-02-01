@@ -137,7 +137,7 @@ function ProfileSetting() {
                         size='md'
                         name={user.fullName}
                         src={
-                          'http://localhost:2000/profilePicture/' + user.photo
+                          process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' + user.photo
                         }
                       />
                     </SkeletonCircle>
@@ -174,7 +174,7 @@ function ProfileSetting() {
                                 border='1px'
                                 borderColor='gray.100'
                                 src={
-                                  'http://localhost:2000/profilePicture/' +
+                                  process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +
                                   user.photo
                                 }
                                 alt={user.fullName}
@@ -319,7 +319,7 @@ function ProfileSetting() {
                 <Avatar
                   size='2xl'
                   name={user.fullName}
-                  src={'http://localhost:2000/profilePicture/' + user.photo}
+                  src={process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' + user.photo}
                 />
               </SkeletonCircle>
               <Skeleton isLoaded={!isloading}>
@@ -359,7 +359,7 @@ function ProfileSetting() {
                           border='1px'
                           borderColor='gray.100'
                           src={
-                            'http://localhost:2000/profilePicture/' + user.photo
+                            process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' + user.photo
                           }
                           alt={user.fullName}
                         />

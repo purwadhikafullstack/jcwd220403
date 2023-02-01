@@ -64,7 +64,7 @@ const NavbarDashboard = () => {
                                                 name='A'
                                                 bgColor='#FE9900'
                                                 src={
-                                                    'http://localhost:2000/profilePicture/' +
+                                                    process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +
                                                     auth?.userPhoto
                                                 }
                                             />
@@ -118,7 +118,7 @@ const NavbarDashboard = () => {
                                     size='sm'
                                     name='A'
                                     src={
-                                        'http://localhost:2000/profilePicture/' +
+                                        process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +
                                         auth?.userPhoto
                                     }
                                 />

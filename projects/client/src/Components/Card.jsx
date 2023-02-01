@@ -76,10 +76,11 @@ function HomeCard() {
                       >
                         <Image
                           objectFit='cover'
-                          src={'http://localhost:2000/propertyPicture/' + item.picture}
+                          src={process.env.REACT_APP_URL_PUBLIC + 'propertyPicture/' + item.picture}
                           width='270px'
                           height='190px'
                         />
+
 
                       </Box>
                       <Box px='10px' h='90px'>

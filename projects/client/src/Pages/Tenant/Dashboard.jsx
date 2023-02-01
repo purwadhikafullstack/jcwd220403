@@ -102,7 +102,7 @@ const Dashboard = () => {
                       boxShadow="lg"
                       borderBottom="3px solid gray"
                       src={
-                        'http://localhost:2000/profilePicture/' +
+                        'process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +' +
                         auth?.userPhoto
                       }
                     />
