@@ -159,11 +159,16 @@ const NavBar = () => {
             mr={isMobile ? 3 : 12}
             onClick={onOpen}
           >
-            <Text fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small' , 'small']}>
+            <Text
+              fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small', 'small']}
+            >
               {lokasi ? lokasi : 'Ke mana saja'}
             </Text>
             <Text fontSize={isMobile ? 'xl' : '2xl'}>|</Text>
-            <Text fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small' , 'small']} overflow='hidden'>
+            <Text
+              fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small', 'small']}
+              overflow='hidden'
+            >
               {state === search.state
                 ? new Date(state[0]['startDate']).toLocaleString('en', {
                     day: 'numeric',
@@ -234,7 +239,7 @@ const NavBar = () => {
                     <Link to={'/user'}>Profile</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to={'/trip'}>Trips</Link>
+                    <Link to={'/trips'}>Trips</Link>
                   </MenuItem>
                   <MenuItem>
                     <Link to={'/review'}>Reviews</Link>
@@ -309,8 +314,14 @@ const NavBar = () => {
                   h='12'
                 >
                   <Tab display='block' alignSelf='center'>
-                    <Text fontSize={['xx-small', 'x-small' , 'small']}>Lokasi</Text>
-                    <Text fontSize={isMobile ? 'xx-small' : ['xx-small', 'x-small' , 'small']}>
+                    <Text fontSize={['xx-small', 'x-small', 'small']}>
+                      Lokasi
+                    </Text>
+                    <Text
+                      fontSize={
+                        isMobile ? 'xx-small' : ['xx-small', 'x-small', 'small']
+                      }
+                    >
                       {lokasi ? (
                         <Tag
                           color='black'
@@ -326,8 +337,14 @@ const NavBar = () => {
                     </Text>
                   </Tab>
                   <Tab display='block' alignSelf='center'>
-                    <Text fontSize={['xx-small', 'x-small' , 'small']}>Tanggal</Text>
-                    <Text fontSize={isMobile ? 'xx-small' : ['xx-small', 'x-small' , 'small']}>
+                    <Text fontSize={['xx-small', 'x-small', 'small']}>
+                      Tanggal
+                    </Text>
+                    <Text
+                      fontSize={
+                        isMobile ? 'xx-small' : ['xx-small', 'x-small', 'small']
+                      }
+                    >
                       {new Date(state[0]['startDate']).toLocaleString('en', {
                         day: 'numeric',
                         month: 'short',
