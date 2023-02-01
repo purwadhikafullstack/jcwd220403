@@ -24,7 +24,7 @@ const {
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
-const PORT = process.env.SERVER_PORT || 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/"];
 const corsOptions = {
