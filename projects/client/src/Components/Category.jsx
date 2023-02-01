@@ -34,6 +34,8 @@ const Category = () => {
   const numCards = isTablet ? 6 : 10;
   const { search, setSearch } = useSearch();
 
+  console.log(search)
+  
   const NextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -126,7 +128,7 @@ const Category = () => {
         <Box p={6} width="90%">
           <Slider {...settings}>
             {DataFasility.map((item, index) => (
-              <Box key={item.id} cursor="pointer" color={index === currentIndex ? "black" : "#717171"} _hover={{ color: "black" }} onClick={() => setCurrentIndex(index)}
+              <Box key={item.id} cursor="pointer" color={index === currentIndex ? "black" : "#717171"} _hover={{ color: "black" }} onClick={() => {setCurrentIndex(index); setSearch({ ...search, fasilitas: item.title})}}
                 borderBottom={index === currentIndex ? "2px solid black" : null} width="40px"
 
               >

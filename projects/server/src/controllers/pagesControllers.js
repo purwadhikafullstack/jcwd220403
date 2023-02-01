@@ -77,8 +77,12 @@ module.exports = {
                     },
                     { 
                         model: database.facility,
-                        through: 'property_facility',
-                        as: 'facilities'
+                        attributes: ['name'],
+                        where: {
+                           name : fasilitas ? {
+                                [Op.like]: "%" + fasilitas + "%"
+                            } : {[Op.not]: null} 
+                        }
                     },
                 ],
                 order: [
