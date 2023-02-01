@@ -51,4 +51,28 @@ const addTransaction = async (req, res) => {
   }
 };
 
-module.exports = { addTransaction };
+const getuserTransaction = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    const transactions = await transaction.findAll({
+      where: { userId: id },
+    });
+
+    res.status(200).send(transactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
+const getUsersTransactions = async (req, res) => {};
+
+const cancelTransaction = async (req, res) => {};
+
+module.exports = {
+  addTransaction,
+  getUsersTransactions,
+  getuserTransaction,
+  cancelTransaction,
+};
