@@ -75,14 +75,10 @@ module.exports = {
                         model: database.propertypicture,
                         attributes: [[Sequelize.col('name'),'picture']]
                     },
-                    {
+                    { 
                         model: database.facility,
-                        where: {
-                            name: fasilitas ? {
-                                [Op.like]: "%" + fasilitas + "%"
-                            } : {[Op.not]: null} 
-                        }
-
+                        through: 'property_facility',
+                        as: 'facilities'
                     },
                 ],
                 order: [
