@@ -74,27 +74,13 @@ function HomeCard() {
                         width='270px'
                         height='190px'
                       >
-                        {/* <Image
-                                                    objectFit='cover'
-                                                    src={'http://localhost:2000/propertyPicture/' + item.picture}
-                                                    width='270px'
-                                                    height='190px'
-                                                /> */}
-                      
-                          {item.propertypictures.map((image, i) => (
-                            <Box key={i}>
-                              <Image
-                                objectFit='cover'
-                                src={
-                                  'http://localhost:2000/propertyPicture/' +
-                                  image.picture
-                                }
-                                width='270px'
-                                height='190px'
-                              />
-                            </Box>
-                          ))}
-                        {/* </Carousel> */}
+                        <Image
+                          objectFit='cover'
+                          src={'http://localhost:2000/propertyPicture/' + item.picture}
+                          width='270px'
+                          height='190px'
+                        />
+
                       </Box>
                       <Box px='10px' h='90px'>
                         <Text mt='2' fontWeight='bold' fontSize='sm'>
