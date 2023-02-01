@@ -1,6 +1,5 @@
 import {
   Box,
-  Flex,
   Divider,
   chakra,
   Grid,
@@ -8,12 +7,11 @@ import {
   Container,
   Text,
   Heading,
-  Image,
 } from '@chakra-ui/react';
 import Ongoing from '../../Components/Trips/Ongoing';
 import Trip from '../../Components/Trips/TripTemplate';
 
-export default function TripList() {
+export default function Trips() {
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
       <Grid
