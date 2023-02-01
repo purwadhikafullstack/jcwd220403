@@ -80,7 +80,7 @@ function HomeCard() {
                                                     width='270px'
                                                     height='190px'
                                                 /> */}
-                        <Carousel infiniteLoop showArrows={true}>
+                      
                           {item.propertypictures.map((image, i) => (
                             <Box key={i}>
                               <Image
@@ -94,7 +94,7 @@ function HomeCard() {
                               />
                             </Box>
                           ))}
-                        </Carousel>
+                        {/* </Carousel> */}
                       </Box>
                       <Box px='10px' h='90px'>
                         <Text mt='2' fontWeight='bold' fontSize='sm'>
