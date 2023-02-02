@@ -56,7 +56,7 @@ const RegisterAsTenant = async (req, res) => {
 
     ktp.mv('./src/public/ktp/' + filename);
 
-    res.status(200);
+    res.status(201);
     res.send({
       status: true,
       message: 'file is uploaded',
