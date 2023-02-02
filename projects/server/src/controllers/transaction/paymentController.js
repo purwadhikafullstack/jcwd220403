@@ -30,7 +30,7 @@ const addPayment = async (req, res) => {
     WHERE payments.id = ${addPayment.id};
     `);
 
-    res.status(200).send({
+    res.status(201).send({
       message:
         'Payment method succesfully added, please check your transaction instruction',
       data: addPayment,
@@ -66,7 +66,7 @@ const uploadPaymentProof = async (req, res) => {
 
   const filename = `receipt${transactionId}${extensionName}`;
 
-  const addPaymentProof = await payment.update(
+  await payment.update(
     { paymentProof: filename },
     { where: { transactionId } }
   );

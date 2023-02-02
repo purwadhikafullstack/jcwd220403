@@ -71,7 +71,7 @@ const getuserTransaction = async (req, res) => {
       { type: QueryTypes.SELECT }
     );
 
-    res.status(200).send(transactions);
+    res.status(201).send(transactions);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
