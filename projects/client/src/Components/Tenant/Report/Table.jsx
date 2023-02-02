@@ -39,7 +39,7 @@ import {
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useAuth from "../../../hooks/useAuth";
-import { IoCaretUp, IoCaretDown, IoCloseOutline, IoCalendarOutline } from "react-icons/io5";
+import { IoCaretUp, IoCaretDown, IoCloseOutline, IoCalendarOutline, IoReorderFourOutline } from "react-icons/io5";
 import { GrMoney } from "react-icons/gr";
 import { SearchIcon } from "@chakra-ui/icons";
 import { DateRange } from "react-date-range";
@@ -47,7 +47,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from "react-icons/bs";
 import { BiSort } from "react-icons/bi";
 import { TbFilter, TbFilterOff } from "react-icons/tb";
 
-function TableReport() {
+function ReportHome() {
   const [isloading, setIsloading] = useState(true);
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { auth } = useAuth();
@@ -64,6 +64,7 @@ function TableReport() {
   const [amount, setAmount] = useState(0);
   const [show, setShow] = useState(false)
   const [pages, setPages] = useState([])
+  const [active, setActive] = useState('Transactions')
   const axiosPrivate = useAxiosPrivate();
   const [isMobile] = useMediaQuery("(max-width: 481px)");
   const head = [
@@ -136,7 +137,7 @@ function TableReport() {
     <>
       <Center>
         {isMobile ? (
-          <Box w="90vw" mt="2" mb="8" borderRadius="3xl" p="2" bgColor="white" boxShadow="base" >
+          <Box w="90vw" mt="2" mb="8" p="2" >
                 <Flex Flex bgColor="white" mt="4" p="4" align="center" h="full" >
                     <Circle boxShadow="lg" size="16" bgColor="orange.100">
                         <Icon w={8} h={8} as={GrMoney}/>
@@ -300,7 +301,7 @@ function TableReport() {
               </Flex>
             </Box>
         ) : (
-          <Box mt="4" bgColor="white" boxShadow="base" pb="5" borderRadius="2xl">
+          <Box >
                 <Flex h="15vh" p="4" m="4" borderBottom="1px" borderColor="gray.100" justify="space-between" align="center">
                     <Flex bgColor="white" mt="2" p="4" align="center" h="full" w="30%"  >
                         <Circle boxShadow="lg" size="16" bgColor="orange.100">
@@ -363,27 +364,30 @@ function TableReport() {
                     </Popover>
                  
                 </Flex>
-                <Flex m="4" justify="end" >
-                    <InputGroup bgColor="gray.50" boxShadow="base" w="20%" size="sm"  borderRadius="3xl" overflow="hidden">
-                        <InputLeftElement
-                        pointerEvents='none'
-                        children={<SearchIcon />}
-                        />
-                        <Input borderRadius="3xl" placeholder='Search User' value={search} onChange={(e) => {setSearch(e.target.value); setPage(1)}} fontSize="small" type="text" />
-                        { search ? <InputRightElement onClick={() => setSearch('')} children={<Icon cursor="pointer" as={IoCloseOutline}/>}/> : null}
-                    </InputGroup>
-                    <Select boxShadow="base" bgColor="gray.50" ml="3" onChange={(e) => {setStatus(e.target.value); setPage(1)}} defaultValue={''} size="sm" w="10vw" borderRadius="2xl">
-                        <option value={''}>Get All</option>
-                        <option value={'Menunggu Konfirmasi Pembayaran'}>Menunggu Konfirmasi Pembayaran</option>
-                        <option value={'Diproses'}>Diproses</option>
-                        <option value={'Gagal'}>Gagal</option>
-                        <option value={'Dibatalkan'}>Dibatalkan</option>
-                    </Select>
-                    <Select boxShadow="base" bgColor="gray.50" ml="3" onChange={(e) => {setLimit(e.target.value); setPage(1)}} defaultValue={10} size="sm" w="5vw" borderRadius="2xl">
-                        <option value={10}>10</option>
-                        <option value={2}>2</option>
-                        <option value={100}>100</option>
-                    </Select>
+                <Flex m="4" justify="space-between" align="center" >
+
+                    <Flex justify="end" w="full">
+                        <InputGroup bgColor="gray.50" boxShadow="base" w="20%" size="sm"  borderRadius="3xl" overflow="hidden">
+                            <InputLeftElement
+                            pointerEvents='none'
+                            children={<SearchIcon />}
+                            />
+                            <Input borderRadius="3xl" placeholder='Search User' value={search} onChange={(e) => {setSearch(e.target.value); setPage(1)}} fontSize="small" type="text" />
+                            { search ? <InputRightElement onClick={() => setSearch('')} children={<Icon cursor="pointer" as={IoCloseOutline}/>}/> : null}
+                        </InputGroup>
+                        <Select boxShadow="base" bgColor="gray.50" ml="3" onChange={(e) => {setStatus(e.target.value); setPage(1)}} defaultValue={''} size="sm" w="10vw" borderRadius="2xl">
+                            <option value={''}>Get All</option>
+                            <option value={'Menunggu Konfirmasi Pembayaran'}>Menunggu Konfirmasi Pembayaran</option>
+                            <option value={'Diproses'}>Diproses</option>
+                            <option value={'Gagal'}>Gagal</option>
+                            <option value={'Dibatalkan'}>Dibatalkan</option>
+                        </Select>
+                        <Select boxShadow="base" bgColor="gray.50" ml="3" onChange={(e) => {setLimit(e.target.value); setPage(1)}} defaultValue={10} size="sm" w="5vw" borderRadius="2xl">
+                            <option value={10}>10</option>
+                            <option value={2}>2</option>
+                            <option value={100}>100</option>
+                        </Select>
+                    </Flex>
                 </Flex>
               <TableContainer w="75vw" m="4" >
                 <Table variant="striped">
@@ -444,4 +448,4 @@ function TableReport() {
   );
 }
 
-export default TableReport;
+export default ReportHome;
