@@ -351,7 +351,6 @@ import {
                   </Flex>
                 <TableContainer w="75vw" m="4" >
                   <Table variant="striped">
-                    <TableCaption>{`Holistay Transactions, ${rows} Items`}</TableCaption>
                     <Thead>
                       <Tr>
                           {head.map(item => {

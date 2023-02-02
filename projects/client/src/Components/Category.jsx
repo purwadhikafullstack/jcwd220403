@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -8,34 +8,34 @@ import {
   useMediaQuery,
   useBreakpointValue,
   Icon,
-  Flex
-} from '@chakra-ui/react';
-import { CategorySliders } from '../Data/CategorySliders';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
-import { SettingsIcon } from '@chakra-ui/icons';
-// import "~slick-carousel/slick/slick.css"; 
-import { DataFasility } from "../Data/DataFasility"
+  Flex,
+} from "@chakra-ui/react";
+import { CategorySliders } from "../Data/CategorySliders";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { SettingsIcon } from "@chakra-ui/icons";
+// import "~slick-carousel/slick/slick.css";
+import { DataFasility } from "../Data/DataFasility";
 // import "~slick-carousel/slick/slick-theme.css";
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
 import Slider from "react-slick";
 
 //untuk swipe di mobile
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { BsFilterRight } from "react-icons/bs"
-import useSearch from '../hooks/useSeacrh';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { BsFilterRight } from "react-icons/bs";
+import useSearch from "../hooks/useSeacrh";
 
 const Category = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);
-  console.log(currentIndex)
-  const [isMobile] = useMediaQuery('(max-width: 481px)');
-  const [isTablet] = useMediaQuery('(max-width: 868px) and (min-width: 481px)');
+  console.log(currentIndex);
+  const [isMobile] = useMediaQuery("(max-width: 481px)");
+  const [isTablet] = useMediaQuery("(max-width: 868px) and (min-width: 481px)");
   const numCards = isTablet ? 6 : 10;
   const { search, setSearch } = useSearch();
 
-  console.log(search)
-  
+  console.log(search);
+
   const NextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -87,13 +87,13 @@ const Category = () => {
   const slidesToShowResponsive = useBreakpointValue({
     base: 4,
     md: 7,
-    lg: 10
-  })
+    lg: 10,
+  });
   const slidesToScrollResponsinve = useBreakpointValue({
     base: 4,
     md: 3,
-    lg: 3
-  })
+    lg: 3,
+  });
 
   const settings = {
     dots: true,
@@ -108,19 +108,19 @@ const Category = () => {
   const sizeFont = useBreakpointValue({
     base: "8px",
     md: "10px",
-    lg: "12px"
-  })
+    lg: "12px",
+  });
   const iconSize = useBreakpointValue({
     base: "25px",
     md: "20px",
-    lg: "25px"
-  })
+    lg: "25px",
+  });
 
   const displayButtonFilter = useBreakpointValue({
     base: "none",
-    md:"block",
-    lg:"block"
-  })
+    md: "block",
+    lg: "block",
+  });
 
   return (
     <Center>
@@ -128,24 +128,48 @@ const Category = () => {
         <Box p={6} width="90%">
           <Slider {...settings}>
             {DataFasility.map((item, index) => (
-              <Box key={item.id} cursor="pointer" color={index === currentIndex ? "black" : "#717171"} _hover={{ color: "black" }} onClick={() => {setCurrentIndex(index); setSearch({ ...search, fasilitas: item.title})}}
-                borderBottom={index === currentIndex ? "2px solid black" : null} width="40px"
-
+              <Box
+                key={item.id}
+                cursor="pointer"
+                color={index === currentIndex ? "black" : "#717171"}
+                _hover={{ color: "black" }}
+                onClick={() => {
+                  setCurrentIndex( currentIndex === index ? -1 : index);
+                  setSearch(currentIndex === index ? { ...search, fasilitas: '' } : { ...search, fasilitas: item.title });
+                }}
+                borderBottom={index === currentIndex ? "2px solid black" : null}
+                width="40px"
               >
-                <Flex flexDirection="column" justifyContent="center" alignItems="center">
+                <Flex
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                >
                   <Icon as={item.img} boxSize={iconSize} />
-                  <Text fontSize={sizeFont} fontWeight="bold" fontFamily="sans-serif">{item.title}</Text>
+                  <Text
+                    fontSize={sizeFont}
+                    fontWeight="bold"
+                    fontFamily="sans-serif"
+                  >
+                    {item.title}
+                  </Text>
                 </Flex>
               </Box>
             ))}
           </Slider>
         </Box>
         <Box width="10%" display={displayButtonFilter}>
-          <Button backgroundColor="white" border="1px solid #717171" leftIcon={<BsFilterRight/>} width="75px">Filter</Button>
+          <Button
+            backgroundColor="white"
+            border="1px solid #717171"
+            leftIcon={<BsFilterRight />}
+            width="75px"
+          >
+            Filter
+          </Button>
         </Box>
       </Flex>
     </Center>
-
   );
 };
 export default Category;

@@ -216,7 +216,6 @@ const NavBar = () => {
                   {auth?.userPhoto ? (
                     <Avatar
                       size='sm'
-                      name='A'
                       bgColor='#FE9900'
                       src={
                         process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +

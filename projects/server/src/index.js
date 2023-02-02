@@ -27,7 +27,8 @@ const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com"];
+const allowOrigins = ["https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com", "https://jcwd220403.purwadhikabootcamp.com:8403"];
+// const allowOrigins = "*"
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {
@@ -72,6 +73,9 @@ app.use(pagesRouters);
 app.use(roomsRouters);
 app.use(paymentMethodRouter);
 // app.use(tenantTransactionRouter);
+app.get('/api', (req, res) => {
+  res.send(`Hello, this is my API`);
+});
 
 //routes that don't need token END
 
@@ -98,9 +102,7 @@ app.use(tenantTransactionRouter);
 //routes that need token END
 //device detection END
 
-app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API`);
-});
+
 
 app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
