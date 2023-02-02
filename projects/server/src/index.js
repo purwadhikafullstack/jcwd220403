@@ -26,7 +26,7 @@ const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/"];
+const allowOrigins = ['http://localhost:3000', 'https://rapidapi.com/'];
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {

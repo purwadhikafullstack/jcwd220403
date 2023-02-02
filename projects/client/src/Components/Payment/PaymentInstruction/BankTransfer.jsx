@@ -93,7 +93,7 @@ export default function BankTransfer({ data }) {
           },
           error: {
             render({ data }) {
-              return `${data.response.data.message}`;
+              return `${data.response.data}`;
             },
           },
         },
@@ -201,7 +201,7 @@ export default function BankTransfer({ data }) {
       <Button
         colorScheme='teal'
         onClick={submitPaymentProof}
-        disabled={disableSubmitBtn}
+        isDisabled={disableSubmitBtn}
       >
         I Have Completed Payment
       </Button>

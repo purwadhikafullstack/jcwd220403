@@ -2,6 +2,7 @@ const database = require('../../models');
 const path = require('path');
 const { sequelize } = require('../../models');
 const payment = database.payment;
+const transaction = database.transaction;
 
 const addPayment = async (req, res) => {
   try {
@@ -70,8 +71,21 @@ const uploadPaymentProof = async (req, res) => {
     { where: { transactionId } }
   );
 
+  await transaction.update(
+    {
+      transactionStatus: 'Menunggu Konfirmasi Pembayaran',
+    },
+    {
+      where: { id: transactionId },
+    }
+  );
+
+  const paymentData = await payment.findOne({
+    where: { transactionId },
+  });
+
   await sequelize.query(`
-  DROP EVENT IF EXISTS payment_${addPaymentProof.id};
+  DROP EVENT IF EXISTS payment_${paymentData.id};
   `);
 
   await paymentProof.mv('./src/public/paymentProof/' + filename, (err) => {
@@ -83,7 +97,7 @@ const uploadPaymentProof = async (req, res) => {
   res.status(200).send({
     message:
       'File is successfully uploaded, please wait for the verification process',
-    data: addPaymentProof,
+    data: paymentData,
   });
 };
 
