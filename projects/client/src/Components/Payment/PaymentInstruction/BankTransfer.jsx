@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import axios from '../../../api/axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Timer from './Timer';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
@@ -29,7 +29,14 @@ export default function BankTransfer({ data }) {
   const [selectedFile, setSelectedFile] = useState();
   const [errorMessageForFile, setErrorMessageForFile] = useState('');
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const params = useParams();
+
+  const handleRedirect = () => {
+    setInterval(() => {
+      setSubmitSuccess(true);
+    }, 3000);
+  };
   const totalDay = () => {
     return Math.floor(
       (new Date(data[0].checkOut).getTime() -
@@ -99,6 +106,7 @@ export default function BankTransfer({ data }) {
         },
         { position: toast.POSITION.TOP_CENTER }
       );
+      handleRedirect();
     } catch (error) {
       console.log(error);
     }
@@ -205,6 +213,7 @@ export default function BankTransfer({ data }) {
       >
         I Have Completed Payment
       </Button>
+      {submitSuccess && <Navigate to='/' />}
     </Stack>
   );
 }
