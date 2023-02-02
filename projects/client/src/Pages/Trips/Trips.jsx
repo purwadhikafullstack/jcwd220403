@@ -60,37 +60,35 @@ export default function Trips() {
         </GridItem>
       </Grid>
       <Divider mt={12} mb={12} />
-      <Ongoing />
+      {!loading && <Ongoing data={trips} />}
       <Box>
         <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
           {' '}
           Where you've been
         </chakra.h3>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(4, 1fr)',
-          }}
-          gap={{ base: '8', sm: '12', md: '16' }}
-        >
-          <Trip
-            image={
-              'https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&h=1000&q=80'
-            }
-            heading={'Villa Agung'}
-            tenant='Agung'
-            text={'Jan 11-17, 2023'}
-          />
-          <Trip
-            image={
-              'https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&h=1000&q=80'
-            }
-            heading={'Villa Agung'}
-            tenant='Agung'
-            text={'Jan 20-21, 2023'}
-          />
-        </Grid>
+        {!loading && (
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(4, 1fr)',
+            }}
+            gap={{ base: '8', sm: '12', md: '16' }}
+          >
+            {trips.map(
+              (trip) =>
+                trip.transactionStatus === 'Diproses' && (
+                  <Trip
+                    image={trip.picture}
+                    heading={trip.property_name}
+                    tenant={trip.fullName}
+                    date={trip.checkIn + ' to ' + trip.CheckOut}
+                    review={trip.review}
+                  />
+                )
+            )}
+          </Grid>
+        )}
       </Box>
     </Box>
   );

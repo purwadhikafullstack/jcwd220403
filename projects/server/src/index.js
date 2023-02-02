@@ -60,7 +60,7 @@ app.use(cookieParser());
 //routes that don't need token START
 app.use(refresh);
 app.use(logout);
-
+// app.use(privateTransactionRouters);
 app.use(propertyRouters);
 app.use(transactionRouters);
 app.use(tenantRouters);

@@ -241,9 +241,7 @@ const NavBar = () => {
                   <MenuItem>
                     <Link to={'/trips'}>Trips</Link>
                   </MenuItem>
-                  <MenuItem>
-                    <Link to={'/review'}>Reviews</Link>
-                  </MenuItem>
+                  <MenuItem></MenuItem>
                   <MenuDivider />
                   <MenuItem>
                     <Link to={'/register-tenant'}>List Your Property</Link>

@@ -1,18 +1,48 @@
-import { Box, Flex, GridItem, Image, chakra, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  GridItem,
+  Image,
+  chakra,
+  Text,
+  Button,
+  ButtonGroup,
+} from '@chakra-ui/react';
 import React from 'react';
+import GiveReview from './GiveReview';
+import SeeReview from './SeeReview';
 
-function Trip({ heading, text, image, tenant }) {
+function Trip({ heading, date, image, tenant, review, status }) {
   return (
     <Flex flexDir='row' gap={5} alignItems='center'>
       <Box h='100%' w='50%'>
-        <Image h='full' src={image} borderRadius='5px'></Image>
+        <Image
+          h='full'
+          src={'http://localhost:2000/roomPicture/' + image}
+          borderRadius='5px'
+        ></Image>
       </Box>
       <GridItem>
         <chakra.h3 fontSize='xl' fontWeight='600'>
           {heading}
         </chakra.h3>
-        <Text>Hosted by {tenant}</Text>
-        <Text>{text}</Text>
+        <Text fontSize={'14px'}>Hosted by {tenant}</Text>
+        <Text fontSize={'11px'}>{date}</Text>
+        {status === 'Menunggu Pembayaran' ||
+        status === 'Menunggu Konfirmasi Pembayaran' ? (
+          <ButtonGroup>
+            <Button size={'xs'} colorScheme={'teal'}>
+              Lanjutkan transaksi
+            </Button>
+            <Button size={'xs'} colorScheme={'red'}>
+              Cancel
+            </Button>
+          </ButtonGroup>
+        ) : review ? (
+          <SeeReview property={heading} review={review} />
+        ) : (
+          <GiveReview property={heading} />
+        )}
       </GridItem>
     </Flex>
   );
