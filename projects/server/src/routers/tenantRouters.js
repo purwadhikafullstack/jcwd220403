@@ -4,9 +4,9 @@ const { tenantControllers } = require('../controllers');
 const { multerUpload } = require("../middlewares/multerProperty")
 const { roomUpload } = require("../middlewares/multerRoom")
 
-router.get('/', (req, res) => {
-  res.status(200).send('home');
-});
+// router.get('/', (req, res) => {
+//   res.status(200).send('home');
+// });
 
 //post
 router.post('/api/betenant', tenantControllers.CreateFastility);
