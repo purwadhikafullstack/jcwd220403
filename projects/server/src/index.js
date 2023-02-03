@@ -92,7 +92,7 @@ app.use(
   })
 );
 //routes that need token START
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
