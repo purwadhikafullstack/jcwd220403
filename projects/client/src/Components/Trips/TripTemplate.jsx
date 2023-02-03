@@ -35,7 +35,7 @@ function Trip({ heading, date, image, tenant, review, status }) {
         {status === 'Menunggu Pembayaran' ||
         status === 'Menunggu Konfirmasi Pembayaran' ? (
           <Stack>
-            <Badge fontSize={'9px'} colorScheme={'green'}>
+            <Badge fontSize={'9px'} colorScheme={'green'} borderRadius='4px'>
               {status}
             </Badge>
             <ButtonGroup>

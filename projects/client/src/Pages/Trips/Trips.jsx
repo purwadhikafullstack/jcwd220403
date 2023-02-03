@@ -61,6 +61,7 @@ export default function Trips() {
       </Grid>
       <Divider mt={12} mb={12} />
       <Ongoing data={trips} />
+      <Divider mt={5} mb={5} />
       <Box>
         <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
           Where you've been
