@@ -11,15 +11,20 @@ function Ongoing({ data }) {
 
   const checkData = useCallback(() => {
     data.map((trip) => {
-      trip.transactionStatus === 'Menunggu Konfirmasi Pembayaran' &&
+      if (
+        trip.transactionStatus === 'Menunggu Konfirmasi Pembayaran' ||
+        trip.transactionStatus === 'Menunggu Pembayaran'
+      ) {
         setOngoingTransaction((ongoingtransaction) => [
           ...ongoingtransaction,
           trip,
         ]);
+      }
+
       return null;
     });
     setLoading(false);
-  });
+  }, []);
 
   useEffect(() => {
     checkData();

@@ -3,7 +3,6 @@ import React from 'react';
 import Trip from './TripTemplate';
 
 function OngoingList({ trips }) {
-  console.log(trips);
   return (
     <Grid
       templateColumns={{

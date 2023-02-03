@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Text,
@@ -46,26 +46,26 @@ import {
   DrawerFooter,
   Skeleton,
   SkeletonCircle,
-} from "@chakra-ui/react";
-import axios from "../../api/axios";
-import useAuth from "../../hooks/useAuth";
-import { useSelector, useDispatch } from "react-redux";
-import { Carousel } from "react-responsive-carousel";
-import { FiEdit3 } from "react-icons/fi";
-import { RxDividerVertical } from "react-icons/rx";
+} from '@chakra-ui/react';
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import { Carousel } from 'react-responsive-carousel';
+import { FiEdit3 } from 'react-icons/fi';
+import { RxDividerVertical } from 'react-icons/rx';
 import {
   AiOutlineFolderOpen,
   AiFillSetting,
   AiOutlineCalendar,
   AiOutlineCloudUpload,
   AiFillDelete,
-} from "react-icons/ai";
-import { ImFilePicture } from "react-icons/im";
-import { FaRegEdit } from "react-icons/fa";
-import { GiPriceTag } from "react-icons/gi";
-import { TfiStatsUp } from "react-icons/tfi";
-import { openModalCertainDate } from "../../Redux/CertainDate";
-import InputCertainDate from "../ComponentBeTenant/InputCertainDate";
+} from 'react-icons/ai';
+import { ImFilePicture } from 'react-icons/im';
+import { FaRegEdit } from 'react-icons/fa';
+import { GiPriceTag } from 'react-icons/gi';
+import { TfiStatsUp } from 'react-icons/tfi';
+import { openModalCertainDate } from '../../Redux/CertainDate';
+import InputCertainDate from '../ComponentBeTenant/InputCertainDate';
 
 const RoomCard = () => {
   //everything
@@ -82,15 +82,15 @@ const RoomCard = () => {
 
   //editRooms
   const [loadEdit, setLoadEdit] = useState(false);
-  const [valueName, setValueName] = useState("");
-  const [valueDesc, setValueDesc] = useState("");
+  const [valueName, setValueName] = useState('');
+  const [valueDesc, setValueDesc] = useState('');
   const [valuePrice, setValuePrice] = useState();
   const [openModal, setOpenModal] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [price, setPrice] = useState();
   const [picture, setPicture] = useState(null);
-  const [msgError, setMsgError] = useState("");
+  const [msgError, setMsgError] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
 
   //view desc
@@ -100,7 +100,7 @@ const RoomCard = () => {
 
   //createManyRooms
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
-  const [msgAddPicture, setMsgAddPicture] = useState("");
+  const [msgAddPicture, setMsgAddPicture] = useState('');
 
   const getData = async () => {
     try {
@@ -163,21 +163,21 @@ const RoomCard = () => {
   const CloseModalEdit = () => {
     setOpenModal(false);
     setEditId(null);
-    setMsgError("");
+    setMsgError('');
   };
 
   const updateRooms = async () => {
     try {
       const formData = new FormData();
 
-      formData.append("name", !name ? valueName : name);
-      formData.append("description", !description ? valueDesc : description);
-      formData.append("price", !price ? valuePrice : price);
-      formData.append("file", picture);
+      formData.append('name', !name ? valueName : name);
+      formData.append('description', !description ? valueDesc : description);
+      formData.append('price', !price ? valuePrice : price);
+      formData.append('file', picture);
 
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
           withCredentials: true,
         },
       };
@@ -186,12 +186,12 @@ const RoomCard = () => {
       setTimeout(() => {
         setLoad(false);
         getData();
-        setMsgError("");
+        setMsgError('');
         CloseModalEdit();
         toast({
-          title: "Success",
-          description: "Room has been updated",
-          status: "success",
+          title: 'Success',
+          description: 'Room has been updated',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
@@ -235,9 +235,9 @@ const RoomCard = () => {
     await axios.patch(`/updateAlvaible/${item.id}`);
     getData();
     toast({
-      title: "Success",
+      title: 'Success',
       description: `${item.name} is Alvaible`,
-      status: "success",
+      status: 'success',
       duration: 3000,
       isClosable: true,
     });
@@ -247,9 +247,9 @@ const RoomCard = () => {
     await axios.patch(`/updateDisable/${item.id}`);
     getData();
     toast({
-      title: "Success",
+      title: 'Success',
       description: `${item.name} is Disable`,
-      status: "success",
+      status: 'success',
       duration: 3000,
       isClosable: true,
     });
@@ -268,17 +268,17 @@ const RoomCard = () => {
   const createManyRooms = async () => {
     try {
       const formData = new FormData();
-      formData.append("file", picture);
-      formData.append("roomId", roomId);
+      formData.append('file', picture);
+      formData.append('roomId', roomId);
 
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
           withCredentials: true,
         },
       };
 
-      await axios.post("/addmanyimageroom", formData, config);
+      await axios.post('/addmanyimageroom', formData, config);
       setLoad(true);
       setTimeout(() => {
         setLoad(false);
@@ -286,9 +286,9 @@ const RoomCard = () => {
         getData();
         getDataImagesRoom();
         toast({
-          title: "Success",
-          description: "Picture has been created",
-          status: "success",
+          title: 'Success',
+          description: 'Picture has been created',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
@@ -307,9 +307,9 @@ const RoomCard = () => {
       getDataImagesRoom();
       getData();
       toast({
-        title: "Success",
-        description: "Picture has been deleted",
-        status: "success",
+        title: 'Success',
+        description: 'Picture has been deleted',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
@@ -324,9 +324,9 @@ const RoomCard = () => {
       await axios.delete(`/deleteroom/${item.id}`);
       getData();
       toast({
-        title: "Success",
-        description: "Data has been deleted",
-        status: "success",
+        title: 'Success',
+        description: 'Data has been deleted',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
@@ -336,22 +336,22 @@ const RoomCard = () => {
   };
 
   return (
-    <Box marginTop="10px">
+    <Box marginTop='10px'>
       <Flex
-        gap="10px"
-        justifyContent="center"
-        alignItems="center"
-        flexWrap="wrap"
+        gap='10px'
+        justifyContent='center'
+        alignItems='center'
+        flexWrap='wrap'
       >
         {data &&
           data.map((item, index) => (
             <Box
-              width="300px"
-              height="450px"
-              border="4px solid #f1f1f1"
-              borderRadius="15px"
+              width='300px'
+              height='450px'
+              border='4px solid #f1f1f1'
+              borderRadius='15px'
             >
-              <Box position="relative" margin="0" p={1} height="70%">
+              <Box position='relative' margin='0' p={1} height='70%'>
                 <Skeleton isLoaded={!loadingData}>
                   <Box>
                     {/* <Carousel
@@ -362,39 +362,40 @@ const RoomCard = () => {
                       item.images.map((image, i) => (
                         <Box key={i}>
                           <Image
-                            cursor="pointer"
-                            height="150px"
-                            width="100%"
-                            objectFit="cover"
-                            borderRadius="5px"
-                            src={`http://localhost:2000/roomPicture/${image.picture}`}
+                            cursor='pointer'
+                            height='150px'
+                            width='100%'
+                            objectFit='cover'
+                            borderRadius='5px'
+                            src={`${process.env.REACT_APP_URL_PUBLIC}
+                            roomPicture/'${image.picture}`}
                           />
                         </Box>
                       ))}
                     {/* </Carousel> */}
                   </Box>
                 </Skeleton>
-                <Box marginLeft="4" marginTop="15px">
-                  <Flex gap="5px" alignItems="center" marginBottom="2px">
+                <Box marginLeft='4' marginTop='15px'>
+                  <Flex gap='5px' alignItems='center' marginBottom='2px'>
                     <Skeleton isLoaded={!loadingData}>
-                      <Text fontWeight="bold" fontFamily="sans-serif">
+                      <Text fontWeight='bold' fontFamily='sans-serif'>
                         {item.name}
                       </Text>
                     </Skeleton>
                   </Flex>
-                  <Flex gap="5px" alignItems="center">
+                  <Flex gap='5px' alignItems='center'>
                     <Skeleton isLoaded={!loadingData}>
                       <Text
-                        color="#4e90d3"
-                        fontWeight="bold"
-                        cursor="pointer"
+                        color='#4e90d3'
+                        fontWeight='bold'
+                        cursor='pointer'
                         onClick={() => openAlertDialogDesc(item)}
                       >
                         View Desc {item.name}
                       </Text>
                     </Skeleton>
                     <AlertDialog
-                      motionPreset="slideInBottom"
+                      motionPreset='slideInBottom'
                       onClose={closeAlertDialogDesc}
                       isOpen={alertDialogDesc}
                       isCentered
@@ -409,8 +410,8 @@ const RoomCard = () => {
                               <Spinner />
                             </Center>
                           ) : (
-                            <Box p={5} rounded="lg" shadow="md" width="100%">
-                              <Text textAlign="center">
+                            <Box p={5} rounded='lg' shadow='md' width='100%'>
+                              <Text textAlign='center'>
                                 {descRooms.description}
                               </Text>
                             </Box>
@@ -419,7 +420,7 @@ const RoomCard = () => {
                         <AlertDialogFooter>
                           <Button
                             onClick={closeAlertDialogDesc}
-                            marginRight="10px"
+                            marginRight='10px'
                           >
                             Cancel
                           </Button>
@@ -427,7 +428,7 @@ const RoomCard = () => {
                       </AlertDialogContent>
                     </AlertDialog>
                   </Flex>
-                  <Flex alignItems="center" gap="12px" marginTop="5px">
+                  <Flex alignItems='center' gap='12px' marginTop='5px'>
                     <Box>
                       {item.highSeasons &&
                         item.highSeasons.map((room) => {
@@ -436,47 +437,47 @@ const RoomCard = () => {
                             new Date(room.end_date) > new Date()
                           ) {
                             return (
-                              <Flex gap="5px" alignItems="center">
+                              <Flex gap='5px' alignItems='center'>
                                 <Flex
-                                  flexDirection="column"
-                                  alignItems="center"
+                                  flexDirection='column'
+                                  alignItems='center'
                                 >
                                   <Skeleton isLoaded={!loadingData}>
-                                    <Icon as={TfiStatsUp} color="#5e9b7d" />
+                                    <Icon as={TfiStatsUp} color='#5e9b7d' />
                                     {/* <Text fontSize="8px" color="#5e9b7d" fontWeight="bold">{(((room.price - item.price) / item.price) * 100).toFixed(2)} %</Text> */}
                                   </Skeleton>
                                 </Flex>
                                 <Skeleton isLoaded={!loadingData}>
                                   <Text
-                                    fontSize="12px"
-                                    fontFamily="sans-serif"
-                                    color="#67a0d9"
+                                    fontSize='12px'
+                                    fontFamily='sans-serif'
+                                    color='#67a0d9'
                                   >
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
+                                    {new Intl.NumberFormat('id-ID', {
+                                      style: 'currency',
+                                      currency: 'IDR',
                                     }).format(room.price)}
                                   </Text>
                                 </Skeleton>
                                 <Skeleton isLoaded={!loadingData}>
                                   <Tag
-                                    size="md"
-                                    variant="outline"
-                                    color="#8eb2d4"
-                                    cursor="pointer"
+                                    size='md'
+                                    variant='outline'
+                                    color='#8eb2d4'
+                                    cursor='pointer'
                                   >
                                     <TagLabel>High Seasons</TagLabel>
                                     <TagRightIcon as={GiPriceTag} />
                                     <Text
-                                      fontSize="8px"
-                                      color="#5e9b7d"
-                                      fontWeight="bold"
+                                      fontSize='8px'
+                                      color='#5e9b7d'
+                                      fontWeight='bold'
                                     >
                                       {(
                                         ((room.price - item.price) /
                                           item.price) *
                                         100
-                                      ).toFixed(2)}{" "}
+                                      ).toFixed(2)}{' '}
                                       %
                                     </Text>
                                   </Tag>
@@ -493,25 +494,25 @@ const RoomCard = () => {
                             new Date(room.start_date) <= new Date() &&
                             new Date(room.end_date) > new Date()
                         ).length === 0 && (
-                          <Flex alignItems="center" gap="5px">
+                          <Flex alignItems='center' gap='5px'>
                             <Skeleton isLoaded={!loadingData}>
                               <Text
-                                fontSize="12px"
-                                fontFamily="sans-serif"
-                                color="#67a0d9"
+                                fontSize='12px'
+                                fontFamily='sans-serif'
+                                color='#67a0d9'
                               >
-                                {new Intl.NumberFormat("id-ID", {
-                                  style: "currency",
-                                  currency: "IDR",
+                                {new Intl.NumberFormat('id-ID', {
+                                  style: 'currency',
+                                  currency: 'IDR',
                                 }).format(item.price)}
                               </Text>
                             </Skeleton>
                             <Skeleton isLoaded={!loadingData}>
                               <Tag
-                                size="md"
-                                variant="outline"
-                                color="#8eb2d4"
-                                cursor="pointer"
+                                size='md'
+                                variant='outline'
+                                color='#8eb2d4'
+                                cursor='pointer'
                               >
                                 <TagLabel>Normal</TagLabel>
                                 <TagRightIcon as={GiPriceTag} />
@@ -521,30 +522,30 @@ const RoomCard = () => {
                         )}
                     </Box>
                   </Flex>
-                  <Divider borderColor="#808080" width="90%" marginTop="10px" />
-                  <Flex marginTop="10px" alignItems="center" gap="5px">
-                    <Box bg="#d9efe4" width="70px" borderRadius="5px">
+                  <Divider borderColor='#808080' width='90%' marginTop='10px' />
+                  <Flex marginTop='10px' alignItems='center' gap='5px'>
+                    <Box bg='#d9efe4' width='70px' borderRadius='5px'>
                       <Skeleton isLoaded={!loadingData}>
                         {item.availability ? (
                           <Text
-                            color="#539372"
-                            textAlign="center"
-                            fontWeight="bold"
-                            fontFamily="sans-serif"
+                            color='#539372'
+                            textAlign='center'
+                            fontWeight='bold'
+                            fontFamily='sans-serif'
                             onClick={() => handleDisableRoom(item)}
-                            cursor="pointer"
+                            cursor='pointer'
                           >
                             Active
                           </Text>
                         ) : (
                           <Text
-                            color="#5f5f5f"
-                            bg="#e5e5e5"
-                            textAlign="center"
-                            fontWeight="bold"
-                            fontFamily="sans-serif"
+                            color='#5f5f5f'
+                            bg='#e5e5e5'
+                            textAlign='center'
+                            fontWeight='bold'
+                            fontFamily='sans-serif'
                             onClick={() => handleAlvaibleRoom(item)}
-                            cursor="pointer"
+                            cursor='pointer'
                           >
                             Disable
                           </Text>
@@ -552,21 +553,21 @@ const RoomCard = () => {
                       </Skeleton>
                     </Box>
                     <Skeleton isLoaded={!loadingData}>
-                      <Text color="#a8a8a8" marginLeft="5px" fontSize="12px">
+                      <Text color='#a8a8a8' marginLeft='5px' fontSize='12px'>
                         Updated Nov 29
                       </Text>
                     </Skeleton>
                     <Flex
-                      alignItems="center"
-                      cursor="pointer"
+                      alignItems='center'
+                      cursor='pointer'
                       onClick={() => dispatch(openModalCertainDate(item))}
                     >
                       <InputCertainDate />
                       <Skeleton isLoaded={!loadingData}>
                         <Text
-                          color="#5a93c9"
-                          marginLeft="20px"
-                          fontWeight="bold"
+                          color='#5a93c9'
+                          marginLeft='20px'
+                          fontWeight='bold'
                         >
                           Date
                         </Text>
@@ -574,8 +575,8 @@ const RoomCard = () => {
                       <Skeleton isLoaded={!loadingData}>
                         <Icon
                           as={AiOutlineCalendar}
-                          marginLeft="2px"
-                          color="#5a93c9"
+                          marginLeft='2px'
+                          color='#5a93c9'
                         />
                       </Skeleton>
                     </Flex>
@@ -583,50 +584,50 @@ const RoomCard = () => {
                 </Box>
               </Box>
               <Box
-                bg="#f7f7f7"
-                width="100%"
-                marginTop="21.5px"
-                height="25%"
-                borderBottomRadius="10px"
+                bg='#f7f7f7'
+                width='100%'
+                marginTop='21.5px'
+                height='25%'
+                borderBottomRadius='10px'
               >
                 <Box p={2}>
                   <Skeleton isLoaded={!loadingData}>
                     <Text
-                      textAlign="center"
-                      fontFamily="sans-serif"
-                      color="#787878"
-                      fontWeight="bold"
+                      textAlign='center'
+                      fontFamily='sans-serif'
+                      color='#787878'
+                      fontWeight='bold'
                     >
                       Settings
                     </Text>
                   </Skeleton>
                   <Flex
-                    marginTop="10px"
-                    alignItems="center"
-                    justifyContent="center"
+                    marginTop='10px'
+                    alignItems='center'
+                    justifyContent='center'
                   >
                     <Flex
-                      flexDirection="column"
-                      alignItems="center"
-                      cursor="pointer"
+                      flexDirection='column'
+                      alignItems='center'
+                      cursor='pointer'
                       onClick={() => handleOpenDrawer(item)}
                     >
                       <Skeleton isLoaded={!loadingData}>
-                        <Text fontWeight="bold">Picture</Text>
+                        <Text fontWeight='bold'>Picture</Text>
                       </Skeleton>
                       <Skeleton isLoaded={!loadingData}>
                         <Icon
                           as={ImFilePicture}
-                          boxSize="24px"
-                          color="#3b3a3e"
+                          boxSize='24px'
+                          color='#3b3a3e'
                         />
                       </Skeleton>
                       <Drawer
                         isOpen={isOpenDrawer}
-                        placement="bottom"
+                        placement='bottom'
                         onClose={handleCloseDrawer}
                         finalFocusRef={null}
-                        size="full"
+                        size='full'
                       >
                         <DrawerOverlay />
                         <DrawerContent>
@@ -634,40 +635,40 @@ const RoomCard = () => {
                           <DrawerHeader>Create more picture</DrawerHeader>
 
                           <DrawerBody>
-                            <Flex direction="column" align="center" m={4}>
+                            <Flex direction='column' align='center' m={4}>
                               <Box
-                                borderWidth="1px"
-                                borderColor="gray"
-                                rounded="lg"
-                                width="full"
+                                borderWidth='1px'
+                                borderColor='gray'
+                                rounded='lg'
+                                width='full'
                                 p={4}
                               >
-                                <Stack spacing={4} align="center">
+                                <Stack spacing={4} align='center'>
                                   <Box
                                     as={AiOutlineCloudUpload}
-                                    size="62px"
-                                    color="blue.500"
+                                    size='62px'
+                                    color='blue.500'
                                   />
-                                  <Heading as="h3" size="md">
+                                  <Heading as='h3' size='md'>
                                     Drop your image here ..
                                   </Heading>
                                 </Stack>
-                                <Stack spacing={4} align="center" mt={4}>
+                                <Stack spacing={4} align='center' mt={4}>
                                   <FormControl>
                                     <Input
-                                      type="file"
+                                      type='file'
                                       onChange={handlePictureChange}
                                     />
                                   </FormControl>
                                   {imageUrl && (
                                     <img
                                       src={imageUrl}
-                                      alt="preview"
-                                      width="auto"
-                                      height="auto"
+                                      alt='preview'
+                                      width='auto'
+                                      height='auto'
                                     />
                                   )}
-                                  <Text color="red">{msgAddPicture}</Text>
+                                  <Text color='red'>{msgAddPicture}</Text>
                                   <Divider />
                                 </Stack>
                               </Box>
@@ -675,43 +676,43 @@ const RoomCard = () => {
                             {roomImages ? (
                               roomImages.map((image, i) => (
                                 <Flex
-                                  justifyContent="center"
-                                  alignItems="center"
-                                  flexWrap="wrap"
-                                  gap="10px"
+                                  justifyContent='center'
+                                  alignItems='center'
+                                  flexWrap='wrap'
+                                  gap='10px'
                                 >
                                   <Card
-                                    direction={{ base: "column", sm: "row" }}
-                                    overflow="hidden"
-                                    variant="outline"
+                                    direction={{ base: 'column', sm: 'row' }}
+                                    overflow='hidden'
+                                    variant='outline'
                                   >
                                     <Image
-                                      objectFit="cover"
-                                      maxW={{ base: "100%", sm: "200px" }}
+                                      objectFit='cover'
+                                      maxW={{ base: '100%', sm: '200px' }}
                                       src={
                                         process.env.REACT_APP_URL_PUBLIC +
-                                        "roomPicture/" +
+                                        'roomPicture/' +
                                         image.name
                                       }
-                                      alt="Caffe Latte"
+                                      alt='Caffe Latte'
                                     />
 
                                     <Stack>
                                       <CardBody>
-                                        <Heading size="md">
+                                        <Heading size='md'>
                                           CreatedAt : {image.createdAt}
                                         </Heading>
-                                        <Text py="2">
-                                          Your image type is : {image.type}{" "}
+                                        <Text py='2'>
+                                          Your image type is : {image.type}{' '}
                                           <br />
-                                          Your image size is : {image.size}{" "}
+                                          Your image size is : {image.size}{' '}
                                           bytes
                                         </Text>
                                       </CardBody>
                                       <CardFooter>
                                         <Button
-                                          variant="outline"
-                                          colorScheme="red"
+                                          variant='outline'
+                                          colorScheme='red'
                                           onClick={() =>
                                             deleteRoomImages(image)
                                           }
@@ -724,24 +725,24 @@ const RoomCard = () => {
                                 </Flex>
                               ))
                             ) : (
-                              <Text textAlign="center">
+                              <Text textAlign='center'>
                                 Anda belum menambahkan foto untuk ruangan ini
                               </Text>
                             )}
                           </DrawerBody>
                           <DrawerFooter>
                             <Button
-                              variant="outline"
+                              variant='outline'
                               mr={3}
                               onClick={handleCloseDrawer}
                             >
                               Cancel
                             </Button>
                             <Button
-                              colorScheme="blue"
+                              colorScheme='blue'
                               onClick={createManyRooms}
                             >
-                              {load ? <Spinner /> : "Save"}
+                              {load ? <Spinner /> : 'Save'}
                             </Button>
                           </DrawerFooter>
                         </DrawerContent>
@@ -749,22 +750,22 @@ const RoomCard = () => {
                     </Flex>
                     <Icon
                       as={RxDividerVertical}
-                      boxSize="40px"
-                      color="#eaeaea"
+                      boxSize='40px'
+                      color='#eaeaea'
                     />
                     <Flex
-                      flexDirection="column"
-                      alignItems="center"
-                      cursor="pointer"
+                      flexDirection='column'
+                      alignItems='center'
+                      cursor='pointer'
                       onClick={() => OpenModalEdit(item)}
                     >
                       <Skeleton isLoaded={!loadingData}>
-                        <Text fontWeight="bold" cursor="pointer">
+                        <Text fontWeight='bold' cursor='pointer'>
                           Edit
                         </Text>
                       </Skeleton>
                       <Skeleton isLoaded={!loadingData}>
-                        <Icon as={FaRegEdit} boxSize="24px" color="#3b3a3e" />
+                        <Icon as={FaRegEdit} boxSize='24px' color='#3b3a3e' />
                       </Skeleton>
                       <Modal isOpen={openModal} onClose={CloseModalEdit}>
                         <ModalOverlay />
@@ -779,14 +780,14 @@ const RoomCard = () => {
                                 </Center>
                               ) : (
                                 <Box>
-                                  <Text fontWeight="bold" mb="1rem" color="red">
+                                  <Text fontWeight='bold' mb='1rem' color='red'>
                                     {msgError}
                                   </Text>
                                   <FormControl>
                                     <FormLabel>Room Name</FormLabel>
                                     <Input
-                                      variant="flushed"
-                                      placeholder="Room name?"
+                                      variant='flushed'
+                                      placeholder='Room name?'
                                       defaultValue={valueName}
                                       onChange={(e) => setName(e.target.value)}
                                     />
@@ -794,8 +795,8 @@ const RoomCard = () => {
                                   <FormControl>
                                     <FormLabel>Description</FormLabel>
                                     <Input
-                                      variant="flushed"
-                                      placeholder="Description?"
+                                      variant='flushed'
+                                      placeholder='Description?'
                                       defaultValue={valueDesc}
                                       onChange={(e) =>
                                         setDescription(e.target.value)
@@ -805,8 +806,8 @@ const RoomCard = () => {
                                   <FormControl>
                                     <FormLabel>Price</FormLabel>
                                     <Input
-                                      variant="flushed"
-                                      placeholder="Price?"
+                                      variant='flushed'
+                                      placeholder='Price?'
                                       defaultValue={valuePrice}
                                       onChange={(e) => setPrice(e.target.value)}
                                     />
@@ -814,8 +815,8 @@ const RoomCard = () => {
                                   <FormControl>
                                     <FormLabel>Picture</FormLabel>
                                     <Input
-                                      type="file"
-                                      variant="flushed"
+                                      type='file'
+                                      variant='flushed'
                                       onChange={handlePictureChange}
                                     />
                                   </FormControl>
@@ -825,18 +826,18 @@ const RoomCard = () => {
                           </ModalBody>
                           <ModalFooter>
                             <Button
-                              colorScheme="blue"
+                              colorScheme='blue'
                               mr={3}
                               onClick={CloseModalEdit}
                             >
                               Close
                             </Button>
                             <Button
-                              variant="outline"
-                              colorScheme="blue"
+                              variant='outline'
+                              colorScheme='blue'
                               onClick={updateRooms}
                             >
-                              {load ? <Spinner /> : "Save"}
+                              {load ? <Spinner /> : 'Save'}
                             </Button>
                           </ModalFooter>
                         </ModalContent>
@@ -844,23 +845,23 @@ const RoomCard = () => {
                     </Flex>
                     <Icon
                       as={RxDividerVertical}
-                      boxSize="40px"
-                      color="#eaeaea"
+                      boxSize='40px'
+                      color='#eaeaea'
                     />
                     <Flex
-                      flexDirection="column"
-                      alignItems="center"
-                      cursor="pointer"
+                      flexDirection='column'
+                      alignItems='center'
+                      cursor='pointer'
                       onClick={() => deleteRooms(item)}
                     >
                       <Skeleton isLoaded={!loadingData}>
-                        <Text fontWeight="bold">Delete</Text>
+                        <Text fontWeight='bold'>Delete</Text>
                       </Skeleton>
                       <Skeleton isLoaded={!loadingData}>
                         <Icon
                           as={AiFillDelete}
-                          boxSize="24px"
-                          color="#3b3a3e"
+                          boxSize='24px'
+                          color='#3b3a3e'
                         />
                       </Skeleton>
                     </Flex>

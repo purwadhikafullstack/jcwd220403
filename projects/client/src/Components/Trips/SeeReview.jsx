@@ -35,9 +35,6 @@ export default function SeeReview({ property, review }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='teal' mr={3} onClick={onClose}>
-              Edit
-            </Button>
             <Button colorScheme='orange' onClick={onClose}>
               Cancel
             </Button>

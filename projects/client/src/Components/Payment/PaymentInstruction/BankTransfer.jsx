@@ -159,7 +159,8 @@ export default function BankTransfer({ data }) {
               height='40px'
               width='40px'
               display='flex'
-              backgroundImage={`url('http://localhost:2000/BankLogo/${bank.logo}')`}
+              backgroundImage={`url('${process.env.REACT_APP_URL_PUBLIC}
+                            bankLogo/${bank.logo}')`}
               backgroundSize='contain'
               backgroundRepeat='no-repeat'
               backgroundPosition='top'

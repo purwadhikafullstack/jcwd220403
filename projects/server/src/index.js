@@ -136,8 +136,8 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-// const clientPath = '../../client/build';
-const clientPath = './Public';
+const clientPath = '../../client/build';
+// const clientPath = './Public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page

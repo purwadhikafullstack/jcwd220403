@@ -14,6 +14,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Ongoing from '../../Components/Trips/Ongoing';
 import Trip from '../../Components/Trips/TripTemplate';
 import useAuth from '../../hooks/useAuth';
+import Declined from '../../Components/Trips/Declined';
+import Finished from '../../Components/Trips/Finished';
 
 export default function Trips() {
   const axiosPrivate = useAxiosPrivate();
@@ -35,7 +37,7 @@ export default function Trips() {
     getTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
-
+  console.log(trips);
   return loading ? null : (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
       <Grid
@@ -61,8 +63,8 @@ export default function Trips() {
       </Grid>
       <Divider mt={12} mb={12} />
       <Ongoing data={trips} />
-      <Divider mt={5} mb={5} />
-      <Box>
+      <Divider mt={12} mb={12} />
+      {/* <Box>
         <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
           Where you've been
         </chakra.h3>
@@ -89,7 +91,10 @@ export default function Trips() {
               )
           )}
         </Grid>
-      </Box>
+      </Box> */}
+      <Finished trips={trips} />
+      <Divider mt={12} mb={12} />
+      <Declined trips={trips} />
     </Box>
   );
 }
