@@ -208,15 +208,7 @@ export default function Register() {
                             style={{ color: 'red' }}
                           />
                         </FormControl>
-                        <Button
-                          type='submit'
-                          width='100%'
-                          bg={'blue.400'}
-                          color={'white'}
-                          _hover={{
-                            bg: 'blue.500',
-                          }}
-                        >
+                        <Button type='submit' width='100%' colorScheme={'teal'}>
                           Register
                         </Button>
                         <Divider />

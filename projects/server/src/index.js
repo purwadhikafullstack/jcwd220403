@@ -31,6 +31,8 @@ const allowOrigins = [
   'https://rapidapi.com/',
   'https://jcwd220403.purwadhikabootcamp.com',
   'https://jcwd220403.purwadhikabootcamp.com:8403',
+  'http://localhost:3000',
+  'http://localhost:3000/',
 ];
 const corsOptions = {
   credentials: true,
@@ -134,7 +136,8 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = '../../client/build';
+// const clientPath = '../../client/build';
+const clientPath = './Public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page

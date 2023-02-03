@@ -223,7 +223,8 @@ const NavBar = () => {
                       size='sm'
                       bgColor='#FE9900'
                       src={
-                        process.env.REACT_APP_URL_PUBLIC + 'profilePicture/' +
+                        process.env.REACT_APP_URL_PUBLIC +
+                        'profilePicture/' +
                         auth?.userPhoto
                       }
                     />
@@ -407,9 +408,9 @@ const NavBar = () => {
                               fontSize='x-small'
                             >{`Holistay tersedia di ${alllokasi.length} kota`}</Text>
                             <Flex>
-                              {alllokasi.map((item) => {
+                              {alllokasi.map((item, index) => {
                                 return (
-                                  <UnorderedList>
+                                  <UnorderedList key={index}>
                                     <ListItem fontSize='xx-small'>
                                       {item.city}
                                     </ListItem>

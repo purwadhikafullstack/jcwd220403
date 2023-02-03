@@ -1,38 +1,41 @@
 import { Box, chakra } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import NoOngoingTrip from './NoOngoingTrip';
-import Trip from './TripTemplate';
+import OngoingList from './OngoingList';
 
 function Ongoing({ data }) {
   const [ongoingtransaction, setOngoingTransaction] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const checkData = async () => {
-    await data.map((trip) => {
-      if (trip.transactionStatus === 'Menunggu Konfirmasi Pembayaran') {
+  const checkData = useCallback(() => {
+    data.map((trip) => {
+      trip.transactionStatus === 'Menunggu Konfirmasi Pembayaran' &&
         setOngoingTransaction((ongoingtransaction) => [
           ...ongoingtransaction,
           trip,
         ]);
-      }
       return null;
     });
     setLoading(false);
-  };
+  });
 
   useEffect(() => {
     checkData();
-    console.log(ongoingtransaction);
-  }, [loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box mb={12}>
       <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
         Ongoing
       </chakra.h3>
-      {ongoingtransaction.length === 0 ? <NoOngoingTrip /> : <p>trips</p>}
+      {ongoingtransaction.length === 0 ? (
+        <NoOngoingTrip />
+      ) : (
+        <OngoingList trips={ongoingtransaction} />
+      )}
     </Box>
   );
 }
