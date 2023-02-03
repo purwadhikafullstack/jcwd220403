@@ -8,7 +8,6 @@ import {
     useDisclosure,
     TableContainer,
     Table,
-    TableCaption,
     Thead,
     Tr,
     Th,
@@ -19,8 +18,6 @@ import {
     InputLeftElement,
     Input,
     Select,
-    Tag,
-    TagLabel,
     InputRightElement,
     Circle,
     Popover,
@@ -45,7 +42,6 @@ import {
   import { DateRange } from "react-date-range";
   import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from "react-icons/bs";
   import { BiSort } from "react-icons/bi";
-  import { TbFilter, TbFilterOff } from "react-icons/tb";
   
   function TableGuest() {
     const [isloading, setIsloading] = useState(true);

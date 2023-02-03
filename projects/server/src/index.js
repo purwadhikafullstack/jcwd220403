@@ -27,7 +27,7 @@ const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = ["https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com", "https://jcwd220403.purwadhikabootcamp.com:8403"];
+const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com", "https://jcwd220403.purwadhikabootcamp.com:8403"];
 // const allowOrigins = "*"
 const corsOptions = {
   credentials: true,
@@ -92,7 +92,7 @@ app.use(
   })
 );
 //routes that need token START
-//app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);
