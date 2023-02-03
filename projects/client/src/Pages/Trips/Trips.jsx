@@ -18,7 +18,6 @@ import useAuth from '../../hooks/useAuth';
 export default function Trips() {
   const axiosPrivate = useAxiosPrivate();
   const [trips, setTrips] = useState();
-  const [ongoingtransaction, setOngoingTransaction] = useState([]);
   const [loading, setLoading] = useState(true);
   const { auth } = useAuth();
 
@@ -26,14 +25,11 @@ export default function Trips() {
     try {
       const tripsData = await axiosPrivate.get(`/trips/${auth.userId}`);
       setTrips(tripsData.data);
-
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(trips);
 
   useEffect(() => {
     getTrips();

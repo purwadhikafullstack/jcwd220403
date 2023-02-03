@@ -116,6 +116,7 @@ export default function BankTransfer({ data }) {
   useEffect(() => {
     getBankData();
     getpaymentData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   function priceInCurrency() {

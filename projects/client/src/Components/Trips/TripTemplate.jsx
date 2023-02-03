@@ -27,11 +27,9 @@ function Trip({ heading, date, image, tenant, review, status }) {
         ></Image>
       </Box>
       <GridItem>
-        <Box>
-          <chakra.h3 fontSize='xl' fontWeight='600'>
-            {heading}
-          </chakra.h3>
-        </Box>
+        <chakra.h3 fontSize='xl' fontWeight='600'>
+          {heading}
+        </chakra.h3>
         <Text fontSize={'14px'}>Hosted by {tenant}</Text>
         <Text fontSize={'11px'}>{date}</Text>
         {status === 'Menunggu Pembayaran' ||
