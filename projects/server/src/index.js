@@ -28,7 +28,6 @@ const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
 const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com", "https://jcwd220403.purwadhikabootcamp.com:8403"];
-// const allowOrigins = "*"
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {
@@ -41,8 +40,8 @@ const corsOptions = {
 app.use("/public", express.static(path.join(__dirname, "./Public")));
 
 app.use(
-  //cors(corsOptions)
-  cors()
+  cors(corsOptions)
+  // cors()
   // {
   //   origin: [
   //     process.env.WHITELISTED_DOMAIN &&
