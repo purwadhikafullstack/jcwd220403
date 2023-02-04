@@ -5,7 +5,7 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const fileUpload = require('express-fileupload');
-const path = require("path");
+const path = require('path');
 const verifyJWT = require('./middlewares/verifyJWT');
 const {
   authRouters,
@@ -27,7 +27,12 @@ const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com", "https://jcwd220403.purwadhikabootcamp.com:8403"];
+const allowOrigins = [
+  'http://localhost:3000',
+  'https://rapidapi.com/',
+  'https://jcwd220403.purwadhikabootcamp.com',
+  'https://jcwd220403.purwadhikabootcamp.com:8403',
+];
 const corsOptions = {
   credentials: true,
   origin: (origin, callback) => {
@@ -37,7 +42,7 @@ const corsOptions = {
   },
 };
 
-app.use("/public", express.static(path.join(__dirname, "./Public")));
+app.use('/public', express.static(path.join(__dirname, './Public')));
 
 app.use(
   cors(corsOptions)
@@ -49,7 +54,6 @@ app.use(
   //   ],
   // }
 );
-
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -64,7 +68,7 @@ app.use(cookieParser());
 //routes that don't need token START
 app.use(refresh);
 app.use(logout);
-
+// app.use(privateTransactionRouters);
 app.use(propertyRouters);
 app.use(transactionRouters);
 app.use(tenantRouters);
@@ -101,8 +105,6 @@ app.use(tenantTransactionRouter);
 //routes that need token END
 //device detection END
 
-
-
 app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
     message: 'Hello, Student !',
@@ -133,7 +135,8 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region CLIENT
-const clientPath = "../../client/build";
+const clientPath = '../../client/build';
+// const clientPath = './Public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page

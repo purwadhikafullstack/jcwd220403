@@ -12,7 +12,7 @@ function HomeCard() {
   const [currentData, setCurrentData] = useState();
   const [loading, setLoading] = useState(false);
   const { search } = useSearch();
-  
+
   const getdata = async () => {
     try {
       setLoading(true);
@@ -57,9 +57,10 @@ function HomeCard() {
               mt='3'
             >
               {currentData &&
-                currentData.map((item) => {
+                currentData.map((item, index) => {
                   return (
                     <Box
+                      key={index}
                       as={Link}
                       to={'/detailpage/' + item.id}
                       w='270px'
@@ -76,12 +77,14 @@ function HomeCard() {
                       >
                         <Image
                           objectFit='cover'
-                          src={process.env.REACT_APP_URL_PUBLIC + 'propertyPicture/' + item.picture}
+                          src={
+                            process.env.REACT_APP_URL_PUBLIC +
+                            'propertyPicture/' +
+                            item.picture
+                          }
                           width='270px'
                           height='190px'
                         />
-
-
                       </Box>
                       <Box px='10px' h='90px'>
                         <Text mt='2' fontWeight='bold' fontSize='sm'>
@@ -97,7 +100,10 @@ function HomeCard() {
                           {item.category.city}
                         </Text>
                         <Text mt='2' fontWeight='bold' fontSize='sm'>
-                          {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.rooms[0].price)}
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                          }).format(item.rooms[0].price)}
                         </Text>
                       </Box>
                     </Box>

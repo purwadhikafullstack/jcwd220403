@@ -1,11 +1,7 @@
-import { Box, Heading, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 function Timer({ payment }) {
-  // const params = useParams();
-
   const trasactionCreated = new Date(payment.createdAt);
 
   const expiredTime = new Date(
