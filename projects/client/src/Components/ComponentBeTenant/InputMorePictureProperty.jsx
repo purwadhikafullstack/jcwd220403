@@ -31,37 +31,38 @@ import {
 } from "../../Redux/MorePictureProperty";
 import axios from "../../api/axios";
 // import axios from "axios"
-import useAuth from "../../hooks/useAuth";
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { useEffect } from "react";
+import useAuth from '../../hooks/useAuth'
+import { AiOutlineCloudUpload } from "react-icons/ai"
+import { useEffect } from 'react'
+import "../../Styles/inputFile.css"
 
 const InputMorePictureProperty = () => {
-  const dispatch = useDispatch();
-  const openDrawer = useSelector(
-    (state) => state.MorePictureProperty.isDrawerOpen
-  );
-  const picture = useSelector((state) => state.MorePictureProperty.picture);
-  const imageUrl = useSelector((state) => state.MorePictureProperty.imageUrl);
-  const [msgAddPicture, setMsgAddPicture] = useState("");
-  const [load, setLoad] = useState(false);
-  const [dataImages, setDataImages] = useState();
-  const toast = useToast();
-  const { auth } = useAuth();
+    const dispatch = useDispatch()
+    const openDrawer = useSelector((state) => state.MorePictureProperty.isDrawerOpen)
+    const picture = useSelector((state) => state.MorePictureProperty.picture)
+    const imageUrl = useSelector((state) => state.MorePictureProperty.imageUrl)
+    const propertyId = useSelector((state) => state.MorePictureProperty.idProperty)
+    console.log(propertyId)
+    const [msgAddPicture, setMsgAddPicture] = useState("")
+    const [load, setLoad] = useState(false)
+    const [dataImages, setDataImages] = useState()
+    console.log(dataImages)
+    const toast = useToast()
+    const { auth } = useAuth();
 
-  const getImagesProperty = async () => {
-    try {
-      const response = await axios.get(
-        `/getmorePictureProperty/${auth.tenantId}`
-      );
-      setDataImages(response.data[0].propertypictures);
-    } catch (err) {
-      console.log(err);
+    const getImagesProperty= async () => {
+        try {
+            const response = await axios.get(`/getmorePictureProperty/${propertyId}`)
+            setDataImages(response.data[0].propertypictures)
+        } catch (err) {
+            console.log(err)
+        }
     }
   };
 
-  useEffect(() => {
-    getImagesProperty();
-  }, []);
+    useEffect(() => {
+        getImagesProperty()
+    }, [propertyId])
 
   const handlePictureChange = (e) => {
     const picture = e.target.files[0];
@@ -97,20 +98,32 @@ const InputMorePictureProperty = () => {
     }
   };
 
-  const deletePropertyImages = async (image) => {
-    try {
-      await axios.delete(`/deletepropertyimage/${image.id}`);
-      getImagesProperty();
-      window.location.reload();
-      toast({
-        title: "Success",
-        description: "Picture has been deleted",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (err) {
-      console.log(err);
+    const handleSubmit = async () => {
+        try {
+            const formData = new FormData()
+            formData.append('file', picture)
+
+            await axios.post(`/createMorePictureProperty/${propertyId}`, formData)
+            setLoad(true)
+            setTimeout(() => {
+                setLoad(false)
+                dispatch(closeDrawerForMorePicture())
+                getImagesProperty()
+                window.location.reload()
+                toast({
+                    title: 'Success',
+                    description: 'Picture has been created',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                })
+            }, 3000)
+        } catch (err) {
+            console.log(err)
+            if (err.response) {
+                setMsgAddPicture(err.response.data)
+            }
+        }
     }
   };
 
@@ -189,23 +202,65 @@ const InputMorePictureProperty = () => {
                       alt="Caffe Latte"
                     />
 
-                    <Stack>
-                      <CardBody>
-                        <Heading size="md">
-                          CreatedAt : {image.createdAt}
-                        </Heading>
-                        <Text py="2">
-                          Your image type is : {image.type} <br />
-                          Your image size is : {image.size} bytes
-                        </Text>
-                      </CardBody>
-                      <CardFooter>
-                        <Button
-                          variant="outline"
-                          colorScheme="red"
-                          onClick={() => deletePropertyImages(image)}
-                        >
-                          Delete Picture
+                    <DrawerBody>
+                        <Flex direction='column' align='center' m={4}>
+                            <Box borderWidth='1px' borderColor='gray' rounded='lg' width='full' p={4}>
+                                <Stack spacing={4} align='center'>
+                                    <Box as={AiOutlineCloudUpload} size='62px' color='blue.500' />
+                                    <Heading as='h3' size='md'>Drop your image here ..</Heading>
+                                </Stack>
+                                <Stack spacing={4} align='center' mt={4}>
+                                    <FormControl>
+                                        <Input type="file" onChange={handlePictureChange} />
+                                    </FormControl>
+                                    {
+                                        imageUrl &&
+                                        <img src={imageUrl} alt="preview" width="auto" height="auto" />
+                                    }
+                                    <Text color="red">{msgAddPicture}</Text>
+                                    <Divider />
+                                </Stack>
+                            </Box>
+                        </Flex>
+                        <Flex justifyContent="center" alignItems="center" gap="10px">
+                        {dataImages ? (dataImages.map((image, i) => (
+                            <Flex justifyContent="center" alignItems="center">
+                                <Card
+                                    direction={{ base: 'column', sm: 'row' }}
+                                    overflow='hidden'
+                                    variant='outline'
+                                    key={i}
+                                >
+                                    <Image
+                                        objectFit='cover'
+                                        maxW={{ base: '100%', sm: '200px' }}
+                                        src={'http://localhost:2000/propertyPicture/' + image.name}
+                                        alt='Caffe Latte'
+                                    />
+
+                                    <Stack>
+                                        <CardBody>
+                                            <Heading size='md'>Dibuat : {new Date (image.createdAt).toLocaleDateString()}</Heading>
+                                            <Text py='2'>
+                                                Your image type is : {image.type} <br />
+                                                Your image size is : {image.size} bytes
+                                            </Text>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button variant="outline" colorScheme="red" onClick={() => deletePropertyImages(image)}>
+                                                Delete Picture
+                                            </Button>
+                                        </CardFooter>
+                                    </Stack>
+                                </Card>
+                            </Flex>
+                        ))) : (<Text textAlign="center">Anda belum menambahkan foto untuk ruangan ini</Text>)}
+                        </Flex>
+                    </DrawerBody>
+
+                    <DrawerFooter>
+                        <Button variant='outline' mr={3} onClick={() => dispatch(closeDrawerForMorePicture())}>
+                            Cancel
                         </Button>
                       </CardFooter>
                     </Stack>
