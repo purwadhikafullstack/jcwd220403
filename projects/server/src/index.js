@@ -25,25 +25,12 @@ const {
 } = require('./routers');
 const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
+const corsOptions = require('./config/corsOptions');
+const credentials = require('./middlewares/credentials');
 const PORT = process.env.PORT || 8000;
 const app = express();
-const allowOrigins = [
-  'http://localhost:3000',
-  'https://rapidapi.com/',
-  'https://jcwd220403.purwadhikabootcamp.com',
-  'https://jcwd220403.purwadhikabootcamp.com:8403',
-];
-const corsOptions = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (allowOrigins.includes(origin)) return callback(null, true);
 
-    callback(new Error('Not allowed by CORS'));
-  },
-};
-
-app.use('/public', express.static(path.join(__dirname, './public')));
-
+app.use(credentials);
 app.use(
   cors(corsOptions)
   // cors()
@@ -59,6 +46,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
+
+app.use('/public', express.static(path.join(__dirname, './public')));
 
 //#region API ROUTES
 
@@ -76,9 +65,6 @@ app.use(pagesRouters);
 app.use(roomsRouters);
 app.use(paymentMethodRouter);
 // app.use(tenantTransactionRouter);
-app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API`);
-});
 
 //routes that don't need token END
 
@@ -104,6 +90,10 @@ app.use(tenantRouters);
 app.use(tenantTransactionRouter);
 //routes that need token END
 //device detection END
+
+app.get('/api', (req, res) => {
+  res.send(`Hello, this is my API`);
+});
 
 app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
