@@ -42,7 +42,7 @@ const corsOptions = {
   },
 };
 
-app.use('/public', express.static(path.join(__dirname, './Public')));
+app.use('/public', express.static(path.join(__dirname, './public')));
 
 app.use(
   cors(corsOptions)
@@ -136,12 +136,11 @@ app.use((err, req, res, next) => {
 
 //#region CLIENT
 const clientPath = '../../client/build';
-// const clientPath = './Public';
 app.use(express.static(join(__dirname, clientPath)));
 
 // Serve the HTML page
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, clientPath, 'index.html'));
+  res.sendFile(join(__dirname, clientPath, '/index.html'));
 });
 
 //#endregion
