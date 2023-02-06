@@ -21,6 +21,7 @@ const {
   propertyRouters,
   paymentRouters,
   paymentMethodRouter,
+  reviewRouter,
 } = require('./routers');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions');
@@ -77,6 +78,7 @@ app.use(transactionRouters);
 app.use(privateTransactionRouters);
 app.use(paymentMethodRouter);
 app.use(paymentRouters);
+app.use(reviewRouter);
 
 //tenant
 app.use(RegisterAsTenant);
