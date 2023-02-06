@@ -23,7 +23,6 @@ const {
   paymentRouters,
   paymentMethodRouter,
 } = require('./routers');
-const middlewareDetect = require('./middlewares/deviceDetector');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions');
 const credentials = require('./middlewares/credentials');
@@ -69,7 +68,6 @@ app.use(paymentMethodRouter);
 //routes that don't need token END
 
 //device detection START
-app.use(middlewareDetect);
 app.use(authRouters);
 app.use(
   fileUpload({
@@ -81,7 +79,7 @@ app.use(
   })
 );
 //routes that need token START
-app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use(userRouters);
 app.use(RegisterAsTenant);
 app.use(privateTransactionRouters);

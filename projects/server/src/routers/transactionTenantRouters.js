@@ -1,14 +1,33 @@
-const router = require('express').Router()
+const router = require('express').Router();
+const { tenantTransaction } = require('../controllers');
+const verifyJWT = require('../middlewares/verifyJWT');
 
-const {tenantTransaction} = require("../controllers")
+router.get(
+  '/api/transactions/tenant/:tenantId',
+  tenantTransaction.getTransaction
+);
+router.get(
+  '/api/transactions/tenant/chart/:tenantId/:curentYear',
+  tenantTransaction.getDataChart
+);
+router.get(
+  '/api/transactions/tenant/:tenantId/total',
+  tenantTransaction.getTotalTransaction
+);
+router.get(
+  '/api/transactions/tenant/:tenantId/:status',
+  tenantTransaction.transactionsUser
+);
 
-router.get('/api/transactions/tenant/:tenantId', tenantTransaction.getTransaction);
-router.get('/api/transactions/tenant/chart/:tenantId/:curentYear', tenantTransaction.getDataChart);
-router.get('/api/transactions/tenant/:tenantId/total', tenantTransaction.getTotalTransaction);
-router.get('/api/transactions/tenant/:tenantId/:status', tenantTransaction.transactionsUser);
-
-
-router.post('/api/transactions/accept', tenantTransaction.acceptTransaction);
-router.post('/api/transactions/reject', tenantTransaction.rejectTransaction);
+router.post(
+  '/api/transactions/accept',
+  verifyJWT,
+  tenantTransaction.acceptTransaction
+);
+router.post(
+  '/api/transactions/reject',
+  verifyJWT,
+  tenantTransaction.rejectTransaction
+);
 
 module.exports = router;
