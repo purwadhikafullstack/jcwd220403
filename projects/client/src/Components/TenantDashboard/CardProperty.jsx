@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
     Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody,
     Tooltip, ModalFooter, Spinner, Text, useToast, Input, Image, Flex, Icon, FormControl,
@@ -36,24 +36,24 @@ const CardProperty = () => {
     const [editId, setEditId] = useState(null)
     const toast = useToast()
 
-    //editname
-    const [isopenModalName, setIsOpenModalName] = useState(false)
-    const [nameProperty, setNameProperty] = useState("")
-    const [msgName, setMsgName] = useState("")
-    const isErrorNameProperty = nameProperty === ''
+  //editname
+  const [isopenModalName, setIsOpenModalName] = useState(false);
+  const [nameProperty, setNameProperty] = useState('');
+  const [msgName, setMsgName] = useState('');
+  const isErrorNameProperty = nameProperty === '';
 
-    //editpicture
-    const [picture, setPicture] = useState(null)
-    const [msgPicture, setMsgPicture] = useState("")
-    const [indexHover, setIndexHover] = useState(-1)
-    const [openModalPicture, setOpanModelPicture] = useState(false)
+  //editpicture
+  const [picture, setPicture] = useState(null);
+  const [msgPicture, setMsgPicture] = useState('');
+  const [indexHover, setIndexHover] = useState(-1);
+  const [openModalPicture, setOpanModelPicture] = useState(false);
 
-    //descripsi
-    const [alertDialogDesc, setAlertDialogDesc] = useState(false)
-    const [editDesc, setEditDesc] = useState(false)
-    const [msgNameDesc, setMsgNameDesc] = useState("")
-    const [desc, setDesc] = useState("")
-    const isErrorDescProperty = desc === ''
+  //descripsi
+  const [alertDialogDesc, setAlertDialogDesc] = useState(false);
+  const [editDesc, setEditDesc] = useState(false);
+  const [msgNameDesc, setMsgNameDesc] = useState('');
+  const [desc, setDesc] = useState('');
+  const isErrorDescProperty = desc === '';
 
     //edit location detail
     const [province, setProvince] = useState("")
@@ -65,17 +65,17 @@ const CardProperty = () => {
     const [dataCity, setDataCity] = useState([])
     const [selectedProvince, setSelectedProvince] = useState(null)
 
-    const isErrorCountry = country === ""
-    const isErrorProvince = province === ""
-    const isErrorCity = city === ""
+  const isErrorCountry = country === '';
+  const isErrorProvince = province === '';
+  const isErrorCity = city === '';
 
-    //facility
-    const [alertDialogFacility, setAlertDialogFacility] = useState(false)
-    const [editFacility, setEditFacility] = useState(false)
-    const [clickedItem, setClickedItem] = useState([])
-    const [dataFacility, setDataFacility] = useState()
-    const [loadFacility, setLoadFacility] = useState(false)
-    const [msgNameFacility, setMsgNameFacility] = useState("")
+  //facility
+  const [alertDialogFacility, setAlertDialogFacility] = useState(false);
+  const [editFacility, setEditFacility] = useState(false);
+  const [clickedItem, setClickedItem] = useState([]);
+  const [dataFacility, setDataFacility] = useState();
+  const [loadFacility, setLoadFacility] = useState(false);
+  const [msgNameFacility, setMsgNameFacility] = useState('');
 
     //caraousel 
     const [caraouselIndexHover, setCaraouselIndexHover] = useState(-1)
@@ -122,54 +122,54 @@ const CardProperty = () => {
         }
     }
 
-    const getDataDesc = async () => {
-        try {
-            setLoadDesc(true)
-            const response = await axios.get(`/descProperty/${editId}`)
-            setDescProperty(response.data)
-            setTimeout(() => {
-                setLoadDesc(false)
-            }, 3000)
-        } catch (err) {
-            console.log(err)
-        }
+  const getDataDesc = async () => {
+    try {
+      setLoadDesc(true);
+      const response = await axios.get(`/descProperty/${editId}`);
+      setDescProperty(response.data);
+      setTimeout(() => {
+        setLoadDesc(false);
+      }, 3000);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-    const getDataFacility = async () => {
-        try {
-            setLoadFacility(true)
-            const response = await axios.get(`/getFacilityById/${editId}`)
-            setDataFacility(response.data)
-            setTimeout(() => {
-                setLoadFacility(false)
-            }, 3000)
-        } catch (err) {
-            console.log(err)
-        }
+  const getDataFacility = async () => {
+    try {
+      setLoadFacility(true);
+      const response = await axios.get(`/getFacilityById/${editId}`);
+      setDataFacility(response.data);
+      setTimeout(() => {
+        setLoadFacility(false);
+      }, 3000);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-    useEffect(() => {
-        getDataFacility()
-    }, [editId])
+  useEffect(() => {
+    getDataFacility();
+  }, [editId]);
 
-    useEffect(() => {
-        getDataDesc()
-    }, [editId])
+  useEffect(() => {
+    getDataDesc();
+  }, [editId]);
 
 
     useEffect(() => {
         getData()
     }, [])
 
-    // editpicture ............................................................................................
-    const isOpenModalPicture = (item) => {
-        setOpanModelPicture(true)
-        setEditId(item.id)
-
-    }
-    const isCloseModalPicture = () => {
-        setOpanModelPicture(false)
-        setEditId(null)
+  // editpicture ............................................................................................
+  const isOpenModalPicture = (item) => {
+    setOpanModelPicture(true);
+    setEditId(item.id);
+  };
+  const isCloseModalPicture = () => {
+    setOpanModelPicture(false);
+    setEditId(null);
+  };
 
     }
 
@@ -260,34 +260,38 @@ const CardProperty = () => {
         setEditDesc(true)
     }
 
-    const editDescription = async () => {
-        try {
-            await axios.patch(`/editdescription/${editId}`, {
-                description: desc
-            }, {
-                withCredentials: true
-            })
-            setLoad(true)
-            setTimeout(() => {
-                setLoad(false)
-                getData()
-                getDataDesc()
-                closeAlertDialogDesc()
-                setDesc("")
-                toast({
-                    title: 'Success',
-                    description: 'Description has been updated',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                })
-            }, 3000)
-        } catch (err) {
-            if (err.response) {
-                setMsgNameDesc(err.response.data)
-            }
+  const editDescription = async () => {
+    try {
+      await axios.patch(
+        `/editdescription/${editId}`,
+        {
+          description: desc,
+        },
+        {
+          withCredentials: true,
         }
+      );
+      setLoad(true);
+      setTimeout(() => {
+        setLoad(false);
+        getData();
+        getDataDesc();
+        closeAlertDialogDesc();
+        setDesc('');
+        toast({
+          title: 'Success',
+          description: 'Description has been updated',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      }, 3000);
+    } catch (err) {
+      if (err.response) {
+        setMsgNameDesc(err.response.data);
+      }
     }
+  };
 
     //edit location detail
     const editLocationDetail = async () => {
@@ -364,70 +368,76 @@ const CardProperty = () => {
         setEditId(item.id)
     }
 
-    const handleModalCloseLocation = () => {
-        setModalOpenLocation(false)
-        setEditId(null)
-    }
+  const handleModalCloseLocation = () => {
+    setModalOpenLocation(false);
+    setEditId(null);
+  };
 
-    //facility
-    const openAlertDialogFacility = (item) => {
-        setAlertDialogFacility(true)
-        setEditId(item.id)
-        getDataFacility()
-    }
-    const closeAlertDialogFacility = () => {
-        setAlertDialogFacility(false)
-        setEditId(null)
-        setEditFacility(false)
-        setMsgNameFacility("")
-    }
-    const openEditFacility = () => {
-        setEditFacility(true)
-    }
-    const editFacilities = async (e) => {
-        e.preventDefault()
-        try {
-            const nameFacility = clickedItem.map(facility => facility.title).join(", ")
-            await axios.patch(`/editfacility/${editId}`, {
-                name: nameFacility
-            }, {
-                withCredentials: true
-            })
-            setLoad(true)
-            setTimeout(() => {
-                setLoad(false)
-                closeAlertDialogFacility()
-                getDataFacility()
-                setClickedItem([])
-                toast({
-                    title: 'Success',
-                    description: 'Facility has been updated',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                })
-            }, 3000)
-        } catch (err) {
-            console.log(err)
-            if (err.response) {
-                setMsgNameFacility(err.response.data)
-            }
+  //facility
+  const openAlertDialogFacility = (item) => {
+    setAlertDialogFacility(true);
+    setEditId(item.id);
+    getDataFacility();
+  };
+  const closeAlertDialogFacility = () => {
+    setAlertDialogFacility(false);
+    setEditId(null);
+    setEditFacility(false);
+    setMsgNameFacility('');
+  };
+  const openEditFacility = () => {
+    setEditFacility(true);
+  };
+  const editFacilities = async (e) => {
+    e.preventDefault();
+    try {
+      const nameFacility = clickedItem
+        .map((facility) => facility.title)
+        .join(', ');
+      await axios.patch(
+        `/editfacility/${editId}`,
+        {
+          name: nameFacility,
+        },
+        {
+          withCredentials: true,
         }
-    }
-    const handleItemClick = (item) => {
-        if (clickedItem.includes(item)) {
-            setClickedItem(clickedItem.filter((i) => i !== item));
-        } else {
-            setClickedItem([...clickedItem, item]);
-        }
-    }
-    function countFacilities(facilities) {
-        let count = 0;
-        facilities.forEach(facility => {
-            count += facility.name.split(", ").length;
+      );
+      setLoad(true);
+      setTimeout(() => {
+        setLoad(false);
+        closeAlertDialogFacility();
+        getDataFacility();
+        setClickedItem([]);
+        toast({
+          title: 'Success',
+          description: 'Facility has been updated',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
         });
-        return count;
+      }, 3000);
+    } catch (err) {
+      console.log(err);
+      if (err.response) {
+        setMsgNameFacility(err.response.data);
+      }
     }
+  };
+  const handleItemClick = (item) => {
+    if (clickedItem.includes(item)) {
+      setClickedItem(clickedItem.filter((i) => i !== item));
+    } else {
+      setClickedItem([...clickedItem, item]);
+    }
+  };
+  function countFacilities(facilities) {
+    let count = 0;
+    facilities.forEach((facility) => {
+      count += facility.name.split(', ').length;
+    });
+    return count;
+  }
 
     //responsive
     const widthFontSize = useBreakpointValue({
@@ -886,4 +896,4 @@ const CardProperty = () => {
     )
 }
 
-export default CardProperty
+export default CardProperty;
