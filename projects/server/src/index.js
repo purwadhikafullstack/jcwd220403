@@ -6,7 +6,6 @@ const { join } = require('path');
 const database = require('./models');
 const fileUpload = require('express-fileupload');
 const path = require('path');
-const verifyJWT = require('./middlewares/verifyJWT');
 const {
   authRouters,
   userRouters,
