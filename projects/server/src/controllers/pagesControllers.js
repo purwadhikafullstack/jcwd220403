@@ -101,12 +101,12 @@ module.exports = {
                 ],
             })
             
-            // const data = response.map(item => {
-            //     const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
-            //     delete newData.picture;
-            //     return newData;
-            // });
-            res.status(201).send(response)
+            const data = response.map(item => {
+                const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
+                delete newData.picture;
+                return newData;
+            });
+            res.status(201).send(data)
         }catch(err){
             console.log(err)
             res.status(404).send(err)

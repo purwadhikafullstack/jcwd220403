@@ -577,7 +577,7 @@ const CardProperty = () => {
                                             >
                                                 <Image cursor="pointer" height="150px" width="100%" objectFit="cover" borderRadius="5px"
                                                     style={{ filter: index === indexHover ? "brightness(30%)" : "none" }}
-                                                    src={`http://localhost:2000/propertyPicture/${image.picture}`}
+                                                    src={process.env.REACT_APP_URL_PUBLIC + 'propertyPicture/' + image.picture}
                                                 />
                                             </Box>
                                         ))}

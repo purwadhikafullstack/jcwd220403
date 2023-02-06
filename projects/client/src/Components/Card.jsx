@@ -149,10 +149,7 @@ function HomeCard() {
                               onMouseOut={() => (setActiveIndex(-1))}>
                               <Image
                                 objectFit='cover'
-                                src={
-                                  'http://localhost:2000/propertyPicture/' +
-                                  image.picture
-                                }
+                                src={process.env.REACT_APP_URL_PUBLIC + 'propertyPicture/' + image.picture}
                                 width='270px'
                                 height='190px'
                               />

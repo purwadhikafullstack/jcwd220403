@@ -481,7 +481,7 @@ const InputCertainDate = () => {
                                 <Slider {...settings}>
                                     {room && room.images.map((image) => (
                                         <Box borderRadius="10px">
-                                            <Image height={heightImage} borderRadius="10px" src={`http://localhost:2000/roomPicture/${image.picture}`} />
+                                            <Image height={heightImage} borderRadius="10px" src={process.env.REACT_APP_URL_PUBLIC + 'roomPicture/' + image.picture} />
                                         </Box>
                                     ))}
                                 </Slider>
