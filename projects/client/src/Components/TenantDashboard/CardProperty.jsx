@@ -41,14 +41,12 @@ import {
 } from '@chakra-ui/react';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
-import { Carousel } from 'react-responsive-carousel';
 import { useDispatch } from 'react-redux';
 import InputMorePictureProperty from '../ComponentBeTenant/InputMorePictureProperty';
 import { openDrawerForMorePicture } from '../../Redux/MorePictureProperty';
 import { FiEdit3 } from 'react-icons/fi';
 import { RxDividerVertical } from 'react-icons/rx';
 import { DataFasility } from '../../Data/DataFasility';
-import Slider from 'react-slick';
 
 const CardProperty = () => {
   //for everything

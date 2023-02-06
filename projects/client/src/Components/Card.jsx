@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import axios from '../api/axios';
-import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import useSearch from '../hooks/useSeacrh';
 
@@ -19,7 +18,7 @@ function HomeCard() {
       const response = await axios.post('/landingpage', search);
       setCurrentData(response.data);
       setLoading(false);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (err) {
       console.log(err);
     }

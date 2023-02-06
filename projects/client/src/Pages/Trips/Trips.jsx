@@ -37,7 +37,7 @@ export default function Trips() {
     getTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
-  console.log(trips);
+  // console.log(trips);
   return loading ? null : (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
       <Grid

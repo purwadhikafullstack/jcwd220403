@@ -29,7 +29,7 @@ export default function VerifyEmailForm() {
 
   const handleOTP = (e) => {
     setOTP(e.target.value);
-    console.log(OTP);
+    // console.log(OTP);
   };
 
   const resendOTP = async () => {
