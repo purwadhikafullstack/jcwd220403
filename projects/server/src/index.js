@@ -46,29 +46,14 @@ app.use(express.json());
 app.use(bearerToken());
 app.use(cookieParser());
 
-app.use('/public', express.static(path.join(__dirname, './public')));
-
 //#region API ROUTES
 
 // ===========================
 // NOTE : Add your routes here
 
-//routes that don't need token START
-app.use(refresh);
-app.use(logout);
-// app.use(privateTransactionRouters);
-app.use(propertyRouters);
-app.use(transactionRouters);
-app.use(tenantRouters);
-app.use(pagesRouters);
-app.use(roomsRouters);
-app.use(paymentMethodRouter);
-// app.use(tenantTransactionRouter);
+//file
+app.use('/public', express.static(path.join(__dirname, './public')));
 
-//routes that don't need token END
-
-//device detection START
-app.use(authRouters);
 app.use(
   fileUpload({
     createParentPath: true,
@@ -78,17 +63,32 @@ app.use(
     abortOnLimit: true,
   })
 );
-//routes that need token START
-// app.use(verifyJWT);
+
+//auth
+app.use(refresh);
+app.use(logout);
+app.use(authRouters);
+
+//home
+app.use(pagesRouters);
+
+//user
 app.use(userRouters);
-app.use(RegisterAsTenant);
+app.use(transactionRouters);
 app.use(privateTransactionRouters);
+app.use(paymentMethodRouter);
 app.use(paymentRouters);
+
+//tenant
+app.use(RegisterAsTenant);
 app.use(tenantRouters);
 app.use(tenantTransactionRouter);
-//routes that need token END
-//device detection END
 
+//property
+app.use(propertyRouters);
+app.use(roomsRouters);
+
+// ===========================
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
 });
@@ -98,8 +98,6 @@ app.get('/api/greetings', (req, res, next) => {
     message: 'Hello, Student !',
   });
 });
-
-// ===========================
 
 // not found
 app.use((req, res, next) => {
