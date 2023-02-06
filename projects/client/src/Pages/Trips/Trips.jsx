@@ -1,7 +1,6 @@
 import {
   Box,
   Divider,
-  chakra,
   Grid,
   GridItem,
   Container,
@@ -12,7 +11,6 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Ongoing from '../../Components/Trips/Ongoing';
-import Trip from '../../Components/Trips/TripTemplate';
 import useAuth from '../../hooks/useAuth';
 import Declined from '../../Components/Trips/Declined';
 import Finished from '../../Components/Trips/Finished';

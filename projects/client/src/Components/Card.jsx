@@ -26,6 +26,7 @@ function HomeCard() {
 
   useEffect(() => {
     getdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   const Loadingg = () => {

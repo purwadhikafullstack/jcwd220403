@@ -7,7 +7,6 @@ import OngoingList from './OngoingList';
 
 function Ongoing({ data }) {
   const [ongoingtransaction, setOngoingTransaction] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const checkData = useCallback(() => {
     data.map((trip) => {
@@ -23,7 +22,7 @@ function Ongoing({ data }) {
 
       return null;
     });
-    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
