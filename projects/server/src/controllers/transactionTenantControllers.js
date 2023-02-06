@@ -9,7 +9,6 @@ const handlebars = require("handlebars");
 module.exports = {
     transactionsUser: async (req, res) => {
         const { tenantId, status } = req.params
-        console.log(status)
         try{
             const response = await database.transaction.findAll({
                 attributes: ['id', 'checkIn', 'checkOut', 'transactionStatus'],
@@ -162,6 +161,36 @@ module.exports = {
                 );
 
             res.status(201).send("Success Confirm")
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    cancelUserOrders : async (req, res) => {
+        try{
+            await database.transaction.update({
+                transactionStatus: "Gagal"
+            }, {
+                where : {
+                    id : req.params.id
+                }
+            })
+            res.status(201).send("cancel user orders success")
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
+    acceptUserOrders: async (req, res) => {
+        try{
+            await database.transaction.update({
+                transactionStatus: "Menunggu Konfirmasi Pembayaran"
+            }, {
+                where : {
+                    id : req.params.id
+                }
+            })
+            res.status(201).send("user orders accept")
         }catch(err){
             console.log(err)
             res.status(404).send(err)
