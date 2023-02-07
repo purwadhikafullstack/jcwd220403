@@ -37,7 +37,7 @@ module.exports = {
       const tempResult = tempCompile({
         fullName,
         otp,
-        link: `http://localhost:3000/verification/${token}`,
+        link: `${domain}/verification/${token}`,
       });
 
       await nodemailer.sendMail({
@@ -233,7 +233,7 @@ module.exports = {
       const tempResult = tempCompile({
         fullName: emailExist.fullName,
         otp,
-        link: `http://localhost:3000/verification/${token}`,
+        link: `${domain}/verification/${token}`,
       });
 
       await nodemailer.sendMail({
@@ -286,7 +286,7 @@ module.exports = {
     });
 
     const tempEmail = fs.readFileSync(
-      './src/emailTemplates/forgotPassword.html',
+      `${process.env.ACCESS_SRC_FILE}emailTemplates/forgotPassword.html`,
       'utf-8'
     );
     const tempCompile = handlebars.compile(tempEmail);
@@ -295,7 +295,7 @@ module.exports = {
       email,
       browser,
       device,
-      link: `http://localhost:3000/resetpassword/${emailExist.id}/${token}`,
+      link: `${domain}/resetpassword/${emailExist.id}/${token}`,
     });
 
     await nodemailer.sendMail({
