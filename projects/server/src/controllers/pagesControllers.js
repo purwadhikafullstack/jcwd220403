@@ -3,7 +3,7 @@ const { Op, Sequelize } = require("sequelize");
 
 module.exports = {
     landingPage: async (req, res) => {
-        const {lokasi, state, fasilitas} = req.body
+        const {lokasi, state, fasilitas, order, order_direction} = req.body
         try{
             const response = await database.property.findAll({
                 attributes: ['id', 'name', 'description', 'picture'],
@@ -14,6 +14,7 @@ module.exports = {
                         include: [
                             { 
                                 model: database.transaction,
+                                duplicating: false,
                                 required: false,
                                 attributes: ['id'],
                                 where: {
@@ -42,6 +43,7 @@ module.exports = {
                             { 
                                 model: database.unavailableDates,
                                 required: false,
+                                duplicating: false,
                                 attributes: ['id'],
                                 where: {
                                     [Op.or] : [
@@ -84,21 +86,23 @@ module.exports = {
                             } : {[Op.not]: null} 
                         }
                     },
+                    
                 ],
                 order: [
-                    // ['id', 'ASC'],
-                    ['rooms','price', 'ASC'],
+                    order === "price" ? [{ model: database.room }, order, order_direction] : 
+                    ["id", "ASC"]
                 ],
-                having: [
+                where: Sequelize.and(
                     {
-                        [Op.and]: [
-                            {
-                                'rooms.transactions.id': null,
-                                'rooms.unavailableDates.id': null,
-                            }
-                        ]
-                    }
-                ],
+                        "$rooms.transactions.id$": null
+                    },
+                    {
+                        "$rooms.unavailableDates.id$": null
+                    },
+                ),
+                // subQuery: false,
+                // limit: 7,
+                // offset: 0
             })
             
             const data = response.map(item => {

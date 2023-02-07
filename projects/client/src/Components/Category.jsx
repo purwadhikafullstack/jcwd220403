@@ -9,22 +9,25 @@ import {
   useBreakpointValue,
   Icon,
   Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react';
 import { CategorySliders } from '../Data/CategorySliders';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { SettingsIcon } from '@chakra-ui/icons';
-// import "~slick-carousel/slick/slick.css";
 import { DataFasility } from '../Data/DataFasility';
-// import "~slick-carousel/slick/slick-theme.css";
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Slider from 'react-slick';
 
 //untuk swipe di mobile
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { BsFilterRight } from 'react-icons/bs';
-import useSearch from '../hooks/useSeacrh';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { BsFilterRight } from "react-icons/bs";
+import useSearch from "../hooks/useSeacrh";
+import { GrSort } from "react-icons/gr";
 
 const Category = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -124,8 +127,8 @@ const Category = () => {
 
   return (
     <Center>
-      <Flex justifyContent='center' alignItems='center' width='90%'>
-        <Box p={6} width='90%'>
+      <Flex justifyContent="center" alignItems="center" width="90%">
+        <Box p={6} width="85%">
           <Slider {...settings}>
             {DataFasility.map((item, index) => (
               <Box
@@ -138,6 +141,7 @@ const Category = () => {
                   setSearch(
                     currentIndex === index
                       ? { ...search, fasilitas: '' }
+
                       : { ...search, fasilitas: item.title }
                   );
                 }}
@@ -162,15 +166,22 @@ const Category = () => {
             ))}
           </Slider>
         </Box>
-        <Box width='10%' display={displayButtonFilter}>
-          <Button
-            backgroundColor='white'
-            border='1px solid #717171'
-            leftIcon={<BsFilterRight />}
-            width='75px'
-          >
-            Filter
-          </Button>
+
+        <Box width="10%" display={displayButtonFilter}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              backgroundColor="white"
+              border="1px solid #717171"
+              leftIcon={<GrSort />}
+            >
+              Sort
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => setSearch({...search, order: "price", order_direction: "ASC"})}>Harga Terendah</MenuItem>
+              <MenuItem onClick={() => setSearch({...search, order: "price", order_direction: "DESC"})}>Harga Tertinggi</MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
       </Flex>
     </Center>

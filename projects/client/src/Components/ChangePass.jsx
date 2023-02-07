@@ -16,7 +16,7 @@ export const ChangePass = () => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate()
 
-    const registerSchema = Yup.object().shape({
+    const formSchema = Yup.object().shape({
         password: Yup.string().required('Please enter your password').min(8, "Password should be at least eight characters"),
         password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], "Password does not matched")
     });
@@ -93,7 +93,7 @@ export const ChangePass = () => {
                             password: "",
                             password_confirmation: "",
                         }}
-                        validationSchema={registerSchema}
+                        validationSchema={formSchema}
                         onSubmit={(values, action) => {
                             onChangePass(values);
                             action.setFieldValue("password", "");

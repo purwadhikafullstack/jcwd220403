@@ -28,7 +28,7 @@ export const ChangeEmail = () => {
     const navigate = useNavigate()
     const axiosPrivate = useAxiosPrivate()
 
-    const registerSchema = Yup.object().shape({
+    const formSchema = Yup.object().shape({
         email: Yup.string().email().required('Please enter your email address')
         .test('Email', ' The email address you entered already exists. ',
         function (value) {
@@ -196,7 +196,7 @@ export const ChangeEmail = () => {
                         initialValues={{
                             email: ""
                         }}
-                        validationSchema={registerSchema}
+                        validationSchema={formSchema}
                         onSubmit={(values) => {
                             onChangeEmail(values)
                         }}

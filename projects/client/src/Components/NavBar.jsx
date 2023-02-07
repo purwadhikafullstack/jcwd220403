@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Image,
@@ -33,18 +33,20 @@ import {
   TagLabel,
   TagCloseButton,
   UnorderedList,
-} from '@chakra-ui/react';
-import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons';
-import Logo from '../Assets/Logo.png';
-import LogoOnly from '../Assets/Logo_only.png';
+  Circle,
+} from "@chakra-ui/react";
+import { SearchIcon, HamburgerIcon } from "@chakra-ui/icons";
+import Logo from "../Assets/Logo.png";
+import LogoOnly from "../Assets/Logo_only.png";
 //import component
-import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import useLogout from '../hooks/useLogout';
-import { DateRange } from 'react-date-range';
-import { addDays } from 'date-fns';
-import axios from '../api/axios';
-import useSearch from '../hooks/useSeacrh';
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import useLogout from "../hooks/useLogout";
+import { DateRange } from "react-date-range";
+import { addDays } from "date-fns";
+import axios from "../api/axios";
+import useSearch from "../hooks/useSeacrh";
+import { GrSort } from "react-icons/gr";
 
 const NavBar = () => {
   const { auth } = useAuth();
@@ -52,22 +54,22 @@ const NavBar = () => {
   const logout = useLogout();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [lokasi, setLokasi] = useState('');
+  const [lokasi, setLokasi] = useState("");
   const [alllokasi, setAllokasi] = useState([]);
   const [filterlok, setFilterlok] = useState([]);
-  const lok = useRef('');
+  const lok = useRef("");
 
   const [state, setState] = useState([
     {
       startDate: search.state ? search.state[0].startDate : new Date(),
       endDate: search.state ? search.state[0].endDate : new Date(),
-      key: 'selection',
+      key: "selection",
     },
   ]);
 
   const getLokasi = async () => {
     try {
-      const res = await axios.get('/category');
+      const res = await axios.get("/category");
       setAllokasi(res.data);
     } catch (err) {
       console.log(err);
@@ -86,7 +88,7 @@ const NavBar = () => {
 
   const onSearch = () => {
     setSearch({ lokasi, state });
-    navigate('/');
+    navigate("/");
   };
 
   useEffect(() => {
@@ -95,42 +97,42 @@ const NavBar = () => {
 
   const signOut = async () => {
     await logout();
-    navigate('/');
+    navigate("/");
   };
-  const [isMobile] = useMediaQuery('(max-width: 481px)');
+  const [isMobile] = useMediaQuery("(max-width: 481px)");
   const displayTablet = useBreakpointValue({
-    base: 'none',
-    md: 'block',
-    lg: 'block',
+    base: "none",
+    md: "block",
+    lg: "block",
   });
   const widht = useBreakpointValue({
-    base: '100%',
-    md: '400px',
+    base: "100%",
+    md: "400px",
   });
   const displayLogoOnly = useBreakpointValue({
-    base: 'block',
-    md: 'none',
+    base: "block",
+    md: "none",
   });
   const logoTabletAndDesktop = useBreakpointValue({
-    md: '45%',
-    lg: '25%',
+    md: "45%",
+    lg: "25%",
   });
 
   return (
-    <Box bg='#ffffff' color='white' p={4} position='sticky' top={0} zIndex={1}>
+    <Box bg="#ffffff" color="white" p={4} position="sticky" top={0} zIndex={1}>
       <Flex
-        maxW={isMobile ? '100%' : '6xl'}
-        mx='auto'
+        maxW={isMobile ? "100%" : "6xl"}
+        mx="auto"
         px={4}
         py={2}
         style={{
           ...(isMobile
-            ? { borderBottom: 'none' }
-            : { borderBottom: '1px solid #181D31' }),
+            ? { borderBottom: "none" }
+            : { borderBottom: "1px solid #181D31" }),
         }}
       >
-        <Flex justify='space-evenly' align='center'>
-          <Link to={'/'}>
+        <Flex justify="space-evenly" align="center">
+          <Link to={"/"}>
             <Box>
               <Image
                 src={Logo}
@@ -139,128 +141,206 @@ const NavBar = () => {
               />
               <Image
                 src={LogoOnly}
-                width='30px'
+                width="30px"
                 display={displayLogoOnly}
-                marginRight='5px'
+                marginRight="5px"
               />
             </Box>
           </Link>
           <Flex
-            justify='space-around'
-            align='center'
-            color='black'
-            w={isMobile ? '70vw' : '30vw'}
-            h='50px'
-            borderRadius='full'
-            cursor='pointer'
-            border='1px'
-            borderColor='gray.100'
-            boxShadow='md'
+            justify="space-around"
+            align="center"
+            color="black"
+            w={isMobile ? "70vw" : ["50vw", "40vw", "30vw"]}
+            h="50px"
+            borderRadius="full"
+            cursor="pointer"
+            border="1px"
+            borderColor="gray.100"
+            boxShadow="md"
             mr={isMobile ? 3 : 12}
-            onClick={onOpen}
+            onClick={isMobile ? null : onOpen}
           >
-            <Text
-              fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small', 'small']}
-            >
-              {lokasi ? lokasi : 'Ke mana saja'}
-            </Text>
-            <Text fontSize={isMobile ? 'xl' : '2xl'}>|</Text>
-            <Text
-              fontSize={isMobile ? 'x-small' : ['xx-small', 'x-small', 'small']}
-              overflow='hidden'
-            >
-              {state === search.state
-                ? new Date(state[0]['startDate']).toLocaleString('en', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  }) +
-                  ' - ' +
-                  new Date(state[0]['endDate']).toLocaleString('en', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })
-                : 'Minggu Mana pun'}
-            </Text>
-            <Button borderRadius='full' size='sm' bgColor='orange'>
-              <SearchIcon />
-            </Button>
+
+            {isMobile ? (
+              <>
+                <Button
+                  onClick={onOpen}
+                  size="sm"
+                  bgColor={isMobile ? "inherit" : "orange"}
+                >
+                  <SearchIcon />
+                </Button>
+                <Box onClick={onOpen}>
+                  <Text fontSize="small">
+                    {lokasi ? lokasi : "Ke mana saja"}
+                  </Text>
+                  <Text fontSize="xx-small" overflow="hidden">
+                    {state === search.state
+                      ? new Date(state[0]["startDate"]).toLocaleString("en", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        }) +
+                        " - " +
+                        new Date(state[0]["endDate"]).toLocaleString("en", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : "Minggu Mana pun"}
+                  </Text>
+                </Box>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    backgroundColor="white"
+                    border="1px"
+                    borderColor="gray.300"
+                    size="sm"
+                    borderRadius="3xl"
+                  >
+                    <GrSort />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem
+                      onClick={() =>
+                        setSearch({
+                          ...search,
+                          order: "price",
+                          order_direction: "ASC",
+                        })
+                      }
+                    >
+                      Harga Terendah
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() =>
+                        setSearch({
+                          ...search,
+                          order: "price",
+                          order_direction: "DESC",
+                        })
+                      }
+                    >
+                      Harga Tertinggi
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </>
+            ) : (
+              <>
+                <Text
+                  fontSize={
+                    isMobile ? "x-small" : ["xx-small", "x-small", "small"]
+                  }
+                >
+                  {lokasi ? lokasi : "Ke mana saja"}
+                </Text>
+                <Text fontSize={isMobile ? "xl" : "2xl"}>|</Text>
+                <Text
+                  fontSize={
+                    isMobile ? "x-small" : ["xx-small", "x-small", "small"]
+                  }
+                  overflow="hidden"
+                >
+                  {state === search.state
+                    ? new Date(state[0]["startDate"]).toLocaleString("en", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }) +
+                      " - " +
+                      new Date(state[0]["endDate"]).toLocaleString("en", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    : "Minggu Mana pun"}
+                </Text>
+                <Button borderRadius="3xl" size="sm" bgColor="orange">
+                  <SearchIcon />
+                </Button>
+              </>
+            )}
           </Flex>
           {isMobile ? null : (
             <Box>
               <Text
-                fontSize='14px'
-                fontFamily='Poppins'
-                cursor='pointer'
-                _hover={{ fontWeight: 'bold' }}
-                color='black'
-                marginRight='10px'
+                fontSize="14px"
+                fontFamily="Poppins"
+                cursor="pointer"
+                _hover={{ fontWeight: "bold" }}
+                color="black"
+                marginRight="10px"
               >
                 {auth?.isTenant === true ? (
-                  <Link to={'/tenant/dashboard'}>Switch to hosting</Link>
+                  <Link to={"/tenant/dashboard"}>Switch to hosting</Link>
                 ) : (
-                  <Link to={'/register-tenant'}>List your property</Link>
+                  <Link to={"/register-tenant"}>List your property</Link>
                 )}
               </Text>
             </Box>
           )}
-          <Box marginLeft='auto' display={displayTablet}>
+          <Box marginLeft="auto" display={displayTablet}>
             <Menu>
-              <MenuButton w='70px'>
+              <MenuButton w="70px">
                 <Tag
-                  bgColor='white'
-                  w='40'
-                  h='10'
-                  borderRadius='full'
-                  border='1px'
-                  borderColor='gray.300'
-                  _hover={{ cursor: 'pointer' }}
+                  bgColor="white"
+                  w="40"
+                  h="10"
+                  borderRadius="full"
+                  border="1px"
+                  borderColor="gray.300"
+                  _hover={{ cursor: "pointer" }}
                 >
-                  <Icon as={HamburgerIcon} mr='2' ml='1' />
+                  <Icon as={HamburgerIcon} mr="2" ml="1" />
                   {auth?.userPhoto ? (
                     <Avatar
-                      size='sm'
-                      bgColor='#FE9900'
+                      size="sm"
+                      bgColor="#FE9900"
                       src={
                         process.env.REACT_APP_URL_PUBLIC +
-                        'profilePicture/' +
+                        "profilePicture/" +
                         auth?.userPhoto
                       }
                     />
                   ) : (
-                    <Avatar size='sm' name='A' bgColor='#FE9900' />
+                    <Avatar size="sm" name="A" bgColor="#FE9900" />
                   )}
                 </Tag>
               </MenuButton>
               {auth?.accessToken ? (
-                <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                <MenuList zIndex="3" fontFamily="poppins" color="black">
                   <MenuItem>
-                    <Link to={'/user'}>Profile</Link>
+                    <Link to={"/user"}>Profile</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to={'/trips'}>Trips</Link>
+                    <Link to={"/trip"}>Trips</Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link to={"/review"}>Reviews</Link>
                   </MenuItem>
                   <MenuItem></MenuItem>
                   <MenuDivider />
                   <MenuItem>
-                    <Link to={'/register-tenant'}>List Your Property</Link>
+                    <Link to={"/register-tenant"}>List Your Property</Link>
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem>Help</MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
                 </MenuList>
               ) : (
-                <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                <MenuList zIndex="3" fontFamily="poppins" color="black">
                   <MenuItem>
-                    <Link to={'/register'}>Register</Link>
+                    <Link to={"/register"}>Register</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to={'/login'}>Login</Link>
+                    <Link to={"/login"}>Login</Link>
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem>
-                    <Link to={'/register-tenant'}>List Your Property</Link>
+                    <Link to={"/register-tenant"}>List Your Property</Link>
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem>Help</MenuItem>
@@ -268,18 +348,18 @@ const NavBar = () => {
               )}
             </Menu>
           </Box>
-          <Box marginLeft='auto' display={displayLogoOnly}>
+          <Box marginLeft="auto" display={displayLogoOnly}>
             <Menu>
               <MenuButton
                 as={IconButton}
-                aria-label='Options'
+                aria-label="Options"
                 icon={<HamburgerIcon />}
-                variant='outline'
-                borderRadius='full'
-                boxShadow='md'
-                color='black'
+                variant="outline"
+                borderRadius="full"
+                boxShadow="md"
+                color="black"
               />
-              <MenuList color='black' zIndex='3' fontFamily='poppins'>
+              <MenuList color="black" zIndex="3" fontFamily="poppins">
                 <MenuItem>Register</MenuItem>
                 <MenuItem>Login</MenuItem>
                 <MenuDivider />
@@ -293,73 +373,73 @@ const NavBar = () => {
       </Flex>
 
       {/* search lokasi and date */}
-      <Drawer placement='top' onClose={onClose} isOpen={isOpen}>
+      <Drawer placement="top" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay zIndex={1} />
         <DrawerContent>
           <DrawerBody>
             <Center>
               <Tabs
                 isFitted
-                variant='soft-rounded'
-                colorScheme='orange'
-                w={isMobile ? '90vw' : '60vw'}
+                variant="soft-rounded"
+                colorScheme="orange"
+                w={isMobile ? "90vw" : "60vw"}
               >
                 <TabList
-                  mb='1em'
-                  bgColor='gray.100'
-                  borderRadius='3xl'
-                  overflow='hidden'
-                  h='12'
+                  mb="1em"
+                  bgColor="gray.100"
+                  borderRadius="3xl"
+                  overflow="hidden"
+                  h="12"
                 >
-                  <Tab display='block' alignSelf='center'>
-                    <Text fontSize={['xx-small', 'x-small', 'small']}>
+                  <Tab display="block" alignSelf="center">
+                    <Text fontSize={["xx-small", "x-small", "small"]}>
                       Lokasi
                     </Text>
                     <Text
                       fontSize={
-                        isMobile ? 'xx-small' : ['xx-small', 'x-small', 'small']
+                        isMobile ? "xx-small" : ["xx-small", "x-small", "small"]
                       }
                     >
                       {lokasi ? (
                         <Tag
-                          color='black'
-                          colorScheme='inherit'
-                          size={isMobile ? 'sm' : 'md'}
+                          color="black"
+                          colorScheme="inherit"
+                          size={isMobile ? "sm" : "md"}
                         >
                           <TagLabel>{lokasi}</TagLabel>
-                          <TagCloseButton onClick={() => setLokasi('')} />
+                          <TagCloseButton onClick={() => setLokasi("")} />
                         </Tag>
                       ) : (
-                        'Cari lokasi'
+                        "Cari lokasi"
                       )}
                     </Text>
                   </Tab>
-                  <Tab display='block' alignSelf='center'>
-                    <Text fontSize={['xx-small', 'x-small', 'small']}>
+                  <Tab display="block" alignSelf="center">
+                    <Text fontSize={["xx-small", "x-small", "small"]}>
                       Tanggal
                     </Text>
                     <Text
                       fontSize={
-                        isMobile ? 'xx-small' : ['xx-small', 'x-small', 'small']
+                        isMobile ? "xx-small" : ["xx-small", "x-small", "small"]
                       }
                     >
-                      {new Date(state[0]['startDate']).toLocaleString('en', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
+                      {new Date(state[0]["startDate"]).toLocaleString("en", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
                       }) +
-                        ' - ' +
-                        new Date(state[0]['endDate']).toLocaleString('en', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
+                        " - " +
+                        new Date(state[0]["endDate"]).toLocaleString("en", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
                         })}
                     </Text>
                   </Tab>
                   <Button
-                    bgColor='orange'
-                    borderRadius='full'
-                    size='lg'
+                    bgColor="orange"
+                    borderRadius="full"
+                    size="lg"
                     onClick={() => {
                       onSearch();
                       onClose();
@@ -374,22 +454,22 @@ const NavBar = () => {
                       <Box>
                         <Input
                           defaultValue={lokasi}
-                          w={isMobile ? '90vw' : '50vw'}
+                          w={isMobile ? "90vw" : "50vw"}
                           ref={lok}
                           onChange={searchlok}
-                          placeholder='Cari Kota'
-                          type='text'
+                          placeholder="Cari Kota"
+                          type="text"
                         />
                         {filterlok ? (
                           <List>
                             {filterlok.map((item, index) => {
                               return (
                                 <ListItem
-                                  p='2'
+                                  p="2"
                                   value={item.city}
                                   key={index}
-                                  _hover={{ bgColor: 'gray.100' }}
-                                  cursor='pointer'
+                                  _hover={{ bgColor: "gray.100" }}
+                                  cursor="pointer"
                                   onClick={() => {
                                     setLokasi(item.city);
                                     setFilterlok([]);
@@ -404,14 +484,14 @@ const NavBar = () => {
                         {lokasi.length === 0 ? (
                           <>
                             <Text
-                              color='orange'
-                              fontSize='x-small'
+                              color="orange"
+                              fontSize="x-small"
                             >{`Holistay tersedia di ${alllokasi.length} kota`}</Text>
                             <Flex>
                               {alllokasi.map((item, index) => {
                                 return (
-                                  <UnorderedList key={index}>
-                                    <ListItem fontSize='xx-small'>
+                                  <UnorderedList>
+                                    <ListItem fontSize="xx-small">
                                       {item.city}
                                     </ListItem>
                                   </UnorderedList>
@@ -425,10 +505,10 @@ const NavBar = () => {
                   </TabPanel>
                   <TabPanel>
                     <Center>
-                      <Box border='1px' borderRadius='xl' overflow='hidden'>
+                      <Box border="1px" borderRadius="xl" overflow="hidden">
                         <DateRange
                           fixedHeight={true}
-                          rangeColors={['#FE9900']}
+                          rangeColors={["#FE9900"]}
                           editableDateInputs={true}
                           onChange={(item) => setState([item.selection])}
                           minDate={addDays(new Date(), 0)}
