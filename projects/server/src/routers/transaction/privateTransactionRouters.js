@@ -15,4 +15,10 @@ router.get(
   privateTransactionControllers.getuserTransaction
 );
 
+router.patch(
+  '/api/transaction/cancel',
+  verifyJWT,
+  privateTransactionControllers.cancelTransaction
+);
+
 module.exports = router;

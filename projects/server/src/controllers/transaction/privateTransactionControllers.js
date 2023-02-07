@@ -82,7 +82,14 @@ const getUsersTransactions = async (req, res) => {};
 
 const cancelTransaction = async (req, res) => {
   try {
-    const { transactionId } = req.body;
+    const { id } = req.body;
+
+    await transaction.update(
+      { transactionStatus: 'Dibatalkan' },
+      { where: { id } }
+    );
+
+    res.status(200).send({ message: 'transaction was canceled successfully' });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
