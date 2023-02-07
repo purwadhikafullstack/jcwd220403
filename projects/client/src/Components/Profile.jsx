@@ -142,11 +142,10 @@ function ProfileSetting() {
                     <SkeletonCircle size="" isLoaded={!isloading}>
                       <Avatar
                         size="md"
-                        name={user.fullName}
                         src={
                           process.env.REACT_APP_URL_PUBLIC +
                           "profilePicture/" +
-                          user.photo
+                          auth?.userPhoto
                         }
                       />
                     </SkeletonCircle>
@@ -396,11 +395,10 @@ function ProfileSetting() {
               <SkeletonCircle size="" isLoaded={!isloading}>
                 <Avatar
                   size="2xl"
-                  name={user.fullName}
                   src={
                     process.env.REACT_APP_URL_PUBLIC +
                     "profilePicture/" +
-                    user.photo
+                    auth?.userPhoto
                   }
                 />
               </SkeletonCircle>
