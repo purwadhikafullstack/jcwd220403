@@ -107,7 +107,7 @@ export default function LoginCard() {
               as='form'
               spacing={8}
               mx={'auto'}
-              maxW={'xl'}
+              w={{ base: 'xl', sm: 'md', md: 'xl' }}
               py={5}
               px={6}
               onSubmit={formik.handleSubmit}
@@ -153,12 +153,15 @@ export default function LoginCard() {
                     >
                       Login
                     </Button>
-                    <Divider />
-                    <HStack>
-                      <Button colorScheme='red' leftIcon={<FaGoogle />}>
-                        Google
-                      </Button>
-                    </HStack>
+                    <Flex align='center' w={'full'}>
+                      <Divider border={'1px'} />
+                      <Text padding='2'>OR</Text>
+                      <Divider border={'1px'} />
+                    </Flex>
+                    <Button colorScheme='red' leftIcon={<FaGoogle />} w='full'>
+                      Google
+                    </Button>
+
                     <Stack direction={'horizontal'}>
                       <Text align={'center'} marginRight={2}>
                         Need an account?

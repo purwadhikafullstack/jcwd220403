@@ -32,12 +32,17 @@ module.exports = {
         `${process.env.ACCESS_SRC_FILE}emailTemplates/verificationEmail.html`,
         'utf-8'
       );
+
+      if (!tempEmail) {
+        return res.status(400).send({ message: 'No email template found' });
+      }
+
       const tempCompile = handlebars.compile(tempEmail);
 
       const tempResult = tempCompile({
         fullName,
         otp,
-        link: `${domain}/verification/${token}`,
+        link: `${process.env.DOMAIN}/verification/${token}`,
       });
 
       await nodemailer.sendMail({
@@ -272,11 +277,11 @@ module.exports = {
       raw: true,
     });
 
-    if (emailExist === null) {
-      res.status(400).send({ message: 'email is not registered yet' });
+    if (!emailExist) {
+      return res.status(400).send({ message: 'email is not registered yet' });
     }
-    if (emailExist.verified == false) {
-      res.status(400).send({
+    if (!emailExist.verified) {
+      return res.status(400).send({
         message: 'user is not verified yet. Please check your email',
       });
     }

@@ -25,7 +25,11 @@ router.post(
 );
 router.post('/api/verification/', authControllers.verification);
 router.post('/api/resendOTP/', authControllers.resendOTP);
-router.post('/api/forgotPassword/', authControllers.forgotPassword);
+router.post(
+  '/api/forgotPassword/',
+  middlewareDetect,
+  authControllers.forgotPassword
+);
 router.post(
   '/api/resetPassword/',
   resetPasswordValidation,

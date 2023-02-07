@@ -12,7 +12,6 @@ import {
   Text,
   useColorModeValue,
   VStack,
-  HStack,
   Divider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -23,7 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Field, ErrorMessage, Formik, Form } from 'formik';
-import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -86,7 +85,14 @@ export default function Register() {
           'url(https://source.unsplash.com/random/1920x1080/?house) center/cover no-repeat'
         }
       >
-        <Stack spacing={4} mx={'auto'} maxW={'xl'} py={2} px={2} rounded='xl'>
+        <Stack
+          spacing={4}
+          mx={'auto'}
+          w={{ base: 'xl', sm: 'md', md: 'xl' }}
+          py={2}
+          px={2}
+          rounded='xl'
+        >
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -211,12 +217,21 @@ export default function Register() {
                         <Button type='submit' width='100%' colorScheme={'teal'}>
                           Register
                         </Button>
-                        <Divider />
-                        <HStack>
-                          <Button colorScheme='red' leftIcon={<FaGoogle />}>
-                            Google
-                          </Button>
-                        </HStack>
+
+                        <Flex align='center' w={'full'}>
+                          <Divider border={'1px'} />
+                          <Text padding='2'>OR</Text>
+                          <Divider border={'1px'} />
+                        </Flex>
+
+                        <Button
+                          colorScheme='red'
+                          leftIcon={<FaGoogle />}
+                          w='full'
+                        >
+                          Google
+                        </Button>
+
                         <Divider />
                         <Stack direction={'horizontal'}>
                           <Text align={'center'} marginRight={2}>
