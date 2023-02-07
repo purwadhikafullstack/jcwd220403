@@ -31,18 +31,6 @@ const credentials = require('./middlewares/credentials');
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-const allowOrigins = ['http://localhost:3000', "https://rapidapi.com/", "https://jcwd220403.purwadhikabootcamp.com"];
-const corsOptions = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (allowOrigins.includes(origin)) return callback(null, true);
-
-    callback(new Error('Not allowed by CORS'));
-  },
-};
-
-app.use("/public", express.static(path.join(__dirname, "./Public")));
-
 app.use(credentials);
 app.use(
   cors(corsOptions)
@@ -55,8 +43,8 @@ app.use(
   // }
 );
 
-
-schedule.scheduleJob('00 02 13 * * *', emailReminder.users);
+// Schedule
+schedule.scheduleJob('00 37 14 * * *', emailReminder.users);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

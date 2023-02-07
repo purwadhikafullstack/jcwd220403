@@ -114,7 +114,7 @@ module.exports = {
         }
       );
 
-      fileUploaded.mv('./src/public/profilePicture/' + filename);
+      fileUploaded.mv(`${process.env.ACCESS_SRC_FILE}public/profilePicture/` + filename);
       res.status(200).send({
         massage: 'Update Profile Picture Success',
       });
@@ -179,7 +179,7 @@ module.exports = {
       console.log(token);
 
       const tempEmail = fs.readFileSync(
-        './src/emailTemplates/otpEmail.html',
+        `${process.env.ACCESS_SRC_FILE}emailTemplates/otpEmail.html`,
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);

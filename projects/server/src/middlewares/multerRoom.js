@@ -3,7 +3,7 @@ const multer = require("multer")
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './src/public/roomPicture');
+    cb(null, `${process.env.ACCESS_SRC_FILE}public/roomPicture`);
   },
   filename: (req, file, cb) => {
     cb(

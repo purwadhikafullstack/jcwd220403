@@ -29,7 +29,7 @@ module.exports = {
       });
 
       const tempEmail = fs.readFileSync(
-        './src/emailTemplates/verificationEmail.html',
+        `${process.env.ACCESS_SRC_FILE}emailTemplates/verificationEmail.html`,
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);
@@ -92,7 +92,7 @@ module.exports = {
       const { email, fullName } = verifiedUser.dataValues;
 
       const tempEmail = fs.readFileSync(
-        './src/emailTemplates/successVerificationEmail.html',
+        `${process.env.ACCESS_SRC_FILE}emailTemplates/successVerificationEmail.html`,
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);
@@ -225,7 +225,7 @@ module.exports = {
       });
 
       const tempEmail = fs.readFileSync(
-        './src/emailTemplates/verificationEmail.html',
+        `${process.env.ACCESS_SRC_FILE}emailTemplates/verificationEmail.html`,
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);

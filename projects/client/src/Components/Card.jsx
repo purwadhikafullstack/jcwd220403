@@ -122,7 +122,6 @@ function HomeCard() {
                     <Box
                       key={index}
                       as={Link}
-                      key={index}
                       to={'/detailpage/' + item.id}
                       w='270px'
                       h='260px'

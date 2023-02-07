@@ -106,12 +106,12 @@ module.exports = {
         year: 'numeric',
       }),
     };
-    console.log(input);
+    
     try {
       var templateHtml = fs.readFileSync(
         path.join(
           process.cwd(),
-          './src/emailTemplates/generate-pdf/index.html'
+          `${process.env.ACCESS_SRC_FILE}emailTemplates/generate-pdf/index.html`
         ),
         'utf8'
       );
@@ -122,7 +122,7 @@ module.exports = {
       milis = milis.getTime();
 
       var pdfPath = path.join(
-        './src/public/pdf',
+        `${process.env.ACCESS_SRC_FILE}public/pdf`,
         `${'Invoice'}-${'Ilham Hidayatulloh'}-${milis}.pdf`
       );
 
@@ -148,13 +148,13 @@ module.exports = {
         waitUntil: 'networkidle0',
       });
       await page.addStyleTag({
-        path: './src/emailTemplates/generate-pdf/style.css',
+        path: `${process.env.ACCESS_SRC_FILE}emailTemplates/generate-pdf/style.css`,
       });
       await page.pdf(options);
       await browser.close();
 
       const tempEmail = fs.readFileSync(
-        './src/emailTemplates/generate-pdf/email.html',
+        `${process.env.ACCESS_SRC_FILE}emailTemplates/generate-pdf/email.html`,
         'utf-8'
       );
       const tempCompile = handlebars.compile(tempEmail);

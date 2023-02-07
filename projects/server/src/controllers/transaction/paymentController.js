@@ -88,7 +88,7 @@ const uploadPaymentProof = async (req, res) => {
   DROP EVENT IF EXISTS payment_${paymentData.id};
   `);
 
-  await paymentProof.mv('./src/public/paymentProof/' + filename, (err) => {
+  await paymentProof.mv(`${process.env.ACCESS_SRC_FILE}public/paymentProof/` + filename, (err) => {
     if (err) {
       return res.status(500).send(err);
     }
