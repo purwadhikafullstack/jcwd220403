@@ -76,7 +76,7 @@ const RegisterAsTenant = async (req, res) => {
       userId,
     });
 
-    ktp.mv('./src/public/ktp/' + filename);
+    ktp.mv(`${process.env.ACCESS_SRC_FILE}public/ktp/` + filename);
 
     res.status(201);
     res.send({
