@@ -158,12 +158,6 @@ export default function LoginCard() {
                       <Button colorScheme='red' leftIcon={<FaGoogle />}>
                         Google
                       </Button>
-                      <Button colorScheme='facebook' leftIcon={<FaFacebook />}>
-                        Facebook
-                      </Button>
-                      <Button colorScheme='twitter' leftIcon={<FaTwitter />}>
-                        Twitter
-                      </Button>
                     </HStack>
                     <Stack direction={'horizontal'}>
                       <Text align={'center'} marginRight={2}>

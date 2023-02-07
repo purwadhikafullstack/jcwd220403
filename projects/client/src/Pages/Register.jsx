@@ -216,18 +216,6 @@ export default function Register() {
                           <Button colorScheme='red' leftIcon={<FaGoogle />}>
                             Google
                           </Button>
-                          <Button
-                            colorScheme='facebook'
-                            leftIcon={<FaFacebook />}
-                          >
-                            Facebook
-                          </Button>
-                          <Button
-                            colorScheme='twitter'
-                            leftIcon={<FaTwitter />}
-                          >
-                            Twitter
-                          </Button>
                         </HStack>
                         <Divider />
                         <Stack direction={'horizontal'}>
