@@ -15,7 +15,7 @@ const addPayment = async (req, res) => {
 
     const addPayment = await payment.create({
       transactionId,
-      paymentMethodId,
+      paymentmethodId: paymentMethodId,
       total,
     });
 

@@ -80,7 +80,14 @@ const getuserTransaction = async (req, res) => {
 
 const getUsersTransactions = async (req, res) => {};
 
-const cancelTransaction = async (req, res) => {};
+const cancelTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
 
 module.exports = {
   addTransaction,
