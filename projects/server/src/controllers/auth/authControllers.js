@@ -25,7 +25,7 @@ module.exports = {
       });
 
       const token = jwt.sign({ email: email }, otp, {
-        expiresIn: '10m',
+        expiresIn: '1d',
       });
 
       const tempEmail = fs.readFileSync(
@@ -55,7 +55,7 @@ module.exports = {
       res
         .header('Access-Control-Allow-Credentials', true)
         .cookie('email', email, {
-          maxAge: 60 * 5000,
+          maxAge: 86400000, //1 day
           httpOnly: false,
           path: '/',
         })

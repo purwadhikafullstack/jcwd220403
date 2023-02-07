@@ -17,7 +17,7 @@ import { useParams, Navigate } from 'react-router-dom';
 export default function VerifyEmailForm() {
   const [verified, setVerified] = useState(false);
   const [OTP, setOTP] = useState('');
-  const [minutes, setMinutes] = useState(1);
+  const [minutes, setMinutes] = useState(2);
   const [seconds, setSeconds] = useState(0);
   const getTokenFromParams = useParams();
 
@@ -29,11 +29,10 @@ export default function VerifyEmailForm() {
 
   const handleOTP = (e) => {
     setOTP(e.target.value);
-    // console.log(OTP);
   };
 
   const resendOTP = async () => {
-    setMinutes(1);
+    setMinutes(2);
     setSeconds(0);
     try {
       const cookie = document.cookie;
