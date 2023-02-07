@@ -141,7 +141,6 @@ const Category = () => {
                   setSearch(
                     currentIndex === index
                       ? { ...search, fasilitas: '' }
-
                       : { ...search, fasilitas: item.title }
                   );
                 }}
