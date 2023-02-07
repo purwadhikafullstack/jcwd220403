@@ -13,8 +13,21 @@ import {
 import React from 'react';
 import GiveReview from './GiveReview';
 import SeeReview from './SeeReview';
+import { useNavigate } from 'react-router-dom';
 
-function Trip({ heading, date, image, tenant, review, status }) {
+function Trip({
+  heading,
+  date,
+  image,
+  tenant,
+  review,
+  status,
+  transactionId,
+  paymentId,
+  paymentmethodId,
+}) {
+  const navigate = useNavigate();
+
   return (
     <Flex flexDir='row' gap={5} alignItems='center'>
       <Box h='100%' w='100%'>
@@ -43,7 +56,15 @@ function Trip({ heading, date, image, tenant, review, status }) {
               {status}
             </Badge>
             <ButtonGroup>
-              <Button size={'xs'} colorScheme={'teal'}>
+              <Button
+                size={'xs'}
+                colorScheme={'teal'}
+                onClick={() =>
+                  navigate(
+                    `/payment/${transactionId}/${paymentId}/${paymentmethodId}`
+                  )
+                }
+              >
                 Lanjutkan transaksi
               </Button>
               <Button size={'xs'} colorScheme={'gray'}>

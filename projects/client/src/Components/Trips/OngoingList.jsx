@@ -20,6 +20,9 @@ function OngoingList({ trips }) {
           tenant={trip.fullName}
           date={trip.checkIn + ' to ' + trip.CheckOut}
           status={trip.transactionStatus}
+          transactionId={trip.id}
+          paymentId={trip.payment_id}
+          paymentmethodId={trip.paymentmethodId}
         />
       ))}
     </Grid>
