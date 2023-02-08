@@ -8,8 +8,38 @@ const handlebars = require('handlebars');
 
 module.exports = {
   transactionsUser: async (req, res) => {
-    const { tenantId, status } = req.params;
+    const { tenantId, transactionStatus, search, order, order_direction, limit, page } = req.query;
+    const offset = (page * limit) - limit
     try {
+
+      const count = await database.transaction.count({
+        attributes: [],
+        where: { transactionStatus },
+        include: [
+            {
+                model: database.room,
+                attributes: [],
+                required: true,
+                include: [{
+                    model: database.property,
+                    attributes: [],
+                    where: {'tenantId': tenantId}
+                }]
+            },
+            {
+                model: database.user,
+                attributes: ['fullName', 'email'],
+                where: {
+                  fullName: search ? {
+                      [Op.like]: "%" + search + "%"
+                  } : {[Op.not]: null} 
+              }
+            }
+        ],
+      });
+
+      const totalPage = Math.ceil(count / limit);
+
       const response = await database.transaction.findAll({
         attributes: ['id', 'checkIn', 'checkOut', 'transactionStatus'],
         include: [
@@ -26,17 +56,29 @@ module.exports = {
           {
             model: database.user,
             attributes: ['fullName', 'email'],
+            where: {
+              fullName: search ? {
+                  [Op.like]: "%" + search + "%"
+              } : {[Op.not]: null} 
+          }
           },
         ],
         having: {
           [Op.and]: [
             { 'room.property.tenantId': tenantId },
-            { transactionStatus: status },
+            { transactionStatus },
           ],
         },
+        order: [
+          order === "name" ? [{ model: database.room }, order, order_direction] : 
+          order === "fullName" ? [{ model: database.user }, order, order_direction] : 
+          [order, order_direction]
+      ],
+        limit: [+limit],
+        offset: [offset]
       });
-
-      res.status(201).send(response);
+      
+      res.status(201).send({response, count, totalPage});
     } catch (err) {
       console.log(err);
       res.status(404).send(err);
@@ -123,7 +165,7 @@ module.exports = {
 
       var pdfPath = path.join(
         `${process.env.ACCESS_SRC_FILE}public/pdf`,
-        `${'Invoice'}-${'Ilham Hidayatulloh'}-${milis}.pdf`
+        `${'Invoice'}-${data.user.fullName}-${milis}.pdf`
       );
 
       var options = {

@@ -207,4 +207,142 @@ module.exports = {
             res.status(404).send(err)
         }
     },
+    test: async (req, res) => {
+        const {lokasi, state, fasilitas, order, order_direction} = req.body
+        try{
+            const result = await database.property.findAll({
+                attributes: ['id', 'name', 'description', 'picture'],
+                include: [
+                    { 
+                        model: database.room,
+                        attributes: ['price', 'picture', 'propertyId'],
+                        required: false,
+                        include: [
+                            { 
+                                model: database.transaction,
+                                attributes: ['id'],
+                                required: false,
+                                where: {
+                                    [Op.or] : [
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    checkIn: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    checkIn: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    checkOut: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                    transactionStatus: {[Op.notIn]: ['Dibatalkan', 'Gagal']}
+                                                }
+                                            ]
+                                        },
+                                    ],
+                                },
+                            },
+                            { 
+                                model: database.unavailableDates,
+                                attributes: ['id'],
+                                required: false,
+                                where: {
+                                    [Op.or] : [
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].endDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            [Op.and]: [
+                                                {
+                                                    start_date: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].startDate : new Date()},
+                                                }
+                                            ]
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                    { 
+                        attributes: ['city', 'province', 'country', 'locationDetail'],
+                        model: database.category,
+                        where: { city: lokasi ? lokasi : {[Op.not]: null} },
+                    },
+                    { 
+                        model: database.facility,
+                        attributes: ['name'],
+                        where: {
+                           name : fasilitas ? {
+                                [Op.like]: "%" + fasilitas + "%"
+                            } : {[Op.not]: null} 
+                        }
+                    },
+                    
+                ],
+                having: [
+                    {
+                        [Op.and]: [
+                            {
+                                'rooms.transactions.id': null,
+                                'rooms.unavailableDates.id': null
+                            }
+                        ]
+                    }
+                ],
+            })
+
+            const available = result.map(item => {
+                return item.dataValues.id
+            })
+
+            const response = await database.property.findAll({
+                attributes: ['id', 'name', 'description', 'picture'],
+                where: {id: {[Op.in]: available}},
+                include: [
+                    { 
+                        model: database.room,
+                        attributes: ['price', 'picture', 'propertyId'],
+                    },
+                    { 
+                        attributes: ['city', 'province', 'country', 'locationDetail'],
+                        model: database.category,
+                    }, 
+                    {
+                        model: database.propertypicture,
+                        attributes: [[Sequelize.col('name'),'picture']]
+                    },
+                    { 
+                        model: database.facility,
+                        attributes: ['name'],
+                    },
+                    
+                ],
+                order: [
+                    order === "price" ? [{ model: database.room }, order, order_direction] : 
+                    ["id", "ASC"]
+                ],
+                limit: 1,
+                offset: 0
+            })
+            
+            const data = response.map(item => {
+                const newData = { ...item.dataValues, propertypictures: [{ picture: item.picture }, ...item.propertypictures] }
+                delete newData.picture;
+                return newData;
+            });
+            res.status(201).send({data, pages: available.length})
+        }catch(err){
+            console.log(err)
+            res.status(404).send(err)
+        }
+    },
 }

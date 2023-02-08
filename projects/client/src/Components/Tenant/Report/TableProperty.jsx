@@ -81,8 +81,7 @@ function TableProperty() {
 
   const getData = async () => {
     try {
-      const res = await axiosPrivate.get(
-        `http://localhost:2000/api/report/room?tenantId=${auth.tenantId}&search=${search}&order=${order}&order_direction=${order_direction}&limit=${limit}&start=${start}&end=${end}&page=${page}&propertyname=${property}`
+      const res = await axiosPrivate.get(`/report/room?tenantId=${auth.tenantId}&search=${search}&order=${order}&order_direction=${order_direction}&limit=${limit}&start=${start}&end=${end}&page=${page}&propertyname=${property}`
       );
       setData(res.data.data);
       setRows(res.data.totalRows);

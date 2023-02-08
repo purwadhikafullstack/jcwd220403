@@ -3,6 +3,10 @@ const { tenantTransaction } = require('../controllers');
 const verifyJWT = require('../middlewares/verifyJWT');
 
 router.get(
+  '/api/transactions/tenant',
+  tenantTransaction.transactionsUser
+);
+router.get(
   '/api/transactions/tenant/:tenantId',
   tenantTransaction.getTransaction
 );
@@ -13,10 +17,6 @@ router.get(
 router.get(
   '/api/transactions/tenant/:tenantId/total',
   tenantTransaction.getTotalTransaction
-);
-router.get(
-  '/api/transactions/tenant/:tenantId/:status',
-  tenantTransaction.transactionsUser
 );
 
 router.post(

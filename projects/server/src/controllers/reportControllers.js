@@ -14,7 +14,6 @@ module.exports = {
         const offset = (page * limit) - limit
         console.log(req.query)
         try{
-
             const rows = await database.transaction.count({
                 where: { 
                     [Op.and]: [
@@ -53,7 +52,6 @@ module.exports = {
 
             const totalRows = rows[0] ? rows[0].count : 0
             const totalPage = Math.ceil(totalRows / limit);
-            console.log(totalPage)
               
             const data = await database.transaction.findAll({
                 attributes: ['id', 'checkIn', 'checkOut', 'transactionStatus'],

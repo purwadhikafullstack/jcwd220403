@@ -85,8 +85,7 @@ import {
   
     const getData = async () => {
       try {
-        const res = await axiosPrivate.get(
-          `http://localhost:2000/api/report?tenantId=${auth.tenantId}&search=${search}&order=${order}&order_direction=${order_direction}&limit=${limit}&start=${start}&end=${end}&page=${page}&transactionStatus=${status}`
+        const res = await axiosPrivate.get(`/report?tenantId=${auth.tenantId}&search=${search}&order=${order}&order_direction=${order_direction}&limit=${limit}&start=${start}&end=${end}&page=${page}&transactionStatus=${status}`
         );
         setData(res.data.data);
         setRows(res.data.totalRows)
