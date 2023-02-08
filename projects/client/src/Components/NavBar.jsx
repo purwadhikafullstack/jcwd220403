@@ -318,9 +318,6 @@ const NavBar = () => {
                   <MenuItem>
                     <Link to={'/trips'}>Trips</Link>
                   </MenuItem>
-                  <MenuItem>
-                    <Link to={'/review'}>Reviews</Link>
-                  </MenuItem>
                   <MenuItem></MenuItem>
                   <MenuDivider />
                   <MenuItem>
