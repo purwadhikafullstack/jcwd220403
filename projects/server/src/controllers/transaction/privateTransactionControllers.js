@@ -57,6 +57,13 @@ const addTransaction = async (req, res) => {
 const getuserTransaction = async (req, res) => {
   try {
     const { userId } = req.params;
+    const { month } = req.query;
+    let months;
+    if (month) {
+      months = ` and DATE_FORMAT(t.updatedAt, '%Y-%m') = date_format(DATE_SUB(curdate(), INTERVAL ${month} month),'%Y-%m')`;
+    } else {
+      months = '';
+    }
 
     const transactions = await sequelize.query(
       `select t.id, t.transactionStatus, t.checkIn, t.CheckOut, t.userId, r.propertyId, pr.name as property_name, u.fullName, t.roomId, r.name as room_name, r.picture, p.paymentmethodId, p.id as payment_id, p.total, rev.review 
@@ -67,7 +74,7 @@ const getuserTransaction = async (req, res) => {
       inner join tenants as te on te.id = pr.tenantId 
       inner join users as u on u.id = te.userId 
       left join reviews as rev on rev.transactionId = t.id 
-      where t.userId = ${userId};`,
+      where t.userId = ${userId}${months};`,
       { type: QueryTypes.SELECT }
     );
 

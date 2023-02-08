@@ -9,6 +9,7 @@ import {
   HStack,
   Button,
   Heading,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -23,10 +24,18 @@ export default function Trips() {
   const [trips, setTrips] = useState();
   const [loading, setLoading] = useState(true);
   const { auth } = useAuth();
+  const [month, setMonth] = useState('');
+  let ar = [];
+  const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format;
+  for (let x = 0; x <= 2; x++) {
+    ar.push(monthName(new Date().setMonth(new Date().getMonth() - x)));
+  }
 
   const getTrips = async () => {
     try {
-      const tripsData = await axiosPrivate.get(`/trips/${auth.userId}`);
+      const tripsData = await axiosPrivate.get(
+        `/trips/${auth.userId}?month=${month}`
+      );
       setTrips(tripsData.data);
       setLoading(false);
     } catch (error) {
@@ -37,7 +46,7 @@ export default function Trips() {
   useEffect(() => {
     getTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  }, [loading, month]);
 
   return loading ? null : (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -67,9 +76,12 @@ export default function Trips() {
         Filter
       </chakra.h3>
       <HStack>
-        <Button>Past 30 Days</Button>
-        <Button>Past 60 Days</Button>
-        <Button>Past 90 Days</Button>
+        <Button onClick={() => setMonth('')}>All Trips</Button>
+        <ButtonGroup colorScheme={'blue'}>
+          {ar.map((i, index) => (
+            <Button onClick={() => setMonth(index)}>{i}</Button>
+          ))}
+        </ButtonGroup>
       </HStack>
       <Divider mt={5} mb={12} />
       <Ongoing data={trips} />

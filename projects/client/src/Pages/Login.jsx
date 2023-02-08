@@ -162,7 +162,11 @@ export default function LoginCard() {
                       Google
                     </Button>
 
-                    <Stack direction={'horizontal'} justifyContent={'center'}>
+                    <Stack
+                      direction={'horizontal'}
+                      justifyContent={'center'}
+                      fontSize={13}
+                    >
                       <Text align={'center'} marginRight={2}>
                         Need an account?
                       </Text>
@@ -170,7 +174,11 @@ export default function LoginCard() {
                         <RouterLink to={'/register'}>Register here</RouterLink>
                       </Text>
                     </Stack>
-                    <Stack direction={'horizontal'} justifyContent={'center'}>
+                    <Stack
+                      direction={'horizontal'}
+                      justifyContent={'center'}
+                      fontSize={13}
+                    >
                       <Text align={'center'} marginRight={2}>
                         Already a registed but didn't get the OTP?
                       </Text>
