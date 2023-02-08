@@ -11,13 +11,40 @@ import {
   FormControl,
   Input,
 } from '@chakra-ui/react';
+import { useState } from 'react';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function GiveReview({ property }) {
+export default function GiveReview({ property, id, passCheckOut }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const axiosPrivate = useAxiosPrivate();
+  const [reviewText, setReviewText] = useState('');
+  const [disable, setDisable] = useState(passCheckOut);
+  const handleInput = (e) => {
+    setReviewText(e.target.value);
+  };
+
+  function reset() {
+    onClose();
+  }
+
+  const submitReview = async (e) => {
+    e.preventDefault();
+    try {
+      await axiosPrivate.post('/review', { transactionId: id, reviewText });
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme={'teal'} size={'xs'}>
+      <Button
+        onClick={onOpen}
+        colorScheme={'teal'}
+        size={'xs'}
+        isDisabled={disable}
+      >
         Give Review
       </Button>
 
@@ -33,12 +60,12 @@ export default function GiveReview({ property }) {
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <Input type={'text'} h={'150'}></Input>
+              <Input type={'text'} h={'150'} onChange={handleInput}></Input>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='teal' mr={3} onClick={onClose}>
+            <Button colorScheme='teal' mr={3} onClick={submitReview}>
               Submit
             </Button>
             <Button colorScheme='orange' onClick={onClose}>

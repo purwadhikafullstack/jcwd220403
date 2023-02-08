@@ -14,6 +14,7 @@ import React from 'react';
 import GiveReview from './GiveReview';
 import SeeReview from './SeeReview';
 import { useNavigate } from 'react-router-dom';
+import ConfirmCancel from './ConfirmCancel';
 
 function Trip({
   heading,
@@ -25,6 +26,7 @@ function Trip({
   transactionId,
   paymentId,
   paymentmethodId,
+  passCheckOut,
 }) {
   const navigate = useNavigate();
 
@@ -47,7 +49,11 @@ function Trip({
         <Text fontSize={'11px'}>{date}</Text>
         {status === 'Dibatalkan' ? (
           <Badge fontSize={'9px'} colorScheme={'red'}>
-            Ditolak Tenant
+            Declined by Tenant
+          </Badge>
+        ) : status === 'Dibatalkan User' ? (
+          <Badge fontSize={'9px'} colorScheme={'red'}>
+            Cancelled
           </Badge>
         ) : status === 'Menunggu Pembayaran' ||
           status === 'Menunggu Konfirmasi Pembayaran' ? (
@@ -65,17 +71,19 @@ function Trip({
                   )
                 }
               >
-                Lanjutkan transaksi
+                Continue
               </Button>
-              <Button size={'xs'} colorScheme={'gray'}>
-                Cancel
-              </Button>
+              <ConfirmCancel trip={transactionId} />
             </ButtonGroup>
           </Stack>
         ) : review ? (
           <SeeReview property={heading} review={review} />
         ) : (
-          <GiveReview property={heading} />
+          <GiveReview
+            property={heading}
+            id={transactionId}
+            passCheckOut={passCheckOut}
+          />
         )}
       </GridItem>
     </Flex>

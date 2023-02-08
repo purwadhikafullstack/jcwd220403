@@ -36,7 +36,7 @@ export default function SeeReview({ property, review }) {
 
           <ModalFooter>
             <Button colorScheme='orange' onClick={onClose}>
-              Cancel
+              Close
             </Button>
           </ModalFooter>
         </ModalContent>

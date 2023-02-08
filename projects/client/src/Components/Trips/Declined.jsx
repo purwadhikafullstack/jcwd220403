@@ -17,17 +17,34 @@ function Declined({ trips }) {
         gap={{ base: '8', sm: '12', md: '16' }}
       >
         {trips.map(
-          (trip, index) =>
-            trip.transactionStatus === 'Dibatalkan' && (
-              <Trip
-                key={index}
-                image={trip.picture}
-                heading={trip.property_name}
-                tenant={trip.fullName}
-                date={trip.checkIn + ' to ' + trip.CheckOut}
-                status={trip.transactionStatus}
-              />
-            )
+          (trip, index) => {
+            if (
+              trip.transactionStatus === 'Dibatalkan' ||
+              trip.transactionStatus === 'Dibatalkan User'
+            ) {
+              return (
+                <Trip
+                  key={index}
+                  image={trip.picture}
+                  heading={trip.property_name}
+                  tenant={trip.fullName}
+                  date={trip.checkIn + ' to ' + trip.CheckOut}
+                  status={trip.transactionStatus}
+                />
+              );
+            }
+            return null;
+          }
+          // trip.transactionStatus === 'Dibatalkan'  && (
+          //   <Trip
+          //     key={index}
+          //     image={trip.picture}
+          //     heading={trip.property_name}
+          //     tenant={trip.fullName}
+          //     date={trip.checkIn + ' to ' + trip.CheckOut}
+          //     status={trip.transactionStatus}
+          //   />
+          // )
         )}
       </Grid>
     </Box>
