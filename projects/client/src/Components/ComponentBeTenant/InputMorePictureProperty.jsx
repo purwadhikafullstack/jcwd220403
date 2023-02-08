@@ -9,11 +9,11 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { closeDrawerForMorePicture, setPicture, resetPicture } from '../../Redux/MorePictureProperty'
 import axios from "../../api/axios"
-// import axios from "axios"
 import useAuth from '../../hooks/useAuth'
 import { AiOutlineCloudUpload } from "react-icons/ai"
 import { useEffect } from 'react'
 import "../../Styles/inputFile.css"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const InputMorePictureProperty = () => {
     const dispatch = useDispatch()
@@ -21,13 +21,12 @@ const InputMorePictureProperty = () => {
     const picture = useSelector((state) => state.MorePictureProperty.picture)
     const imageUrl = useSelector((state) => state.MorePictureProperty.imageUrl)
     const propertyId = useSelector((state) => state.MorePictureProperty.idProperty)
-    console.log(propertyId)
     const [msgAddPicture, setMsgAddPicture] = useState("")
     const [load, setLoad] = useState(false)
     const [dataImages, setDataImages] = useState()
-    console.log(dataImages)
     const toast = useToast()
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate()
 
     const getImagesProperty= async () => {
         try {
@@ -53,7 +52,7 @@ const InputMorePictureProperty = () => {
             const formData = new FormData()
             formData.append('file', picture)
 
-            await axios.post(`/createMorePictureProperty/${propertyId}`, formData)
+            await axiosPrivate.post(`/createMorePictureProperty/${propertyId}`, formData)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)
@@ -78,7 +77,7 @@ const InputMorePictureProperty = () => {
 
     const deletePropertyImages = async (image) => {
         try {
-            await axios.delete(`/deletepropertyimage/${image.id}`)
+            await axiosPrivate.delete(`/deletepropertyimage/${image.id}`)
             getImagesProperty()
             window.location.reload()
             toast({

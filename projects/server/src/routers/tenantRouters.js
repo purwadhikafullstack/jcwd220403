@@ -37,7 +37,7 @@ router.post(
   tenantControllers.createManyImageinRoom
 );
 router.post(
-  '/api/createMorePictureProperty/:tenantId',
+  '/api/createMorePictureProperty/:id',
   verifyJWT,
   multerUpload.single('file'),
   tenantControllers.createMorePictureProperty
@@ -49,7 +49,7 @@ router.get('/api/roombyid/:id', tenantControllers.getRoomPropertyById);
 router.get('/api/roomimages/:id', tenantControllers.getDataRoomAndImagesRoom);
 router.get('/api/getAllDataRooms/:tenantId', tenantControllers.getAllDataRooms);
 router.get(
-  '/api/getmorePictureProperty/:tenantId',
+  '/api/getmorePictureProperty/:id',
   tenantControllers.getDataPropertyAndImagesProperty
 );
 router.get('/api/category', tenantControllers.getAllCategory);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Text, Center, FormControl, FormLabel, Input, FormHelperText, Spinner, Button, useMediaQuery, useBreakpointValue } from "@chakra-ui/react"
+import { Box, Text, Center, FormControl, FormLabel, Input, FormHelperText, Spinner, Button, useBreakpointValue } from "@chakra-ui/react"
 import axios from "../../api/axios"
 // import axios from "axios"
 import { BsCheckLg } from "react-icons/bs"
@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { submitClickedToFalse } from '../../Redux/ButtonSlice';
 import { motion } from "framer-motion"
 import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const InputRoom = () => {
 
@@ -18,6 +19,7 @@ const InputRoom = () => {
     const [errorMsg, setErrorMsg] = useState("")
     const [checklis, setChecklist] = useState(false)
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate()
 
     const isErrorName = name === ""
     const isErrorDesc = description === ""
@@ -49,7 +51,7 @@ const InputRoom = () => {
                 }
             }
 
-            await axios.post(`/roomOnBeTenant/${auth.tenantId}`, formData, config)
+            await axiosPrivate.post(`/roomOnBeTenant/${auth.tenantId}`, formData, config)
             
             setLoad(true)
             setTimeout(() => {

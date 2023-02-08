@@ -16,8 +16,6 @@ import { closeModalCertainDate } from '../../Redux/CertainDate'
 import Calendar from 'react-calendar';
 import "../../Styles/reactCalendar.css"
 import axios from "../../api/axios"
-import useAuth from '../../hooks/useAuth';
-import { Carousel } from 'react-responsive-carousel';
 import { IoPricetagsOutline, IoHomeOutline } from "react-icons/io5"
 import { BsArrowBarRight, BsArrowBarDown } from "react-icons/bs"
 import { AiOutlineFileDone, AiOutlinePercentage } from "react-icons/ai"
@@ -28,9 +26,11 @@ import { CgArrowLongDownR } from "react-icons/cg"
 import { MdOutlineAutoDelete } from "react-icons/md"
 import Axios from "axios"
 import Slider from 'react-slick';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const InputCertainDate = () => {
     const isOpenModalCertainDate = useSelector((state) => state.CertainDate.isOpen)
+    const axiosPrivate = useAxiosPrivate()
     let room = useSelector((state) => state.CertainDate.room)
     const disableData = room && room.unavailableDates
     const highSeasonsData = room && room.highSeasons
@@ -155,7 +155,7 @@ const InputCertainDate = () => {
 
     const handleSubmit = async () => {
         try {
-            await axios.post(`/disableCertainDate/${room.id}`, {
+            await axiosPrivate.post(`/disableCertainDate/${room.id}`, {
                 start_date: startDate,
                 end_date: endDate
             })
@@ -184,7 +184,7 @@ const InputCertainDate = () => {
 
     const handleSubmitHighSeason = async () => {
         try {
-            await axios.post(`/highSeason/${room.id}`, {
+            await axiosPrivate.post(`/highSeason/${room.id}`, {
                 start_date: startDate,
                 end_date: endDate,
                 price: result ? result : price
@@ -249,7 +249,7 @@ const InputCertainDate = () => {
 
     const deleteCertainDate = async (d) => {
         try {
-            await axios.delete(`/deleteCertainDate/${d.id}`)
+            await axiosPrivate.delete(`/deleteCertainDate/${d.id}`)
 
             toast({
                 title: 'Success',
@@ -264,7 +264,7 @@ const InputCertainDate = () => {
     }
     const deleteHighSeason = async (d) => {
         try {
-            await axios.delete(`/deleteHighSeason/${d.id}`)
+            await axiosPrivate.delete(`/deleteHighSeason/${d.id}`)
 
             toast({
                 title: 'Success',

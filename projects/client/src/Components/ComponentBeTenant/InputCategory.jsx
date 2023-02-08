@@ -93,7 +93,7 @@ const InputCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/category', {
+      await axiosPrivate.post('/category', {
         country,
         province,
         city,

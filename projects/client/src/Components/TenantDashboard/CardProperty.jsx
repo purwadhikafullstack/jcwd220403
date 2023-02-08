@@ -58,12 +58,12 @@ import Slider from 'react-slick';
 import { FaArrowLeft, FaArrowRight, FaHotel } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 import Axios from 'axios';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const CardProperty = () => {
   //for everything
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  console.log(data);
   const [load, setLoad] = useState(false);
   const [descProperty, setDescProperty] = useState();
   const [loadDesc, setLoadDesc] = useState(false);
@@ -71,6 +71,7 @@ const CardProperty = () => {
   const { auth } = useAuth();
   const [editId, setEditId] = useState(null);
   const toast = useToast();
+  const axiosPrivate = useAxiosPrivate()
 
   //editname
   const [isopenModalName, setIsOpenModalName] = useState(false);
@@ -228,7 +229,7 @@ const CardProperty = () => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      await axios.patch(`/editpicture/${editId}`, formData, config);
+      await axiosPrivate.patch(`/editpicture/${editId}`, formData, config);
       setLoad(true);
       setTimeout(() => {
         setLoad(false);
@@ -261,7 +262,7 @@ const CardProperty = () => {
   };
   const editName = async () => {
     try {
-      await axios.patch(`/editname/${editId}`, {
+      await axiosPrivate.patch(`/editname/${editId}`, {
         name: nameProperty,
       });
       setLoad(true);
@@ -302,7 +303,7 @@ const CardProperty = () => {
 
   const editDescription = async () => {
     try {
-      await axios.patch(
+      await axiosPrivate.patch(
         `/editdescription/${editId}`,
         {
           description: desc,
@@ -336,7 +337,7 @@ const CardProperty = () => {
   //edit location detail
   const editLocationDetail = async () => {
     try {
-      await axios.patch(
+      await axiosPrivate.patch(
         `/editlocation/${editId}`,
         {
           country,
@@ -441,7 +442,7 @@ const CardProperty = () => {
       const nameFacility = clickedItem
         .map((facility) => facility.title)
         .join(', ');
-      await axios.patch(
+      await axiosPrivate.patch(
         `/editfacility/${editId}`,
         {
           name: nameFacility,

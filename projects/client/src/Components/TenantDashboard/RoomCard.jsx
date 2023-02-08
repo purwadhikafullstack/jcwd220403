@@ -79,6 +79,7 @@ import {
   getStatusActiveLength,
   getStatusOffMarketLength,
 } from '../../Redux/PropertySlice';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const RoomCard = () => {
   //everything
@@ -94,6 +95,7 @@ const RoomCard = () => {
   const [load, setLoad] = useState(false);
   const [editId, setEditId] = useState();
   const toast = useToast();
+  const axiosPrivate = useAxiosPrivate()
 
   //for filtering data
   const statusALl = useSelector((state) => state.PropertySlice.value.statusAll);
@@ -256,7 +258,7 @@ const RoomCard = () => {
           withCredentials: true,
         },
       };
-      await axios.patch(`/editroom/${editId}`, formData, config);
+      await axiosPrivate.patch(`/editroom/${editId}`, formData, config);
       setLoad(true);
       setTimeout(() => {
         setLoad(false);
@@ -328,7 +330,7 @@ const RoomCard = () => {
         },
       };
 
-      await axios.post('/addmanyimageroom', formData, config);
+      await axiosPrivate.post('/addmanyimageroom', formData, config);
       setLoad(true);
       setTimeout(() => {
         setLoad(false);
@@ -353,7 +355,7 @@ const RoomCard = () => {
 
   const deleteRoomImages = async (image) => {
     try {
-      await axios.delete(`/deleteroomimage/${image.id}`);
+      await axiosPrivate.delete(`/deleteroomimage/${image.id}`);
       getDataImagesRoom();
       getData();
       toast({
@@ -371,7 +373,7 @@ const RoomCard = () => {
   //delete rooms
   const deleteRooms = async (item) => {
     try {
-      await axios.delete(`/deleteroom/${item.id}`);
+      await axiosPrivate.delete(`/deleteroom/${item.id}`);
       getData();
       setMsgDelete('');
       toast({

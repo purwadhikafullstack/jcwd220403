@@ -40,7 +40,7 @@ const InputFasility = () => {
       const DataFacilityString = clickedItem
         .map((facility) => facility.title)
         .join(', ');
-      await axios.post('/betenant', {
+      await axiosPrivate.post('/betenant', {
         name: DataFacilityString,
       });
       setLoad(true);

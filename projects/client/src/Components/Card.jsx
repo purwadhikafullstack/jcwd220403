@@ -1,4 +1,4 @@
-import { Box, Text, Image, Flex, Center, Button } from '@chakra-ui/react';
+import { Box, Text, Image, Flex, Center, Button, Skeleton, SkeletonText } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
@@ -13,18 +13,17 @@ import 'swiper/css';
 
 function HomeCard() {
   const [currentData, setCurrentData] = useState();
-  console.log(currentData);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(-1);
   const { search } = useSearch();
 
   const getdata = async () => {
     try {
-      setLoading(true);
       const response = await axios.post('/landingpage', search);
       setCurrentData(response.data);
-      setLoading(false);
-      // console.log(response.data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000)
     } catch (err) {
       console.log(err);
     }
@@ -34,14 +33,6 @@ function HomeCard() {
     getdata();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
-  const Loadingg = () => {
-    return (
-      <Center>
-        <PulseLoader color='#19b4b5' size={30} margin='50px 0px' />
-      </Center>
-    );
-  };
 
   // ----------------------------------------------------------------------
 
@@ -98,114 +89,93 @@ function HomeCard() {
   };
 
   return (
-    <>
-      {loading ? (
-        <Loadingg />
-      ) : (
-        <Center>
-          <motion.div
-            className='card'
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Flex
-              flexWrap={'wrap'}
-              justifyContent='center'
-              position='relative'
-              bgColor='white'
-              mt='3'
-            >
-              {currentData &&
-                currentData.map((item, index) => {
-                  return (
-                    <Box
-                      key={index}
-                      as={Link}
-                      to={'/detailpage/' + item.id}
-                      w='270px'
-                      h='260px'
-                      m='10px'
-                      boxSize='auto'
-                    >
-                      <Box
-                        borderRadius='13px'
-                        borderTopRadius='13px'
-                        overflow='hidden'
-                        width='270px'
-                        height='190px'
-                      >
-                        <Slider
-                          dots={true}
-                          infinite={true}
-                          speed={500}
-                          slidesToShow={1}
-                          slidesToScroll={1}
-                          nextArrow={
-                            activeIndex === index ? <NextArrow /> : null
-                          }
-                          prevArrow={
-                            activeIndex === index ? <PrevArrow /> : null
-                          }
-                        >
-                          {item.propertypictures.map((image, i) => (
-                            <Box
-                              key={i}
-                              onMouseEnter={() => setActiveIndex(index)}
-                              onMouseOut={() => setActiveIndex(-1)}
-                            >
-                              <Image
-                                objectFit='cover'
-                                src={
-                                  process.env.REACT_APP_URL_PUBLIC +
-                                  'propertyPicture/' +
-                                  image.picture
-                                }
-                                width='270px'
-                                height='190px'
-                              />
-                            </Box>
-                          ))}
-                        </Slider>
-                      </Box>
-                      <Box px='10px' h='90px'>
-                        <Text mt='2' fontWeight='bold' fontSize='sm'>
-                          {item.name}
-                        </Text>
-                        <Text fontSize='sm' fontWeight='bold' color='gray.400'>
-                          {item.category.country}, {item.category.province},{' '}
-                          {item.category.city}
-                        </Text>
-                        <Text fontWeight='bold' fontSize='sm' color='gray.400'>
-                          Located{' '}
-                          {(
-                            getPreciseDistance(
-                              { latitude: -6.201148, longitude: 106.950827 },
-                              {
-                                latitude:
-                                  item.category.locationDetail.coordinates[0],
-                                longitude:
-                                  item.category.locationDetail.coordinates[1],
-                              }
-                            ) / 1000
-                          ).toFixed(2)}{' '}
-                          Km from Jakarta
-                        </Text>
-                        <Text mt='2' fontWeight='bold' fontSize='sm'>
-                          {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                          }).format(item.rooms[0].price)}
-                        </Text>
-                      </Box>
-                    </Box>
-                  );
-                })}
-            </Flex>
-          </motion.div>
-        </Center>
-      )}
-    </>
+    <Flex flexDirection="column" gap="10px" justifyContent="center" alignItems="center" p={2}>
+      <Flex flexWrap="Wrap" justifyContent="center" alignItems="center" gap="10px">
+        {currentData && currentData.map((item, index) => (
+          <Box key={index} width="280px" height="320px" boxShadow={activeIndex === index ? "dark-lg" : "md"}
+            borderRadius="10px" p={1} cursor="pointer" as={Link} to={'/detailpage/' + item.id}>
+            <Box>
+              <Slider
+                dots={true}
+                infinite={true}
+                speed={500}
+                slidesToShow={1}
+                slidesToScroll={1}
+                nextArrow={
+                  activeIndex === index ? <NextArrow /> : null
+                }
+                prevArrow={
+                  activeIndex === index ? <PrevArrow /> : null
+                }
+              >
+                {item.propertypictures.map((image, i) => (
+                  <Box
+                    key={i}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onMouseOut={() => setActiveIndex(-1)}
+                  >
+                    <Skeleton isLoaded={!loading}>
+                      <Image
+                        objectFit='cover'
+                        src={
+                          process.env.REACT_APP_URL_PUBLIC +
+                          'propertyPicture/' +
+                          image.picture
+                        }
+                        width="100%"
+                        height="150px"
+                        borderRadius="10px"
+                      />
+                    </Skeleton>
+                  </Box>
+                ))}
+              </Slider>
+            </Box>
+            <Box>
+              <Text mt='8' fontWeight='bold' fontSize='sm' textAlign="center">
+                <Skeleton isLoaded={!loading}>
+                  {item.name}
+                </Skeleton>
+              </Text>
+              <Text fontSize='sm' fontWeight='bold' color='gray.400' textAlign="center" marginTop="2px">
+                <Skeleton isLoaded={!loading}>
+                  {item.category.country}, {item.category.province},{' '}
+                  {item.category.city}
+                </Skeleton>
+              </Text>
+              <Text fontWeight='bold' fontSize='sm' color='gray.400' textAlign="center" marginTop="2px">
+                <Skeleton isLoaded={!loading}>
+                  Located{' '}
+                  {(
+                    getPreciseDistance(
+                      { latitude: -6.201148, longitude: 106.950827 },
+                      {
+                        latitude:
+                          item.category.locationDetail.coordinates[0],
+                        longitude:
+                          item.category.locationDetail.coordinates[1],
+                      }
+                    ) / 1000
+                  ).toFixed(2)}{' '}
+                  Km from Jakarta
+                </Skeleton>
+              </Text>
+              <Text mt='3' fontWeight='bold' fontSize='sm' textAlign="center">
+                <Skeleton isLoaded={!loading} noOfLines={1}>
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  }).format(item.rooms[0].price)}
+                </Skeleton>
+              </Text>
+            </Box>
+          </Box>
+        ))
+        }
+      </Flex >
+      <br />
+      <br />
+    </Flex >
   );
 }
 export default HomeCard;

@@ -56,6 +56,18 @@ app.use(cookieParser());
 // ===========================
 // NOTE : Add your routes here
 
+
+//auth
+app.use(refresh);
+app.use(logout);
+app.use(authRouters);
+
+//home
+app.use(pagesRouters);
+
+//because use multer
+app.use(tenantRouters);
+
 //file
 app.use('/public', express.static(path.join(__dirname, './public')));
 
@@ -69,14 +81,6 @@ app.use(
   })
 );
 
-//auth
-app.use(refresh);
-app.use(logout);
-app.use(authRouters);
-
-//home
-app.use(pagesRouters);
-
 //user
 app.use(userRouters);
 app.use(transactionRouters);
@@ -87,7 +91,6 @@ app.use(reviewRouter);
 
 //tenant
 app.use(RegisterAsTenant);
-app.use(tenantRouters);
 app.use(tenantTransactionRouter);
 
 //property

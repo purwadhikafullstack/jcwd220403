@@ -25,7 +25,7 @@ const Opening = () => {
     })
 
     return (
-        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} >
+        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} justifyContent="center" alignItems="center" >
             <Box flex="1" marginLeft={marginLeft}>
                 <motion.div
                     initial={{ x: "-100%" }}

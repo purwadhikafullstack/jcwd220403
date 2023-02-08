@@ -6,9 +6,10 @@ import {
 } from "@chakra-ui/react"
 import settingsPicture from "../../Assets/settings.jpg"
 import useAuth from '../../hooks/useAuth'
-import axios from '../../api/axios'
+import axios, { axiosPrivate } from '../../api/axios'
 import { useNavigate } from "react-router-dom"
 import Axios from "axios"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const Settings = () => {
     const { auth } = useAuth();
@@ -37,7 +38,7 @@ const Settings = () => {
 
     const handleSubmit = async () => {
         try {
-            await axios.delete(`/logoutTenant/${auth.tenantId}/${auth.email}`)
+            await axiosPrivate.delete(`/logoutTenant/${auth.tenantId}/${auth.email}`)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)

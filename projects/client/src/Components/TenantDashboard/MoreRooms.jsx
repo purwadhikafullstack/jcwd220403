@@ -8,6 +8,7 @@ import {
 import room from "../../Assets/room.jpg"
 import { useSelector } from "react-redux"
 import axios from "../../api/axios"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const MoreRooms = () => {
     const [moreRooms, setMoreRooms] = useState(false)
@@ -26,6 +27,7 @@ const MoreRooms = () => {
     const isErrorPrice = price === undefined
 
     const toast = useToast()
+    const axiosPrivate = useAxiosPrivate()
 
     const handleMoreRooms = () => {
         setMoreRooms(true)
@@ -51,7 +53,7 @@ const MoreRooms = () => {
                 }
             }
 
-            await axios.post(`/room?name=${nameProperty}`, formData, config)
+            await axiosPrivate.post(`/room?name=${nameProperty}`, formData, config)
             setLoad(true)
             setTimeout(() => {
                 setLoad(false)

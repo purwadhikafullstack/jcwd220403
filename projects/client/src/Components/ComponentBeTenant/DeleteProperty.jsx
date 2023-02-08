@@ -10,6 +10,8 @@ import { isDeleteData } from '../../Redux/DoneCreatePropertiesSlice'
 import { isDeletePropertyData } from '../../Redux/DoneCreatePropertiesSlice'
 import axios from "../../api/axios"
 import { useEffect } from 'react'
+// import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 // import axios from "axios"
 
 const DeleteProperty = () => {
@@ -20,6 +22,7 @@ const DeleteProperty = () => {
     const [load, setLoad] = useState(false)
     const [msg, setMsg] = useState("")
     const [lanjutkan, setLanjutkan] = useState(false)
+    const axiosPrivate = useAxiosPrivate()
     // msg === ""? setLanjutkan(false) : setLanjutkan(true)
     const validasi = property && `Delete Property ${property.name}`
 
@@ -34,7 +37,7 @@ const DeleteProperty = () => {
 
     const deleteProperty = async () => {
         try {
-            await axios.delete(`/deleteproperty/${property.id}`, {
+            await axiosPrivate.delete(`/deleteproperty/${property.id}`, {
                 headers: {
                   'Content-Type': 'application/json'
                 },

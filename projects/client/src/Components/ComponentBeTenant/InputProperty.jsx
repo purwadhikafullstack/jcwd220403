@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 import { submitClicked } from '../../Redux/ButtonSlice';
 import { BsCheckLg } from 'react-icons/bs';
 import useAuth from '../../hooks/useAuth';
-// import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const InputProperty = () => {
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const InputProperty = () => {
     const [load, setLoad] = useState(false);
     const [checklis, setChecklist] = useState(false);
     const { auth } = useAuth();
-    // const axiosPrivate = useAxiosPrivate();
+    const axiosPrivate = useAxiosPrivate();
 
     //validasi property
     const isErrorName = name === '';
@@ -56,7 +56,7 @@ const InputProperty = () => {
                 },
             };
 
-            await axios.post(
+            await axiosPrivate.post(
                 '/properties',
                 formData,
                 config

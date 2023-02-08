@@ -19,7 +19,7 @@ const Closing = () => {
     const [isTablet] = useMediaQuery("(max-width: 768px) and (min-width: 481px)")
 
     return (
-        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} >
+        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} justifyContent="center" alignItems="center" >
             <Box flex="1">
                 <Box flex="1">
                     <motion.div
