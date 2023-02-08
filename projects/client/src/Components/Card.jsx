@@ -171,6 +171,9 @@ function HomeCard() {
         ))
         }
       </Flex >
+      <Box boxShadow="md">
+        <Button marginTop="3px" variant="outline" width="300px" display={loading?"none" : "block"}>Load More!</Button>
+      </Box>
       <br />
       <br />
     </Flex >

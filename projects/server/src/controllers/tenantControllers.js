@@ -326,11 +326,11 @@ module.exports = {
             const { country, province, city } = req.body
 
             const getProperty = await database.property.findOne({
-                attributes : ['categoryId'],
-                where : {
-                    id : req.params.id
+                attributes: ['categoryId'],
+                where: {
+                    id: req.params.id
                 },
-                raw:true
+                raw: true
             })
 
             if (!country) throw "country is required"
@@ -651,14 +651,18 @@ module.exports = {
                 }, include: [
                     {
                         model: database.room,
-                        include: [{
-                            model: database.image,
-                            attributes: [[sequelize.col('name'), 'picture']]
-                        }, {
-                            model: database.unavailableDates
-                        }, {
-                            model: database.highSeason
-                        }]
+                        include: [
+                            {
+                                model: database.image,
+                                attributes: [[sequelize.col('name'), 'picture']]
+                            },
+                            {
+                                model: database.unavailableDates
+                            },
+                            {
+                                model: database.highSeason
+                            }
+                        ]
                     }
                 ]
             })

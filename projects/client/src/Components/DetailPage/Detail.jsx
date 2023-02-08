@@ -22,11 +22,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DateRange } from 'react-date-range';
 import { addDays } from 'date-fns';
 import useSearch from '../../hooks/useSeacrh';
+import Slider from 'react-slick';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 function DetailPage() {
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  console.log(data)
   const [isloading, setIsloading] = useState(true);
   const params = useParams();
   const { setSearch, search } = useSearch();
@@ -46,6 +49,11 @@ function DetailPage() {
         `/detail/property/${params.id}`,
         search ? search : { state, lokasi }
       );
+      res.data.rooms.forEach((room) => {
+        if (room.picture) {
+          room.images.push({ picture: room.picture });
+        }
+      });
       setData(res.data);
       // setTimeout(() => {
       setIsloading(false);
@@ -59,6 +67,54 @@ function DetailPage() {
   useEffect(() => {
     getData();
   }, [search]);
+
+  const NextArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <Button
+        bg='white'
+        onClick={onClick}
+        style={{
+          position: 'absolute',
+          right: '20px',
+          top: 'calc(50% - 20px)',
+          color: 'black',
+          borderRadius: '100%',
+          width: '20px',
+          display: "flex",
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <FaArrowRight />
+      </Button>
+    );
+  };
+
+  const PrevArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <Button
+        bg='white'
+        onClick={onClick}
+        style={{
+          position: 'absolute',
+          left: '5px',
+          top: 'calc(50% - 20px)',
+          color: 'black',
+          borderRadius: '100%',
+          width: '20px',
+          display: "flex",
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1,
+          opacity: 1,
+        }}
+      >
+        <FaArrowLeft />
+      </Button>
+    );
+  };
 
   return (
     <>
@@ -164,14 +220,33 @@ function DetailPage() {
                       boxShadow='md'
                     >
                       <Box m='2' p='2' w='80vw' borderRadius='2xl'>
-                        <Image
-                          src={
-                            process.env.REACT_APP_URL_PUBLIC +
-                            'roomPicture/' +
-                            item.picture
-                          }
-                          objectFit='cover'
-                        />
+                        <Slider
+                        
+                          infinite={true}
+                          speed={500}
+                          slidesToShow={1}
+                          slidesToScroll={1}
+                          nextArrow={<NextArrow />}
+                          prevArrow={<PrevArrow />}
+                        >
+                          {item.images &&
+                            item.images.map((image, i) => (
+                              <Box
+                                key={i}
+                              >
+                                <Image
+                                  width="295px"
+                                  objectFit='cover'
+                                  height="200px"
+                                  src={
+                                    process.env.REACT_APP_URL_PUBLIC +
+                                    'roomPicture/' +
+                                    image.picture
+                                  }
+                                />
+                              </Box>
+                            ))}
+                        </Slider>
                         <Text mb='2' mt='2' fontWeight='bold'>
                           {' '}
                           {item.name}{' '}
@@ -186,15 +261,34 @@ function DetailPage() {
                           {item.description}
                         </Text>
                         <Divider />
-                        <Text
-                          mt='2'
-                          fontWeight='bold'
-                          fontSize='sm'
-                          color='orange'
-                        >
-                          Rp {new Intl.NumberFormat('en-DE').format(item.price)}{' '}
-                          / malam
-                        </Text>
+                        {item.highSeasons && item.highSeasons.map((season, i) => (
+                          <Box>
+                            {new Date(season.start_date) <= new Date() && new Date(season.end_date) >= new Date() ?
+                              (
+                                <Text mb='2' fontWeight='bold' color='orange' fontSize="sm">
+                                  Rp{' '}
+                                  {new Intl.NumberFormat('en-DE').format(
+                                    season.price
+                                  )}{' '}
+                                  / malam
+                                </Text>
+                              ) : null}
+                          </Box>
+                        ))}
+                        {item.highSeasons &&
+                          item.highSeasons.filter(
+                            (room) =>
+                              new Date(room.start_date) <= new Date() &&
+                              new Date(room.end_date) >= new Date()
+                          ).length === 0 ? (
+                          <Text mb='2' fontWeight='bold' color='orange' fontSize="sm">
+                            Rp{' '}
+                            {new Intl.NumberFormat('en-DE').format(
+                              item.price
+                            )}{' '}
+                            / malam
+                          </Text>
+                        ) : null}
                         <Button
                           mt='2'
                           colorScheme='orange'
@@ -377,13 +471,34 @@ function DetailPage() {
                             <Text mb='2' fontWeight='bold'>
                               {item.name}
                             </Text>
-                            <Text mb='2' fontWeight='bold' color='orange'>
-                              Rp{' '}
-                              {new Intl.NumberFormat('en-DE').format(
-                                item.price
-                              )}{' '}
-                              / malam
-                            </Text>
+                            {item.highSeasons && item.highSeasons.map((season, i) => (
+                              <Box>
+                                {new Date(season.start_date) <= new Date() && new Date(season.end_date) >= new Date() ?
+                                  (
+                                    <Text mb='2' fontWeight='bold' color='orange'>
+                                      Rp{' '}
+                                      {new Intl.NumberFormat('en-DE').format(
+                                        season.price
+                                      )}{' '}
+                                      / malam
+                                    </Text>
+                                  ) : null}
+                              </Box>
+                            ))}
+                            {item.highSeasons &&
+                              item.highSeasons.filter(
+                                (room) =>
+                                  new Date(room.start_date) <= new Date() &&
+                                  new Date(room.end_date) >= new Date()
+                              ).length === 0 ? (
+                              <Text mb='2' fontWeight='bold' color='orange'>
+                                Rp{' '}
+                                {new Intl.NumberFormat('en-DE').format(
+                                  item.price
+                                )}{' '}
+                                / malam
+                              </Text>
+                            ) : null}
                           </Flex>
                           <Divider />
                           <Text h='15vh' textAlign='justify' overflow='scroll'>

@@ -179,6 +179,10 @@ module.exports = {
                             },
                             {
                                 model: database.image,
+                                attributes: [[Sequelize.col('name'), 'picture']]
+                            },
+                            {
+                                model : database.highSeason
                             }
                         ] 
                     },

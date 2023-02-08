@@ -13,14 +13,12 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const Settings = () => {
     const { auth } = useAuth();
-    console.log(auth)
     const [msg, setMsg] = useState("")
     const [input, setInput] = useState("")
     const createdAt = new Date(auth.createdAt)
-    const now = new Date() - createdAt
-    const diffDays = Math.ceil(now / (100 * 60 * 60 * 24))
+    const now = new Date().getTime() - createdAt.getTime()
+    const diffDays = Math.ceil(now / (1000 * 3600 * 24))
     const validasiInput = `${auth.email}/${auth.name}`
-    const navigate = useNavigate()
     const [load, setLoad] = useState(false)
     //formodal
     const [isOpen, setIsOpen] = useState(false)
@@ -75,7 +73,7 @@ const Settings = () => {
                         sebagai tenant di Holistay.
                     </Text>
                     <Text marginTop="10px" color="#4649ee" fontFamily="sans-serif">
-                        Sudah {diffDays} hari anda disini, dan holistay sangat berterima kasih atas partisipasi anda
+                        Sudah kurang lebih {diffDays} sejak anda register menjadi user, dan holistay sangat berterima kasih atas partisipasi anda
                         untuk mempercayai holistay mengembangkan property anda, kami harap anda akan mempertimbagkan keputusan anda
                     </Text>
                     <Button marginTop="10px" width="100%" colorScheme="facebook" onClick={() => setIsOpen(true)}>Akhiri Sekarang</Button>
