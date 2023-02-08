@@ -105,10 +105,7 @@ const NavBar = () => {
     md: 'block',
     lg: 'block',
   });
-  const widht = useBreakpointValue({
-    base: '100%',
-    md: '400px',
-  });
+
   const displayLogoOnly = useBreakpointValue({
     base: 'block',
     md: 'none',
@@ -310,12 +307,16 @@ const NavBar = () => {
                 </Tag>
               </MenuButton>
               {auth?.accessToken ? (
-                <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                <MenuList
+                  zIndex='3'
+                  fontFamily='Poppins,Roboto,Arial,Helvetica,sans-serif'
+                  color='black'
+                >
                   <MenuItem>
                     <Link to={'/user'}>Profile</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to={'/trip'}>Trips</Link>
+                    <Link to={'/trips'}>Trips</Link>
                   </MenuItem>
                   <MenuItem>
                     <Link to={'/review'}>Reviews</Link>
