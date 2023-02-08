@@ -78,6 +78,18 @@ module.exports = {
     try {
       const verify = jwt.verify(token, otp);
 
+      const checkUser = await user.findOne({
+        where: {
+          email: verify.email,
+        },
+      });
+
+      if (checkUser.verified) {
+        return res
+          .status(400)
+          .send({ message: 'You account is already verified' });
+      }
+
       await user.update(
         {
           verified: true,
@@ -89,13 +101,7 @@ module.exports = {
         }
       );
 
-      const verifiedUser = await user.findOne({
-        where: {
-          email: verify.email,
-        },
-      });
-
-      const { email, fullName } = verifiedUser.dataValues;
+      const { email, fullName } = checkUser.dataValues;
 
       const tempEmail = fs.readFileSync(
         `${process.env.ACCESS_SRC_FILE}emailTemplates/successVerificationEmail.html`,
@@ -223,6 +229,12 @@ module.exports = {
 
       if (emailExist === null) {
         res.status(400).send({ message: 'email is not registered yet' });
+      }
+
+      if (emailExist.verified) {
+        return res
+          .status(400)
+          .send({ message: 'You account is already verified' });
       }
 
       let checkResendOTPAttemp = await user.findOne({ where: { email } });

@@ -71,7 +71,11 @@ export default function VerifyEmailForm() {
         {
           pending: 'verification on progress...',
           success: 'Verification Success!',
-          error: 'Verification fail 😢',
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );

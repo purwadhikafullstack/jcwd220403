@@ -15,7 +15,7 @@ import axios from '../api/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate, Link as RouterLink, useLocation } from 'react-router-dom';
-import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '../Components/TextField';
@@ -139,7 +139,7 @@ export default function LoginCard() {
                       justify={'space-between'}
                       gap={10}
                     >
-                      <Checkbox>Remember me</Checkbox>
+                      {/* <Checkbox>Remember me</Checkbox> */}
                       <Text color={'blue.400'}>
                         <RouterLink to='/forgotPassword'>
                           Forgot password?
@@ -175,7 +175,7 @@ export default function LoginCard() {
                         Already a registed but didn't get the OTP?
                       </Text>
                       <Text color={'blue.400'} fontWeight={'bold'}>
-                        <RouterLink to={'/login'}>Resend OTP</RouterLink>
+                        <RouterLink to={'/resend_otp'}>Resend OTP</RouterLink>
                       </Text>
                     </Stack>
                   </Stack>

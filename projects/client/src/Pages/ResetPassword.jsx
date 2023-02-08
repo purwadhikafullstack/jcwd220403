@@ -9,15 +9,20 @@ import {
   Heading,
   VStack,
   FormLabel,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 function ResetPassword() {
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const getParams = useParams();
 
   const handleInput = (e) => {
@@ -86,20 +91,46 @@ function ResetPassword() {
           <VStack>
             <FormControl isRequired>
               <FormLabel>Password</FormLabel>
-              <Input
-                type='password'
-                name='password'
-                textAlign={'center'}
-                onChange={handleInput}
-              />
+              <InputGroup>
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  textAlign={'center'}
+                  onChange={handleInput}
+                />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Repeat Password</FormLabel>
-              <Input
-                type='password'
-                name='confirmPassword'
-                textAlign={'center'}
-              />
+              <InputGroup>
+                <Input
+                  type={showRepeatPassword ? 'text' : 'password'}
+                  name='confirmPassword'
+                  textAlign={'center'}
+                />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowRepeatPassword(
+                        (showRepeatPassword) => !showRepeatPassword
+                      )
+                    }
+                  >
+                    {showRepeatPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
           </VStack>
           <Stack spacing={6}>

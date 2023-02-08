@@ -234,7 +234,7 @@ export default function Register() {
                         Already a registed but didn't get the OTP?
                       </Text>
                       <Text color={'blue.400'} fontWeight={'bold'}>
-                        <RouterLink to={'/login'}>Resend OTP</RouterLink>
+                        <RouterLink to={'/resend_otp'}>Resend OTP</RouterLink>
                       </Text>
                     </Stack>
                   </VStack>
