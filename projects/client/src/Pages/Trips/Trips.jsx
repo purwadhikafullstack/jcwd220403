@@ -5,6 +5,9 @@ import {
   GridItem,
   Container,
   Text,
+  chakra,
+  HStack,
+  Button,
   Heading,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
@@ -59,7 +62,16 @@ export default function Trips() {
           </Text>
         </GridItem>
       </Grid>
-      <Divider mt={12} mb={12} />
+      <Divider mt={12} mb={5} />
+      <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
+        Filter
+      </chakra.h3>
+      <HStack>
+        <Button>Past 30 Days</Button>
+        <Button>Past 60 Days</Button>
+        <Button>Past 90 Days</Button>
+      </HStack>
+      <Divider mt={5} mb={12} />
       <Ongoing data={trips} />
       <Divider mt={12} mb={12} />
       <Finished trips={trips} />

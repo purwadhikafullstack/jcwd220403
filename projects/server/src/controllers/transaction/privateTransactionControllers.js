@@ -57,6 +57,9 @@ const addTransaction = async (req, res) => {
 const getuserTransaction = async (req, res) => {
   try {
     const { userId } = req.params;
+    const { date } = req.query;
+
+    const dates = date || '';
 
     const transactions = await sequelize.query(
       `select t.id, t.transactionStatus, t.checkIn, t.CheckOut, t.userId, r.propertyId, pr.name as property_name, u.fullName, t.roomId, r.name as room_name, r.picture, p.paymentmethodId, p.id as payment_id, p.total, rev.review 
@@ -67,7 +70,8 @@ const getuserTransaction = async (req, res) => {
       inner join tenants as te on te.id = pr.tenantId 
       inner join users as u on u.id = te.userId 
       left join reviews as rev on rev.transactionId = t.id 
-      where t.userId = ${userId};`,
+      where t.userId = ${userId}
+      AND DATE(t.updatedAt) > ${dates};`,
       { type: QueryTypes.SELECT }
     );
 
