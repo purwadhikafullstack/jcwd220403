@@ -30,6 +30,7 @@ import ReportPages from './Pages/Tenant/Report';
 import PaymentInstruction from './Pages/Payment/PaymentInstruction';
 import Trips from './Pages/Trips/Trips';
 import DashboardTenant from './Pages/Tenant/DashboardTenant';
+import ResendOTP from './Pages/ResendOTP';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: '/verification/:token',
         element: <VerifyEmailForm />,
+      },
+      {
+        path: '/resend_otp/',
+        element: <ResendOTP />,
       },
       {
         path: '/login',

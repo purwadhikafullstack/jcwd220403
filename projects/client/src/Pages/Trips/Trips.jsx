@@ -5,6 +5,9 @@ import {
   GridItem,
   Container,
   Text,
+  chakra,
+  HStack,
+  Button,
   Heading,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
@@ -35,7 +38,7 @@ export default function Trips() {
     getTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
-  // console.log(trips);
+
   return loading ? null : (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
       <Grid
@@ -59,37 +62,18 @@ export default function Trips() {
           </Text>
         </GridItem>
       </Grid>
-      <Divider mt={12} mb={12} />
+      <Divider mt={12} mb={5} />
+      <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
+        Filter
+      </chakra.h3>
+      <HStack>
+        <Button>Past 30 Days</Button>
+        <Button>Past 60 Days</Button>
+        <Button>Past 90 Days</Button>
+      </HStack>
+      <Divider mt={5} mb={12} />
       <Ongoing data={trips} />
       <Divider mt={12} mb={12} />
-      {/* <Box>
-        <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
-          Where you've been
-        </chakra.h3>
-
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(4, 1fr)',
-          }}
-          gap={{ base: '8', sm: '12', md: '16' }}
-        >
-          {trips.map(
-            (trip, index) =>
-              trip.transactionStatus === 'Diproses' && (
-                <Trip
-                  key={index}
-                  image={trip.picture}
-                  heading={trip.property_name}
-                  tenant={trip.fullName}
-                  date={trip.checkIn + ' to ' + trip.CheckOut}
-                  review={trip.review}
-                />
-              )
-          )}
-        </Grid>
-      </Box> */}
       <Finished trips={trips} />
       <Divider mt={12} mb={12} />
       <Declined trips={trips} />

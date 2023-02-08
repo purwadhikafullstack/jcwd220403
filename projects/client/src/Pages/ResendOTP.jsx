@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function ResetPasswordRequest() {
+function ResendOTP() {
   const [email, setEmail] = useState('');
 
   const handleInput = (e) => {
@@ -24,17 +24,13 @@ function ResetPasswordRequest() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post(`/forgotPassword`, { email });
+      const res = axios.post(`/resendOTP`, { email });
 
       await toast.promise(
         res,
         {
-          pending: 'Submitting your data...',
-          success: {
-            render({ data }) {
-              return `Request success, please check your email: ${data.data.email}`;
-            },
-          },
+          pending: 'Sending request...',
+          success: `Request success, please check your email`,
           error: {
             render({ data }) {
               return `${data.response.data.message}`;
@@ -73,12 +69,11 @@ function ResetPasswordRequest() {
         >
           <Center>
             <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
-              Forgot your password?
+              Resend OTP
             </Heading>
           </Center>
           <Center fontSize={{ base: 'sm', sm: 'md' }} color={'black'}>
-            No worries! Enter your email address and we'll send you the
-            instructions to reset your password.
+            Enter your email address and we'll send you the OTP
           </Center>
           <FormControl isRequired>
             <FormLabel>Email</FormLabel>
@@ -107,4 +102,4 @@ function ResetPasswordRequest() {
   );
 }
 
-export default ResetPasswordRequest;
+export default ResendOTP;

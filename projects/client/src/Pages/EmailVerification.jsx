@@ -17,7 +17,7 @@ import { useParams, Navigate } from 'react-router-dom';
 export default function VerifyEmailForm() {
   const [verified, setVerified] = useState(false);
   const [OTP, setOTP] = useState('');
-  const [minutes, setMinutes] = useState(1);
+  const [minutes, setMinutes] = useState(2);
   const [seconds, setSeconds] = useState(0);
   const getTokenFromParams = useParams();
 
@@ -29,11 +29,10 @@ export default function VerifyEmailForm() {
 
   const handleOTP = (e) => {
     setOTP(e.target.value);
-    // console.log(OTP);
   };
 
   const resendOTP = async () => {
-    setMinutes(1);
+    setMinutes(2);
     setSeconds(0);
     try {
       const cookie = document.cookie;
@@ -45,7 +44,11 @@ export default function VerifyEmailForm() {
         {
           pending: 'Resending OTP...',
           success: 'Resend OTP Success! Please check your email',
-          error: 'Resend OTP Fail fail 😢',
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );
@@ -68,7 +71,11 @@ export default function VerifyEmailForm() {
         {
           pending: 'verification on progress...',
           success: 'Verification Success!',
-          error: 'Verification fail 😢',
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );

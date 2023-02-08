@@ -85,7 +85,7 @@ const cancelTransaction = async (req, res) => {
     const { id } = req.body;
 
     await transaction.update(
-      { transactionStatus: 'Dibatalkan' },
+      { transactionStatus: 'Dibatalkan User' },
       { where: { id } }
     );
 

@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model, Sequelize } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       gender: {
-        type: DataTypes.ENUM("Male", "Female", "Other"),
+        type: DataTypes.ENUM('Male', 'Female', 'Other'),
       },
       birthdate: {
         type: DataTypes.DATEONLY,
@@ -64,17 +64,27 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'default_profile_picture.jpg',
       },
       location: {
-        type: DataTypes.GEOMETRY("POINT"),
+        type: DataTypes.GEOMETRY('POINT'),
       },
       isTenant: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
+      resendOTPAttemp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      resendOTPDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'),
+      },
     },
     {
       sequelize,
-      modelName: "user",
+      modelName: 'user',
     }
   );
   return user;

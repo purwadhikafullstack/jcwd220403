@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
           'Menunggu Konfirmasi Pembayaran',
           'Dibatalkan',
           'Gagal',
-          'Diproses'
+          'Diproses',
+          'Dibatalkan User'
         ),
         defaultValue: 'Menunggu Pembayaran',
         allowNull: false,

@@ -12,7 +12,6 @@ import {
   Text,
   useColorModeValue,
   VStack,
-  HStack,
   Divider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -23,11 +22,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Field, ErrorMessage, Formik, Form } from 'formik';
-import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
 
   const registerSchema = Yup.object().shape({
     fullName: Yup.string()
@@ -47,6 +47,7 @@ export default function Register() {
   });
 
   const handleSubmit = async (data) => {
+    setDisableButton(true);
     try {
       const res = axios.post('/register', data, {
         withCredentials: true,
@@ -74,6 +75,7 @@ export default function Register() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    setDisableButton(false);
   };
   return (
     <section>
@@ -86,7 +88,14 @@ export default function Register() {
           'url(https://source.unsplash.com/random/1920x1080/?house) center/cover no-repeat'
         }
       >
-        <Stack spacing={4} mx={'auto'} maxW={'xl'} py={2} px={2} rounded='xl'>
+        <Stack
+          spacing={4}
+          mx={'auto'}
+          w={{ base: 'xl', sm: 'md', md: 'xl' }}
+          py={2}
+          px={2}
+          rounded='xl'
+        >
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -101,7 +110,7 @@ export default function Register() {
 
             <Formik
               initialValues={{
-                FullName: '',
+                fullName: '',
                 email: '',
                 password: '',
                 repeatPassword: '',
@@ -112,137 +121,125 @@ export default function Register() {
                 action.resetForm();
               }}
             >
-              {(props) => {
-                return (
-                  <>
-                    <Form>
-                      <VStack spacing={4} align='center'>
-                        <FormControl isRequired>
-                          <FormLabel htmlFor='name'>Full Name</FormLabel>
-                          <Field
-                            as={Input}
-                            type='text'
-                            name='fullName'
-                            variant='filled'
-                          />
-                          <ErrorMessage
-                            style={{ color: 'red' }}
-                            component='div'
-                            name='fullName'
-                          />
-                        </FormControl>
-                        <FormControl isRequired>
-                          <FormLabel htmlFor='email'>Email</FormLabel>
-                          <Field
-                            as={Input}
-                            type='email'
-                            name='email'
-                            variant='filled'
-                          />
-                          <ErrorMessage
-                            style={{ color: 'red' }}
-                            component='div'
-                            name='email'
-                          />
-                        </FormControl>
-                        <FormControl isRequired>
-                          <FormLabel htmlFor='password'>Password</FormLabel>
-                          <InputGroup>
-                            <Field
-                              as={Input}
-                              type={showPassword ? 'text' : 'password'}
-                              name='password'
-                              variant='filled'
-                            />
+              {
+                <Form>
+                  <VStack spacing={4} align='center'>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor='name'>Full Name</FormLabel>
+                      <Field as={Input} type='text' name='fullName' />
+                      <ErrorMessage
+                        style={{ color: 'red' }}
+                        component='div'
+                        name='fullName'
+                      />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor='email'>Email</FormLabel>
+                      <Field as={Input} type='email' name='email' />
+                      <ErrorMessage
+                        style={{ color: 'red' }}
+                        component='div'
+                        name='email'
+                      />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor='password'>Password</FormLabel>
+                      <InputGroup>
+                        <Field
+                          as={Input}
+                          type={showPassword ? 'text' : 'password'}
+                          name='password'
+                        />
 
-                            <InputRightElement h={'full'}>
-                              <Button
-                                variant={'ghost'}
-                                onClick={() =>
-                                  setShowPassword(
-                                    (showPassword) => !showPassword
-                                  )
-                                }
-                              >
-                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                              </Button>
-                            </InputRightElement>
-                          </InputGroup>
-                          <ErrorMessage
-                            component='div'
-                            name='password'
-                            style={{ color: 'red' }}
-                          />
-                        </FormControl>
-                        <FormControl isRequired>
-                          <FormLabel htmlFor='repeatPassword'>
-                            Confirm Password
-                          </FormLabel>
-                          <InputGroup>
-                            <Field
-                              as={Input}
-                              type={showRepeatPassword ? 'text' : 'password'}
-                              name='repeatPassword'
-                              variant='filled'
-                            />
-                            <InputRightElement h={'full'}>
-                              <Button
-                                variant={'ghost'}
-                                onClick={() =>
-                                  setShowRepeatPassword(
-                                    (showRepeatPassword) => !showRepeatPassword
-                                  )
-                                }
-                              >
-                                {showRepeatPassword ? (
-                                  <ViewIcon />
-                                ) : (
-                                  <ViewOffIcon />
-                                )}
-                              </Button>
-                            </InputRightElement>
-                          </InputGroup>
-                          <ErrorMessage
-                            component='div'
-                            name='repeatPassword'
-                            style={{ color: 'red' }}
-                          />
-                        </FormControl>
-                        <Button type='submit' width='100%' colorScheme={'teal'}>
-                          Register
-                        </Button>
-                        <Divider />
-                        <HStack>
-                          <Button colorScheme='red' leftIcon={<FaGoogle />}>
-                            Google
-                          </Button>
+                        <InputRightElement h={'full'}>
                           <Button
-                            colorScheme='facebook'
-                            leftIcon={<FaFacebook />}
+                            variant={'ghost'}
+                            onClick={() =>
+                              setShowPassword((showPassword) => !showPassword)
+                            }
                           >
-                            Facebook
+                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                           </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                      <ErrorMessage
+                        component='div'
+                        name='password'
+                        style={{ color: 'red' }}
+                      />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor='repeatPassword'>
+                        Confirm Password
+                      </FormLabel>
+                      <InputGroup>
+                        <Field
+                          as={Input}
+                          type={showRepeatPassword ? 'text' : 'password'}
+                          name='repeatPassword'
+                        />
+                        <InputRightElement h={'full'}>
                           <Button
-                            colorScheme='twitter'
-                            leftIcon={<FaTwitter />}
+                            variant={'ghost'}
+                            onClick={() =>
+                              setShowRepeatPassword(
+                                (showRepeatPassword) => !showRepeatPassword
+                              )
+                            }
                           >
-                            Twitter
+                            {showRepeatPassword ? (
+                              <ViewIcon />
+                            ) : (
+                              <ViewOffIcon />
+                            )}
                           </Button>
-                        </HStack>
-                        <Divider />
-                        <Stack direction={'horizontal'}>
-                          <Text align={'center'} marginRight={2}>
-                            Already a user?
-                          </Text>
-                          <Text color={'blue.400'} fontWeight={'bold'}>
-                            <RouterLink to={'/login'}>Login here</RouterLink>
-                          </Text>
-                        </Stack>
-                      </VStack>
-                    </Form>
-                  </>
-                );
-              }}
+                        </InputRightElement>
+                      </InputGroup>
+                      <ErrorMessage
+                        component='div'
+                        name='repeatPassword'
+                        style={{ color: 'red' }}
+                      />
+                    </FormControl>
+                    <Button
+                      type='submit'
+                      width='100%'
+                      colorScheme={'teal'}
+                      isDisabled={disableButton}
+                    >
+                      Register
+                    </Button>
+
+                    <Flex align='center' w={'full'}>
+                      <Divider border={'1px'} />
+                      <Text padding='2'>OR</Text>
+                      <Divider border={'1px'} />
+                    </Flex>
+
+                    <Button colorScheme='red' leftIcon={<FaGoogle />} w='full'>
+                      Google
+                    </Button>
+
+                    <Divider />
+                    <Stack direction={'horizontal'}>
+                      <Text align={'center'} marginRight={2}>
+                        Already a user?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/login'}>Login here</RouterLink>
+                      </Text>
+                    </Stack>
+                    <Stack direction={'horizontal'}>
+                      <Text align={'center'} marginRight={2}>
+                        Already a registed but didn't get the OTP?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/resend_otp'}>Resend OTP</RouterLink>
+                      </Text>
+                    </Stack>
+                  </VStack>
+                </Form>
+              }
             </Formik>
           </Box>
         </Stack>

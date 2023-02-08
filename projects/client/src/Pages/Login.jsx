@@ -15,7 +15,7 @@ import axios from '../api/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate, Link as RouterLink, useLocation } from 'react-router-dom';
-import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '../Components/TextField';
@@ -107,7 +107,7 @@ export default function LoginCard() {
               as='form'
               spacing={8}
               mx={'auto'}
-              maxW={'xl'}
+              w={{ base: 'xl', sm: 'md', md: 'xl' }}
               py={5}
               px={6}
               onSubmit={formik.handleSubmit}
@@ -139,7 +139,7 @@ export default function LoginCard() {
                       justify={'space-between'}
                       gap={10}
                     >
-                      <Checkbox>Remember me</Checkbox>
+                      {/* <Checkbox>Remember me</Checkbox> */}
                       <Text color={'blue.400'}>
                         <RouterLink to='/forgotPassword'>
                           Forgot password?
@@ -153,24 +153,29 @@ export default function LoginCard() {
                     >
                       Login
                     </Button>
-                    <Divider />
-                    <HStack>
-                      <Button colorScheme='red' leftIcon={<FaGoogle />}>
-                        Google
-                      </Button>
-                      <Button colorScheme='facebook' leftIcon={<FaFacebook />}>
-                        Facebook
-                      </Button>
-                      <Button colorScheme='twitter' leftIcon={<FaTwitter />}>
-                        Twitter
-                      </Button>
-                    </HStack>
-                    <Stack direction={'horizontal'}>
+                    <Flex align='center' w={'full'}>
+                      <Divider border={'1px'} />
+                      <Text padding='2'>OR</Text>
+                      <Divider border={'1px'} />
+                    </Flex>
+                    <Button colorScheme='red' leftIcon={<FaGoogle />} w='full'>
+                      Google
+                    </Button>
+
+                    <Stack direction={'horizontal'} justifyContent={'center'}>
                       <Text align={'center'} marginRight={2}>
                         Need an account?
                       </Text>
                       <Text color={'blue.400'} fontWeight={'bold'}>
                         <RouterLink to={'/register'}>Register here</RouterLink>
+                      </Text>
+                    </Stack>
+                    <Stack direction={'horizontal'} justifyContent={'center'}>
+                      <Text align={'center'} marginRight={2}>
+                        Already a registed but didn't get the OTP?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/resend_otp'}>Resend OTP</RouterLink>
                       </Text>
                     </Stack>
                   </Stack>

@@ -27,6 +27,12 @@ export default function Finished({ trips }) {
                 tenant={trip.fullName}
                 date={trip.checkIn + ' to ' + trip.CheckOut}
                 review={trip.review}
+                transactionId={trip.id}
+                passCheckOut={
+                  new Date(trip.CheckOut).getDate() > new Date().getDate()
+                    ? true
+                    : false
+                }
               />
             )
         )}
