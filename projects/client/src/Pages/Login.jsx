@@ -162,12 +162,20 @@ export default function LoginCard() {
                       Google
                     </Button>
 
-                    <Stack direction={'horizontal'}>
+                    <Stack direction={'horizontal'} justifyContent={'center'}>
                       <Text align={'center'} marginRight={2}>
                         Need an account?
                       </Text>
                       <Text color={'blue.400'} fontWeight={'bold'}>
                         <RouterLink to={'/register'}>Register here</RouterLink>
+                      </Text>
+                    </Stack>
+                    <Stack direction={'horizontal'} justifyContent={'center'}>
+                      <Text align={'center'} marginRight={2}>
+                        Already a registed but didn't get the OTP?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/login'}>Resend OTP</RouterLink>
                       </Text>
                     </Stack>
                   </Stack>

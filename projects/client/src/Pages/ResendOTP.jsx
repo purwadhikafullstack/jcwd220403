@@ -7,38 +7,34 @@ import {
   Stack,
   Center,
   Heading,
-  VStack,
   FormLabel,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router-dom';
 
-function ResetPassword() {
-  const [password, setPassword] = useState('');
-  const getParams = useParams();
+function ResendOTP() {
+  const [email, setEmail] = useState('');
 
   const handleInput = (e) => {
-    setPassword(e.target.value);
-    // setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setEmail(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = axios.post(`/resetPassword/`, {
-        password,
-        id: getParams.id,
-        token: getParams.token,
-      });
+      const res = axios.post(`/forgotPassword`, { email });
 
       await toast.promise(
         res,
         {
-          pending: 'submitting on progress...',
-          success: 'Reset password success',
+          pending: 'Submitting your data...',
+          success: {
+            render({ data }) {
+              return `Request success, please check your email: ${data.data.email}`;
+            },
+          },
           error: {
             render({ data }) {
               return `${data.response.data.message}`;
@@ -77,31 +73,22 @@ function ResetPassword() {
         >
           <Center>
             <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
-              Reset Password
+              Forgot your password?
             </Heading>
           </Center>
           <Center fontSize={{ base: 'sm', sm: 'md' }} color={'black'}>
-            input your new password here
+            No worries! Enter your email address and we'll send you the
+            instructions to reset your password.
           </Center>
-          <VStack>
-            <FormControl isRequired>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type='password'
-                name='password'
-                textAlign={'center'}
-                onChange={handleInput}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Repeat Password</FormLabel>
-              <Input
-                type='password'
-                name='confirmPassword'
-                textAlign={'center'}
-              />
-            </FormControl>
-          </VStack>
+          <FormControl isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type='email'
+              name='email'
+              textAlign={'center'}
+              onChange={handleInput}
+            />
+          </FormControl>
           <Stack spacing={6}>
             <Button
               onClick={handleSubmit}
@@ -120,4 +107,4 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
+export default ResendOTP;

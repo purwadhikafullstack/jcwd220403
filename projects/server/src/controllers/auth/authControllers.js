@@ -8,6 +8,7 @@ const nodemailer = require('../../middlewares/nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const { OTP_generator } = require('../../middlewares/otp_service');
+const { toISOLocal } = require('../../middlewares/useLocalISOString');
 
 module.exports = {
   register: async (req, res) => {
@@ -208,6 +209,7 @@ module.exports = {
       res.status(401).send({ message: 'Invalid email or password' });
     }
   },
+
   resendOTP: async (req, res) => {
     try {
       const { email } = req.body;
@@ -223,10 +225,45 @@ module.exports = {
         res.status(400).send({ message: 'email is not registered yet' });
       }
 
+      let checkResendOTPAttemp = await user.findOne({ where: { email } });
+
+      const lastResendOTPDate = new Date(
+        checkResendOTPAttemp.resendOTPDate
+      ).getDate();
+      console.log(lastResendOTPDate);
+      if (lastResendOTPDate < new Date().getDate()) {
+        try {
+          const newDate = new Date();
+          const newUserData = await user.update(
+            {
+              resendOTPDate: toISOLocal(newDate),
+              resendOTPAttemp: 0,
+            },
+            { where: { email } }
+          );
+          checkResendOTPAttemp = newUserData;
+        } catch (error) {
+          console.log(error);
+          return res.status(400).send(error);
+        }
+      }
+
+      if (checkResendOTPAttemp.resendOTPAttemp >= 5) {
+        return res.status(400).send({
+          message:
+            'Maximum resend OTP is five times a day. please try again tomorrow',
+        });
+      }
+
+      const updateResendOTPAttemp = await user.increment('resendOTPAttemp', {
+        by: 1,
+        where: { email },
+      });
+
       const otp = OTP_generator();
 
       const token = jwt.sign({ email: email }, otp, {
-        expiresIn: '5m',
+        expiresIn: '1d',
       });
 
       const tempEmail = fs.readFileSync(
@@ -238,7 +275,7 @@ module.exports = {
       const tempResult = tempCompile({
         fullName: emailExist.fullName,
         otp,
-        link: `${domain}/verification/${token}`,
+        link: `${process.env.DOMAIN}/verification/${token}`,
       });
 
       await nodemailer.sendMail({
@@ -251,7 +288,7 @@ module.exports = {
       res
         .header('Access-Control-Allow-Credentials', true)
         .cookie('email', email, {
-          maxAge: 60 * 5000,
+          maxAge: 86400000, //1 day
           httpOnly: false,
           path: '/',
         })
@@ -259,6 +296,7 @@ module.exports = {
         .send({
           message: 'Resent OTP Success',
           token,
+          resendOTPAttemp: updateResendOTPAttemp,
         });
     } catch (error) {
       console.log(error);
@@ -300,7 +338,7 @@ module.exports = {
       email,
       browser,
       device,
-      link: `${domain}/resetpassword/${emailExist.id}/${token}`,
+      link: `${process.env.DOMAIN}/resetpassword/${emailExist.id}/${token}`,
     });
 
     await nodemailer.sendMail({
@@ -335,15 +373,6 @@ module.exports = {
       res.status(200).send({ message: 'Reset Password Success' });
     } catch (error) {
       res.status(401).send(error.message);
-    }
-  },
-
-  test: async (req, res) => {
-    try {
-      res.send('test auth controller');
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
     }
   },
 };

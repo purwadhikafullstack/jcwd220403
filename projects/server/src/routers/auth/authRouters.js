@@ -36,6 +36,5 @@ router.post(
   runValidation,
   authControllers.resetPassword
 );
-router.get('/api/test/', authControllers.test);
 
 module.exports = router;

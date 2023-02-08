@@ -229,6 +229,14 @@ export default function Register() {
                         <RouterLink to={'/login'}>Login here</RouterLink>
                       </Text>
                     </Stack>
+                    <Stack direction={'horizontal'}>
+                      <Text align={'center'} marginRight={2}>
+                        Already a registed but didn't get the OTP?
+                      </Text>
+                      <Text color={'blue.400'} fontWeight={'bold'}>
+                        <RouterLink to={'/login'}>Resend OTP</RouterLink>
+                      </Text>
+                    </Stack>
                   </VStack>
                 </Form>
               }

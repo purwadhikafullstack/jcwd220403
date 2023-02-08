@@ -1,5 +1,5 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, Sequelize } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
@@ -71,10 +71,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
-      otpAttemps: {
+      resendOTPAttemp: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
+      },
+      resendOTPDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'),
       },
     },
     {

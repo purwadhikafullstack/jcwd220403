@@ -28,11 +28,6 @@ function ResetPasswordRequest() {
 
       await toast.promise(
         res,
-        // {
-        //   pending: 'submitting on progress...',
-        //   success: 'Request success, please check your email',
-        //   error: 'Submitting fail 😢',
-        // },
         {
           pending: 'Submitting your data...',
           success: {

@@ -44,7 +44,11 @@ export default function VerifyEmailForm() {
         {
           pending: 'Resending OTP...',
           success: 'Resend OTP Success! Please check your email',
-          error: 'Resend OTP Fail fail 😢',
+          error: {
+            render({ data }) {
+              return `${data.response.data.message}`;
+            },
+          },
         },
         { position: toast.POSITION.TOP_CENTER }
       );
