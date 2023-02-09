@@ -29,7 +29,6 @@ function DetailPage() {
   const [isMobile] = useMediaQuery('(max-width: 481px)');
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  console.log(data)
   const [isloading, setIsloading] = useState(true);
   const params = useParams();
   const { setSearch, search } = useSearch();
@@ -55,10 +54,7 @@ function DetailPage() {
         }
       });
       setData(res.data);
-      // setTimeout(() => {
       setIsloading(false);
-      // }, 1000);
-      // console.log(res.data);
     } catch (err) {
       console.log(err);
     }

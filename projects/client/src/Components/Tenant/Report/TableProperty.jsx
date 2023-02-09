@@ -87,8 +87,6 @@ function TableProperty() {
       setRows(res.data.totalRows);
       setProperties(res.data.property);
 
-      console.log(res.data);
-
       const allpage = [];
       for (let i = 1; i <= res.data.totalPage; i++) {
         allpage.push(i);
@@ -123,8 +121,6 @@ function TableProperty() {
       setOrder_direction("ASC");
     }
   };
-
-  console.log(property);
 
   useEffect(() => {
     getData();
