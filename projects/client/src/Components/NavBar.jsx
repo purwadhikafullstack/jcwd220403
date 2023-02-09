@@ -318,10 +318,6 @@ const NavBar = () => {
                   <MenuItem>
                     <Link to={'/trips'}>Trips</Link>
                   </MenuItem>
-                  <MenuItem>
-                    <Link to={'/review'}>Reviews</Link>
-                  </MenuItem>
-                  <MenuItem></MenuItem>
                   <MenuDivider />
                   <MenuItem>
                     <Link to={'/register-tenant'}>List Your Property</Link>
@@ -359,14 +355,42 @@ const NavBar = () => {
                 boxShadow='md'
                 color='black'
               />
-              <MenuList color='black' zIndex='3' fontFamily='poppins'>
-                <MenuItem>Register</MenuItem>
-                <MenuItem>Login</MenuItem>
-                <MenuDivider />
-                <MenuItem>List Your Property</MenuItem>
-                <MenuDivider />
-                <MenuItem>Help</MenuItem>
-              </MenuList>
+             {auth?.accessToken ? (
+                <MenuList
+                  zIndex='3'
+                  fontFamily='Poppins,Roboto,Arial,Helvetica,sans-serif'
+                  color='black'
+                >
+                  <MenuItem>
+                    <Link to={'/user'}>Profile</Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link to={'/trips'}>Trips</Link>
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>
+                    <Link to={'/register-tenant'}>List Your Property</Link>
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Help</MenuItem>
+                  <MenuItem onClick={signOut}>Logout</MenuItem>
+                </MenuList>
+              ) : (
+                <MenuList zIndex='3' fontFamily='poppins' color='black'>
+                  <MenuItem>
+                    <Link to={'/register'}>Register</Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link to={'/login'}>Login</Link>
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>
+                    <Link to={'/register-tenant'}>List Your Property</Link>
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Help</MenuItem>
+                </MenuList>
+              )}
             </Menu>
           </Box>
         </Flex>

@@ -30,16 +30,6 @@ router.post(
   tenantTransaction.rejectTransaction
 );
 router.post(
-  '/api/transactions/accept',
-  verifyJWT,
-  tenantTransaction.acceptTransaction
-);
-router.post(
-  '/api/transactions/reject',
-  verifyJWT,
-  tenantTransaction.rejectTransaction
-);
-router.post(
   '/api/transactions/cancelOrders/:id',
   verifyJWT,
   tenantTransaction.cancelUserOrders
