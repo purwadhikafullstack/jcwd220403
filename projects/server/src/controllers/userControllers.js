@@ -52,7 +52,6 @@ module.exports = {
   },
   checkEmail: async (req, res) => {
     try {
-      console.log(req.params.email);
       const isAccountExist = await user.findOne({
         where: {
           email: req.params.email,

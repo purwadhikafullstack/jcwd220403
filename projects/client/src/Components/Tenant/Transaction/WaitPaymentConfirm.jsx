@@ -37,6 +37,7 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { BiFilter, BiSort } from 'react-icons/bi';
 import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
+import { ModalPaymentProff } from './ModalPaymenProf';
   
   function WaitPaymentConfirm() {
     const [isloading, setIsloading] = useState(true);
@@ -237,11 +238,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                                                 year: 'numeric',
                                                 })}
                                             </Text>
-                                            <Tag as={Link} size="sm" borderRadius="3xl" bgColor="orange" >
-                                                <TagLabel fontSize="xx-small" >
-                                                    {item.transactionStatus}
-                                                </TagLabel>
-                                            </Tag>
+                                            <ModalPaymentProff item={item}/>
                                         </Box>
                                     </Td>
                                     <Td justifyContent="center">
@@ -313,11 +310,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                                         <Td>{item.room.name}</Td>
                                         <Td>{item.user.fullName}</Td>
                                         <Td>
-                                            <Tag onClick={() => window.open(process.env.REACT_APP_URL_PUBLIC + 'paymentProof/' + item.payment.paymentProof, '_blank')} cursor="pointer" size="sm" borderRadius="3xl" bgColor="orange" >
-                                                <TagLabel fontSize="smaller" >
-                                                    {item.transactionStatus}
-                                                </TagLabel>
-                                            </Tag>
+                                            <ModalPaymentProff item={item}/>
                                         </Td>
                                         <Td>
                                             <Flex>
