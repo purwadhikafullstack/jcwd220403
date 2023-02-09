@@ -8,17 +8,18 @@ import {
   useDisclosure,
   ModalHeader,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useTrips from '../../hooks/useTrips';
 
 export default function ConfirmCancel({ trip }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const axiosPrivate = useAxiosPrivate();
-  // const [seed, setSeed] = useState(1);
+  const { setUpdate } = useTrips();
 
   function reset() {
     // setSeed(Math.random());
     onClose();
+    setUpdate({ update: 'cancel' });
   }
 
   const cancelTrip = async (e) => {

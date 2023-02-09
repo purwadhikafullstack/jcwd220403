@@ -5,8 +5,8 @@ const bearerToken = require('express-bearer-token');
 const { join } = require('path');
 const database = require('./models');
 const fileUpload = require('express-fileupload');
-const path = require("path");
-const emailReminder = require('./middlewares/schReminder')
+const path = require('path');
+const emailReminder = require('./middlewares/schReminder');
 const schedule = require('node-schedule');
 const {
   authRouters,
@@ -56,7 +56,6 @@ app.use(cookieParser());
 
 // ===========================
 // NOTE : Add your routes here
-
 
 //auth
 app.use(refresh);
@@ -149,4 +148,4 @@ app.listen(PORT, (err) => {
   }
 });
 
-// database.sequelize.sync({ alter: true });
+// database.transaction.sync({ alter: true });
