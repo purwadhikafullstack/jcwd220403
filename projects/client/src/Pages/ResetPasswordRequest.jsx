@@ -8,14 +8,20 @@ import {
   Center,
   Heading,
   FormLabel,
+  Text,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const isEmail = (email) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+
 function ResetPasswordRequest() {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [borderColor, setBorderColor] = useState('');
 
   const handleInput = (e) => {
     setEmail(e.target.value);
@@ -23,30 +29,44 @@ function ResetPasswordRequest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = axios.post(`/forgotPassword`, { email });
 
-      await toast.promise(
-        res,
-        {
-          pending: 'Submitting your data...',
-          success: {
-            render({ data }) {
-              return `Request success, please check your email: ${data.data.email}`;
+    if (!isEmail(email)) {
+      setError('Enter a valid email');
+      setBorderColor('red');
+    }
+
+    if (!email) {
+      setError('Please input your email');
+      setBorderColor('red');
+    }
+    if (email && isEmail(email)) {
+      setError('');
+      setBorderColor('');
+      try {
+        const res = axios.post(`/forgotPassword`, { email });
+
+        await toast.promise(
+          res,
+          {
+            pending: 'Submitting your data...',
+            success: {
+              render({ data }) {
+                return `Request success, please check your email: ${data.data.email}`;
+              },
+            },
+            error: {
+              render({ data }) {
+                return `${data.response.data.message}`;
+              },
             },
           },
-          error: {
-            render({ data }) {
-              return `${data.response.data.message}`;
-            },
-          },
-        },
-        { position: toast.POSITION.TOP_CENTER }
-      );
-    } catch (error) {
-      toast.error(error, {
-        position: toast.POSITION.TOP_CENTER,
-      });
+          { position: toast.POSITION.TOP_CENTER }
+        );
+      } catch (error) {
+        toast.error(error, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     }
   };
 
@@ -87,17 +107,14 @@ function ResetPasswordRequest() {
               name='email'
               textAlign={'center'}
               onChange={handleInput}
+              borderColor={borderColor}
             />
+            <Text color={'red'} fontSize='14px'>
+              {error}
+            </Text>
           </FormControl>
           <Stack spacing={6}>
-            <Button
-              onClick={handleSubmit}
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}
-            >
+            <Button onClick={handleSubmit} colorScheme={'teal'}>
               Submit
             </Button>
           </Stack>
