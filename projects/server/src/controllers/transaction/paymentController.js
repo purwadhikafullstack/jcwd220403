@@ -88,11 +88,14 @@ const uploadPaymentProof = async (req, res) => {
   DROP EVENT IF EXISTS payment_${paymentData.id};
   `);
 
-  await paymentProof.mv(`${process.env.ACCESS_SRC_FILE}public/paymentProof/` + filename, (err) => {
-    if (err) {
-      return res.status(500).send(err);
+  await paymentProof.mv(
+    `${process.env.ACCESS_SRC_FILE}public/paymentProof/` + filename,
+    (err) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
     }
-  });
+  );
 
   res.status(200).send({
     message:
@@ -107,6 +110,7 @@ const getPayment = async (req, res) => {
 
     const paymentData = await payment.findOne({
       where: { id: paymentId },
+      include: { model: database.transaction },
     });
 
     res.status(200).send(paymentData);

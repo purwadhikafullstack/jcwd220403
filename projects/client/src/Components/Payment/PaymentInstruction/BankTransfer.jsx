@@ -12,6 +12,8 @@ import {
   FormControl,
   FormLabel,
   Skeleton,
+  ButtonGroup,
+  Flex,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import axios from '../../../api/axios';
@@ -49,6 +51,12 @@ export default function BankTransfer({ data }) {
     try {
       const data = await axiosPrivate.get(`/payment/${params.paymentId}`);
       setPayment(data.data);
+      console.log(payment);
+      if (payment?.transaction?.transactionStatus !== 'Menunggu Pembayaran') {
+        setDisableSubmitBtn(true);
+      } else {
+        setDisableSubmitBtn(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -167,13 +175,33 @@ export default function BankTransfer({ data }) {
             ></Box>
           </Stack>
           <Stack marginBottom='10px'>
-            <Text>Account Number: {bank.accountNumber}</Text>
+            <Flex justifyContent={'space-between'}>
+              <Text>Account Number: {bank.accountNumber}</Text>
+              <Button
+                size={'xs'}
+                onClick={() => {
+                  navigator.clipboard.writeText(bank.accountNumber);
+                }}
+              >
+                Copy
+              </Button>
+            </Flex>
             <Text>Account Holder Name: {bank.accountHolderName}</Text>
           </Stack>
           <Divider />
-          <Text marginBottom='10px' marginTop='10px'>
-            Transfer amount: {priceInCurrency()}
-          </Text>
+          <Flex justifyContent={'space-between'} marginTop='10px'>
+            <Text marginBottom='10px'>
+              Transfer amount: {priceInCurrency()}
+            </Text>
+            <Button
+              size={'xs'}
+              onClick={() => {
+                navigator.clipboard.writeText(priceInCurrency());
+              }}
+            >
+              Copy
+            </Button>
+          </Flex>
         </Box>
       </Box>
 
