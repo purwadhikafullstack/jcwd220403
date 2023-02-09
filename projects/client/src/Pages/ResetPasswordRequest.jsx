@@ -22,6 +22,7 @@ function ResetPasswordRequest() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [borderColor, setBorderColor] = useState('');
+  const [disableButton, setDisableButton] = useState(false);
 
   const handleInput = (e) => {
     setEmail(e.target.value);
@@ -42,6 +43,7 @@ function ResetPasswordRequest() {
     if (email && isEmail(email)) {
       setError('');
       setBorderColor('');
+      setDisableButton(true);
       try {
         const res = axios.post(`/forgotPassword`, { email });
 
@@ -67,6 +69,7 @@ function ResetPasswordRequest() {
           position: toast.POSITION.TOP_CENTER,
         });
       }
+      setDisableButton(false);
     }
   };
 
@@ -108,6 +111,7 @@ function ResetPasswordRequest() {
               textAlign={'center'}
               onChange={handleInput}
               borderColor={borderColor}
+              isDisabled={disableButton}
             />
             <Text color={'red'} fontSize='14px'>
               {error}
