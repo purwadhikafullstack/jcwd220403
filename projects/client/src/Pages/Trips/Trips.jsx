@@ -76,7 +76,7 @@ export default function Trips() {
       </Grid>
       <Divider mt={12} mb={5} />
       <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
-        Filter
+        Booked On:
       </chakra.h3>
       <Stack>
         <ButtonGroup colorScheme={'blue'}>
