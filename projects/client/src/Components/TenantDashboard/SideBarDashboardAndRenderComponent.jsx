@@ -36,7 +36,6 @@ const SideBarDashboardAndRenderComponent = () => {
     const [activeIndex, setActiveIndex] = useState(1);
     const [activeIndexTwo, setActiveIndexTwo] = useState(-1)
     const activeIndexFromMobile = useSelector((state) => state.PropertySlice.value.index)
-    console.log(activeIndexFromMobile)
     const items = [
         {
             title: "Dashboard",

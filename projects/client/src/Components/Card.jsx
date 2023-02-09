@@ -12,13 +12,16 @@ import 'swiper/css';
 function HomeCard() {
   const [currentData, setCurrentData] = useState();
   const [loading, setLoading] = useState(true);
+  const [row, setRow] = useState(0);
+  let [limit, setLimit] = useState(8);
   const [activeIndex, setActiveIndex] = useState(-1);
   const { search } = useSearch();
 
   const getdata = async () => {
     try {
-      const response = await axios.post('/landingpage', search);
-      setCurrentData(response.data);
+      const response = await axios.post('/landingpage', { ...search, limit});
+      setCurrentData(response.data.data);
+      setRow(response.data.pages);
       setTimeout(() => {
         setLoading(false);
       }, 3000)
@@ -30,7 +33,7 @@ function HomeCard() {
   useEffect(() => {
     getdata();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, limit]);
 
   // ----------------------------------------------------------------------
 
@@ -171,9 +174,10 @@ function HomeCard() {
         ))
         }
       </Flex >
+     { row <= limit ? null : 
       <Box boxShadow="md">
-        <Button marginTop="3px" variant="outline" width="300px" display={loading?"none" : "block"}>Load More!</Button>
-      </Box>
+        <Button marginTop="3px" variant="outline" width="300px" onClick={() => setLimit(limit += 4)} display={loading?"none" : "block"}>Load More!</Button>
+      </Box>}
       <br />
       <br />
     </Flex >
