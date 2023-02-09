@@ -6,7 +6,7 @@ import {
   Container,
   Text,
   chakra,
-  HStack,
+  Stack,
   Button,
   Heading,
   ButtonGroup,
@@ -78,14 +78,16 @@ export default function Trips() {
       <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
         Filter
       </chakra.h3>
-      <HStack>
-        <Button onClick={() => setMonth('')}>All Trips</Button>
+      <Stack>
         <ButtonGroup colorScheme={'blue'}>
+          <Button colorScheme={'gray'} onClick={() => setMonth('')}>
+            All Trips
+          </Button>
           {ar.map((i, index) => (
             <Button onClick={() => setMonth(index)}>{i}</Button>
           ))}
         </ButtonGroup>
-      </HStack>
+      </Stack>
       <Divider mt={5} mb={12} />
       <Ongoing data={trips} />
       <Divider mt={12} mb={12} />

@@ -42,7 +42,7 @@ function Ongoing({ data }) {
             </Grid>
           );
         }
-        return <NoOngoingTrip />;
+        return null;
       })}
     </Box>
   );
