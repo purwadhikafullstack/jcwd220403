@@ -66,6 +66,10 @@ module.exports = {
             model: database.payment,
             attributes: ['paymentProof'],
           },
+          {
+            model: database.payment,
+            attributes: ['paymentProof'],
+          },
         ],
         having: {
           [Op.and]: [

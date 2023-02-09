@@ -280,7 +280,7 @@ function ReportHome() {
                                         </Box>
                                         
                                     </Td>
-                                    <Td isNumeric fontSize="x-small" >{ new Intl.NumberFormat('IND', {style: 'currency', currency: 'IDR'}).format(item.room.price)}</Td>
+                                    <Td isNumeric fontSize="x-small" >{ item.payment ? new Intl.NumberFormat('IND', {style: 'currency', currency: 'IDR'}).format(item.payment.total) : "-"}</Td>
                                 </Tr>
                             )
                         })}
@@ -420,7 +420,7 @@ function ReportHome() {
                                     </TagLabel>
                                 </Tag>
                             </Td>
-                          <Td isNumeric >{ new Intl.NumberFormat('IND', {style: 'currency', currency: 'IDR'}).format(item.room.price)}</Td>
+                          <Td isNumeric >{ item.payment ? new Intl.NumberFormat('IND', {style: 'currency', currency: 'IDR'}).format(item.payment.total) : "-"}</Td>
                         </Tr>
                       );
                     })}

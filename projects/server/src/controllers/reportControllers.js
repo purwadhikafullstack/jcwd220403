@@ -82,7 +82,11 @@ module.exports = {
                                 [Op.like]: "%" + search + "%"
                             } : {[Op.not]: null} 
                         }
-                    }
+                    },
+                    {
+                        model: database.payment,
+                        attributes: ['total'],
+                    },
                 ],
                 having: {
                     [Op.and]: [
@@ -101,7 +105,7 @@ module.exports = {
 
             const amount = await database.transaction.findAll({
                 attributes: [
-                    [Sequelize.fn('sum', Sequelize.col('room.price')), 'total_amount'],
+                    [Sequelize.fn('sum', Sequelize.col('payment.total')), 'total_amount'],
                   ],
                 where: { 
                     [Op.and]: [
@@ -126,13 +130,17 @@ module.exports = {
                             }
                         }],
                     },
+                    {
+                        model: database.payment,
+                        attributes: ['total'],
+                    },
                 ],
                 group: ['room.property.tenantId'],
-                having: {
-                    [Op.and]: [
-                        {'total_amount': {[Op.not]: null} },
-                    ]
-                },
+                // having: {
+                //     [Op.and]: [
+                //         {'total_amount': {[Op.not]: null} },
+                //     ]
+                // },
               });
 
               const totalAmount = amount[0] ? +amount[0].dataValues.total_amount : 0
@@ -200,7 +208,7 @@ module.exports = {
 
             const data = await database.transaction.findAll({
                 attributes: [ 'userId',
-                    [Sequelize.fn('count', Sequelize.col('userId')), 'Count'], [Sequelize.fn('sum', Sequelize.col('room.price')), 'total_amount']
+                    [Sequelize.fn('count', Sequelize.col('userId')), 'Count'], [Sequelize.fn('sum', Sequelize.col('payment.total')), 'total_amount']
                   ],
                 where: { 
                     [Op.and]: [
@@ -234,6 +242,10 @@ module.exports = {
                                 [Op.like]: "%" + search + "%"
                             } : {[Op.not]: null} 
                         }
+                    },
+                    {
+                        model: database.payment,
+                        attributes: ['total'],
                     }
                 ],
                 group: ['userId', 'room.property.tenantId'],
@@ -306,7 +318,7 @@ module.exports = {
 
             const data = await database.transaction.findAll({
                 attributes: [ 
-                    [Sequelize.fn('sum', Sequelize.col('room.price')), 'total_amount'],
+                    [Sequelize.fn('sum', Sequelize.col('payment.total')), 'total_amount'],
                     [Sequelize.fn('count', Sequelize.col('room.name')), 'count'],
                   ],
                 where: { 
@@ -339,7 +351,12 @@ module.exports = {
                             }
                         }],
                         required: true
+                    },
+                    {
+                        model: database.payment,
+                        attributes: ['total'],
                     }
+
                 ],
                 group: ['room.id'],
                 order: [
