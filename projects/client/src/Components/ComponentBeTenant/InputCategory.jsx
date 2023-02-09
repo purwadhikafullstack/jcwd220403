@@ -223,7 +223,9 @@ const InputCategory = () => {
                       onClick={handleSubmit}
                       backgroundColor='white'
                       color='black'
-                      padding='25px'
+                      width="max-content"
+                      borderRadius="20px"
+                      padding="15px"
                       _hover={{ fontWeight: 'bold' }}
                       marginTop='10px'
                       marginBottom='10px'
@@ -236,9 +238,10 @@ const InputCategory = () => {
                       onClick={handleSubmit}
                       backgroundColor='white'
                       color='black'
+                      width="max-content"
                       marginTop='10px'
                       marginBottom='10px'
-                      padding='25px'
+                      padding="15px"
                       _hover={{ fontWeight: 'bold' }}
                       style={{ border: checklis ? '' : '2px solid black' }}
                       borderRadius='20px'
@@ -249,11 +252,11 @@ const InputCategory = () => {
                   )}
                 </Center>
               </Center>
-              <br />
-              <br />
-              <br />
             </form>
           </Box>
+          <br />
+          <br />
+          <br />
         </motion.div>
       </Center>
     </Box>

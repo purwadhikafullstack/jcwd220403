@@ -173,8 +173,7 @@ const InputProperty = () => {
                                             onClick={handleSubmit}
                                             backgroundColor='white'
                                             color='black'
-                                            marginTop='10px'
-                                            marginBottom='10px'
+                                            marginTop='15px'
                                             _hover={{ fontWeight: 'bold' }}
                                             isDisabled='true'
                                         >
@@ -185,8 +184,8 @@ const InputProperty = () => {
                                             onClick={handleSubmit}
                                             backgroundColor='white'
                                             color='black'
-                                            marginTop='10px'
-                                            marginBottom='10px'
+                                            marginTop='15px'
+                                          
                                             _hover={{ fontWeight: 'bold' }}
                                             style={{ border: checklis ? '' : '2px solid black' }}
                                             borderRadius='20px'
@@ -198,22 +197,12 @@ const InputProperty = () => {
                                 </Center>
                             </form>
                         </Box>
-                        {MobileToTablet ? (
-                            <Box>
-                                <br />
-                                <br />
-                            </Box>
-                        ) : (
-                            <Box>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                            </Box>
-                        )}
                     </Box>
                 </motion.div>
             </Center>
+            <br />
+            <br />
+            <br />
         </Box>
     );
 };

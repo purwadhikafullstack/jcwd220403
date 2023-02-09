@@ -2,9 +2,9 @@ import React from 'react'
 import {
     Box, Input, Button, Icon, Text, Flex, Spacer,
     InputLeftElement, InputGroup, Divider, Avatar,
-    useMediaQuery, MenuButton, Menu, MenuList, MenuItem, IconButton, Tag, MenuDivider,
+    useMediaQuery, MenuButton, Menu, MenuList, MenuItem, Tag, MenuDivider,
 } from "@chakra-ui/react"
-import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from "@chakra-ui/icons"
+import { HamburgerIcon } from "@chakra-ui/icons"
 import { BsFillLightningFill } from "react-icons/bs"
 import { AiOutlineSearch, AiOutlineBell } from "react-icons/ai"
 import { IoIosHelpCircleOutline } from "react-icons/io"

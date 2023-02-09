@@ -129,13 +129,13 @@ const InputRoom = () => {
                                     )}
                                 </Center>
                             </Center>
-                            <br />
-                            <br />
-                            <br />
                         </form>
                     </Box>
                 </motion.div>
             </Center>
+            <br />
+            <br />
+            <br />
         </Box>
     )
 }

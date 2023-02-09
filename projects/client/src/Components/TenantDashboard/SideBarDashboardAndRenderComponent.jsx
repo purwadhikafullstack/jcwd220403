@@ -36,6 +36,7 @@ const SideBarDashboardAndRenderComponent = () => {
     const [activeIndex, setActiveIndex] = useState(1);
     const [activeIndexTwo, setActiveIndexTwo] = useState(-1)
     const activeIndexFromMobile = useSelector((state) => state.PropertySlice.value.index)
+
     const items = [
         {
             title: "Dashboard",
@@ -113,46 +114,54 @@ const SideBarDashboardAndRenderComponent = () => {
     })
 
     const RenderComponent = () => {
-        if (activeIndex === 0 || activeIndexFromMobile === 0) {
+        const isMobile = window.innerWidth < 500
+        let activeIndexToUse = activeIndex;
+
+        if (isMobile) {
+            activeIndexToUse = activeIndexFromMobile;
+        }
+
+        if (activeIndexToUse === 0) {
             return (
                 <Box>
-                    <DashboardHomeTenant/>
+                    <DashboardHomeTenant />
                 </Box>
             )
-        } else if (activeIndex === 1 || activeIndexFromMobile === 1) {
+        } else if (activeIndexToUse === 1) {
             return (
                 <Box>
                     <Property />
                 </Box>
             )
-        } else if (activeIndex === 2 || activeIndexFromMobile === 2) {
+        } else if (activeIndexToUse === 2) {
             return (
                 <Box>
                     <Room />
                 </Box>
             )
         }
-        else if (activeIndex === 5 || activeIndexFromMobile === 5){
+        else if (activeIndexToUse === 5) {
             return (
                 <Box>
-                    <TransactionUser/> 
+                    <TransactionUser />
                 </Box>
             )
         }
-        else if (activeIndex === 6 || activeIndexFromMobile === 6){
+        else if (activeIndexToUse === 6) {
             return (
                 <Box>
-                    <ReportPages/> 
+                    <ReportPages />
                 </Box>
             )
-        } else if (activeIndex === 7 || activeIndexFromMobile === 7){
+        } else if (activeIndexToUse === 7) {
             return (
                 <Box>
-                    <Settings/>
+                    <Settings />
                 </Box>
             )
         }
     }
+
 
     return (
         <Box display="flex">

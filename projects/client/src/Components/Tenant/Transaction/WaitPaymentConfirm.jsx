@@ -29,6 +29,7 @@ import {
     MenuItem,
   } from '@chakra-ui/react';
   import { useState, useEffect } from 'react';
+  import {Link} from 'react-router-dom'
   import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
   import Swal from 'sweetalert2';
   import useAuth from '../../../hooks/useAuth';
@@ -60,7 +61,6 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
           allpage.push(i)
         }
         setPages(allpage)
-
         setIsloading(false);
       } catch (err) {
         console.log(err);
@@ -106,7 +106,8 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                         'SUCCESS !',
                         `${res.data}`,
                         'success'
-                    )   
+                    )
+                    getData()
                 } catch (err) {
                 console.log(err);
                 }
@@ -158,6 +159,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                         `${res.data}`,
                         'success'
                     )   
+                    getData()
                 } catch (err) {
                 console.log(err);
                 }
@@ -235,7 +237,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                                                 year: 'numeric',
                                                 })}
                                             </Text>
-                                            <Tag size="sm" borderRadius="3xl" bgColor="orange" >
+                                            <Tag as={Link} size="sm" borderRadius="3xl" bgColor="orange" >
                                                 <TagLabel fontSize="xx-small" >
                                                     {item.transactionStatus}
                                                 </TagLabel>
@@ -311,7 +313,7 @@ import { BsSortAlphaDownAlt, BsSortAlphaUpAlt } from 'react-icons/bs';
                                         <Td>{item.room.name}</Td>
                                         <Td>{item.user.fullName}</Td>
                                         <Td>
-                                            <Tag size="sm" borderRadius="3xl" bgColor="orange" >
+                                            <Tag onClick={() => window.open(process.env.REACT_APP_URL_PUBLIC + 'paymentProof/' + item.payment.paymentProof, '_blank')} cursor="pointer" size="sm" borderRadius="3xl" bgColor="orange" >
                                                 <TagLabel fontSize="smaller" >
                                                     {item.transactionStatus}
                                                 </TagLabel>

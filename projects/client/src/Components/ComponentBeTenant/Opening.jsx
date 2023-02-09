@@ -25,7 +25,7 @@ const Opening = () => {
     })
 
     return (
-        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} justifyContent="center" alignItems="center" >
+        <Flex style={{ ...(MobileToTablet ? { flexDirection: "column-reverse" } : {}) }} justifyContent="center" alignItems="center">
             <Box flex="1" marginLeft={marginLeft}>
                 <motion.div
                     initial={{ x: "-100%" }}
@@ -34,12 +34,15 @@ const Opening = () => {
                 >
                     <Text fontFamily="Uniform Pro Medium" fontSize={42} fontWeight="bold"
                         style={{ ...(isTablet ? { textAlign: "center" } : {}) }}
+                        textAlign={MobileToTablet? "center" : "none"}
                     >Beri tahu kami mengenai</Text>
                     <Text fontFamily="Uniform Pro Medium" fontSize={42} fontWeight="bold"
                         style={{ ...(isTablet ? { textAlign: "center" } : {}) }}
+                        textAlign={MobileToTablet? "center" : "none"}
                     >tempat Anda</Text>
                     <Text fontFamily="Candid Light" fontSize="22px" marginTop="10px"
                         style={{ ...(isTablet ? { maxWidth: "600px", margin: "auto", marginTop: "20px" } : {}) }}
+                        textAlign={MobileToTablet? "center" : "none"}
                     >
                         Pada langkah ini, kami akan menanyakan tipe properti yang Anda miliki dan apakah tamu
                         akan memesan seluruh tempat atau hanya satu kamar. Kemudian
@@ -53,7 +56,7 @@ const Opening = () => {
                     variants={Setting}
                     initial="hidden"
                     animate="visible">
-                    <Image marginLeft="10px" width="70%" src="https://thumbs.dreamstime.com/b/house-rent-sale-modern-white-background-d-illustration-180794527.jpg" margin="auto" />
+                    <Image marginLeft="10px" width="100%" src="https://thumbs.dreamstime.com/b/house-rent-sale-modern-white-background-d-illustration-180794527.jpg" margin="auto" />
                 </motion.div>
             </Box>
         </Flex>

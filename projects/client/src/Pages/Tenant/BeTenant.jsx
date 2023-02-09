@@ -70,7 +70,7 @@ function BeTenant() {
     <Box width='auto'>
       {/* <NavBarTenant /> */}
       {currentStep === 1 && (
-        <Box marginTop='80px'>
+        <Box marginTop='80px'z>
           <Opening />
           <Box
             position='fixed'

@@ -16,25 +16,25 @@ module.exports = {
         attributes: [],
         where: { transactionStatus },
         include: [
-            {
-                model: database.room,
-                attributes: [],
-                required: true,
-                include: [{
-                    model: database.property,
-                    attributes: [],
-                    where: {'tenantId': tenantId}
-                }]
-            },
-            {
-                model: database.user,
-                attributes: ['fullName', 'email'],
-                where: {
-                  fullName: search ? {
-                      [Op.like]: "%" + search + "%"
-                  } : {[Op.not]: null} 
-              }
+          {
+            model: database.room,
+            attributes: [],
+            required: true,
+            include: [{
+              model: database.property,
+              attributes: [],
+              where: { 'tenantId': tenantId }
+            }]
+          },
+          {
+            model: database.user,
+            attributes: ['fullName', 'email'],
+            where: {
+              fullName: search ? {
+                [Op.like]: "%" + search + "%"
+              } : { [Op.not]: null }
             }
+          }
         ],
       });
 
@@ -58,9 +58,13 @@ module.exports = {
             attributes: ['fullName', 'email'],
             where: {
               fullName: search ? {
-                  [Op.like]: "%" + search + "%"
-              } : {[Op.not]: null} 
-          }
+                [Op.like]: "%" + search + "%"
+              } : { [Op.not]: null }
+            }
+          },
+          {
+            model: database.payment,
+            attributes: ['paymentProof'],
           },
         ],
         having: {
@@ -70,15 +74,15 @@ module.exports = {
           ],
         },
         order: [
-          order === "name" ? [{ model: database.room }, order, order_direction] : 
-          order === "fullName" ? [{ model: database.user }, order, order_direction] : 
-          [order, order_direction]
-      ],
+          order === "name" ? [{ model: database.room }, order, order_direction] :
+            order === "fullName" ? [{ model: database.user }, order, order_direction] :
+              [order, order_direction]
+        ],
         limit: [+limit],
         offset: [offset]
       });
-      
-      res.status(201).send({response, count, totalPage});
+
+      res.status(201).send({ response, count, totalPage });
     } catch (err) {
       console.log(err);
       res.status(404).send(err);
@@ -148,7 +152,7 @@ module.exports = {
         year: 'numeric',
       }),
     };
-    
+
     try {
       var templateHtml = fs.readFileSync(
         path.join(
@@ -392,9 +396,9 @@ module.exports = {
       });
       response.map(
         (item) =>
-          (result[item.dataValues.month - 1][
-            item.dataValues.transactionStatus
-          ] = item.dataValues.Count)
+        (result[item.dataValues.month - 1][
+          item.dataValues.transactionStatus
+        ] = item.dataValues.Count)
       );
       const chart = result.filter((item) => Object.keys(item).length > 1);
 
