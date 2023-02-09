@@ -134,14 +134,7 @@ function ResetPassword() {
             </FormControl>
           </VStack>
           <Stack spacing={6}>
-            <Button
-              onClick={handleSubmit}
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}
-            >
+            <Button onClick={handleSubmit} colorScheme={'teal'}>
               Submit
             </Button>
           </Stack>

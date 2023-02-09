@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Button,
   FormControl,
@@ -10,7 +9,7 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import axios from '../api/axios';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -85,14 +84,7 @@ function ResendOTP() {
             />
           </FormControl>
           <Stack spacing={6}>
-            <Button
-              onClick={handleSubmit}
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}
-            >
+            <Button onClick={handleSubmit} colorScheme={'teal'}>
               Submit
             </Button>
           </Stack>
