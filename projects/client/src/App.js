@@ -31,6 +31,7 @@ import PaymentInstruction from './Pages/Payment/PaymentInstruction';
 import DashboardTenant from './Pages/Tenant/DashboardTenant';
 import ResendOTP from './Pages/ResendOTP';
 import TripsPage from './Pages/Trips/TripsPage';
+import Unauth from './Pages/Unauth';
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: '/error', element: <Unauth /> },
   //tenant
   {
     element: <PersistLogin />,

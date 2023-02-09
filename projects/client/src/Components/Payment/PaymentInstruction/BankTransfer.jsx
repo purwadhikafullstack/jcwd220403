@@ -12,16 +12,16 @@ import {
   FormControl,
   FormLabel,
   Skeleton,
-  ButtonGroup,
   Flex,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import axios from '../../../api/axios';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Timer from './Timer';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { toast, ToastContainer } from 'react-toastify';
+import useAuth from '../../../hooks/useAuth';
 
 export default function BankTransfer({ data }) {
   const axiosPrivate = useAxiosPrivate();
@@ -32,7 +32,9 @@ export default function BankTransfer({ data }) {
   const [errorMessageForFile, setErrorMessageForFile] = useState('');
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const { auth } = useAuth();
   const params = useParams();
+  const navigate = useNavigate();
 
   const handleRedirect = () => {
     setInterval(() => {
@@ -52,6 +54,9 @@ export default function BankTransfer({ data }) {
       const data = await axiosPrivate.get(`/payment/${params.paymentId}`);
       setPayment(data.data);
       console.log(payment);
+      if (payment.transaction?.userId !== auth.userId) {
+        return navigate('/error');
+      }
       if (payment?.transaction?.transactionStatus !== 'Menunggu Pembayaran') {
         setDisableSubmitBtn(true);
       } else {
