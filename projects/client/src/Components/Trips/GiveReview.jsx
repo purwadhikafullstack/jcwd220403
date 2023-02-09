@@ -13,18 +13,21 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useTrips from '../../hooks/useTrips';
 
 export default function GiveReview({ property, id, passCheckOut }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const axiosPrivate = useAxiosPrivate();
   const [reviewText, setReviewText] = useState('');
   const [disable, setDisable] = useState(passCheckOut);
+  const { setUpdate } = useTrips();
   const handleInput = (e) => {
     setReviewText(e.target.value);
   };
 
   function reset() {
     onClose();
+    setUpdate({ update: 'review' });
   }
 
   const submitReview = async (e) => {

@@ -355,7 +355,7 @@ const NavBar = () => {
                 boxShadow='md'
                 color='black'
               />
-             {auth?.accessToken ? (
+              {auth?.accessToken ? (
                 <MenuList
                   zIndex='3'
                   fontFamily='Poppins,Roboto,Arial,Helvetica,sans-serif'

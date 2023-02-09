@@ -221,7 +221,7 @@ export default function Register() {
                     </Button>
 
                     <Divider />
-                    <Stack direction={'horizontal'}>
+                    <Stack direction={'horizontal'} fontSize={13}>
                       <Text align={'center'} marginRight={2}>
                         Already a user?
                       </Text>
@@ -229,7 +229,7 @@ export default function Register() {
                         <RouterLink to={'/login'}>Login here</RouterLink>
                       </Text>
                     </Stack>
-                    <Stack direction={'horizontal'}>
+                    <Stack direction={'horizontal'} fontSize={13}>
                       <Text align={'center'} marginRight={2}>
                         Already a registed but didn't get the OTP?
                       </Text>

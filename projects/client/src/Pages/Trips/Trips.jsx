@@ -9,24 +9,36 @@ import {
   HStack,
   Button,
   Heading,
+  ButtonGroup,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Ongoing from '../../Components/Trips/Ongoing';
 import useAuth from '../../hooks/useAuth';
 import Declined from '../../Components/Trips/Declined';
 import Finished from '../../Components/Trips/Finished';
+import useTrips from '../../hooks/useTrips';
 
 export default function Trips() {
   const axiosPrivate = useAxiosPrivate();
   const [trips, setTrips] = useState();
   const [loading, setLoading] = useState(true);
   const { auth } = useAuth();
+  const [month, setMonth] = useState('');
+  const { update } = useTrips();
+
+  let ar = [];
+  const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format;
+  for (let x = 0; x <= 2; x++) {
+    ar.push(monthName(new Date().setMonth(new Date().getMonth() - x)));
+  }
 
   const getTrips = async () => {
     try {
-      const tripsData = await axiosPrivate.get(`/trips/${auth.userId}`);
+      const tripsData = await axiosPrivate.get(
+        `/trips/${auth.userId}?month=${month}`
+      );
       setTrips(tripsData.data);
       setLoading(false);
     } catch (error) {
@@ -37,7 +49,7 @@ export default function Trips() {
   useEffect(() => {
     getTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  }, [loading, month, update]);
 
   return loading ? null : (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -67,9 +79,12 @@ export default function Trips() {
         Filter
       </chakra.h3>
       <HStack>
-        <Button>Past 30 Days</Button>
-        <Button>Past 60 Days</Button>
-        <Button>Past 90 Days</Button>
+        <Button onClick={() => setMonth('')}>All Trips</Button>
+        <ButtonGroup colorScheme={'blue'}>
+          {ar.map((i, index) => (
+            <Button onClick={() => setMonth(index)}>{i}</Button>
+          ))}
+        </ButtonGroup>
       </HStack>
       <Divider mt={5} mb={12} />
       <Ongoing data={trips} />
@@ -80,3 +95,5 @@ export default function Trips() {
     </Box>
   );
 }
+
+export const tripContext = createContext();
