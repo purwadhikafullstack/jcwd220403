@@ -170,13 +170,11 @@ module.exports = {
   },
   sendOTP: async (req, res) => {
     try {
-      const { email } = req.body;
+      const { email, nama } = req.body;
       const otp = OTP_generator();
       const token = jwt.sign({ email: email }, otp, {
         expiresIn: '5m',
       });
-      console.log(email);
-      console.log(token);
 
       const tempEmail = fs.readFileSync(
         `${process.env.ACCESS_SRC_FILE}emailTemplates/otpEmail.html`,
@@ -185,7 +183,7 @@ module.exports = {
       const tempCompile = handlebars.compile(tempEmail);
 
       const tempResult = tempCompile({
-        fullName: 'Ilham',
+        fullName: nama,
         otp,
       });
 

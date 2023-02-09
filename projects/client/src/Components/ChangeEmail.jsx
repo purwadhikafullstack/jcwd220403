@@ -57,7 +57,7 @@ export const ChangeEmail = () => {
             setLoad(true)
             const res = await axiosPrivate.post(
                 "user/otpEmail",
-                data,
+                { ...data, nama: auth.name },
             );
             localStorage.setItem("email", res.data.token)
             Swal.fire({

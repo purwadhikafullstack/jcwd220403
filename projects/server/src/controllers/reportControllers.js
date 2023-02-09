@@ -12,7 +12,6 @@ module.exports = {
         const startedDate = start ? new Date(start) : null
         const endDate = end ? new Date(end) : new Date(start)
         const offset = (page * limit) - limit
-        console.log(req.query)
         try{
             const rows = await database.transaction.count({
                 where: { 
@@ -265,7 +264,6 @@ module.exports = {
         const startedDate = start ? new Date(start) : null
         const endDate = end ? new Date(end) : new Date(start)
         const offset = (page * limit) - limit
-        console.log(req.query)
         try{
             const rows = await database.transaction.count({
                 where: { 

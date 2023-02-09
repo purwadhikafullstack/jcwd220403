@@ -29,9 +29,7 @@ export default function Finished({ trips }) {
                 review={trip.review}
                 transactionId={trip.id}
                 passCheckOut={
-                  new Date(trip.CheckOut).getDate() > new Date().getDate()
-                    ? true
-                    : false
+                  new Date(trip.CheckOut) > new Date() ? true : false
                 }
               />
             )
