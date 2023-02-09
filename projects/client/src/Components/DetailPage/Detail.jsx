@@ -458,6 +458,7 @@ function DetailPage() {
                             boxSize='full'
                             objectFit='cover'
                           />
+                          
                         </Flex>
                         <Box m='2' p='2' w='35vw' borderRadius='2xl'>
                           <Flex

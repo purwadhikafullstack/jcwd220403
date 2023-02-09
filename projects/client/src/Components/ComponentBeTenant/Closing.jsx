@@ -26,7 +26,7 @@ const Closing = () => {
                         initial={{ x: "-100%" }}
                         animate={{ x: 0 }}
                         transition={{ duration: 0.7 }}>
-                        <Image marginLeft="10px" width="100%" src="https://thumbs.dreamstime.com/b/house-rent-sale-modern-white-background-d-illustration-180794527.jpg" margin="auto" />
+                        <Image marginLeft="10px" width="80%" src="https://thumbs.dreamstime.com/b/house-rent-sale-modern-white-background-d-illustration-180794527.jpg" margin="auto" />
                     </motion.div>
                 </Box>
             </Box>
