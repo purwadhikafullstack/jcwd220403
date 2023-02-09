@@ -28,9 +28,9 @@ import PaymentPage from './Pages/Payment/PaymentPage';
 import TransactionUser from './Pages/Tenant/TransactionUser';
 import ReportPages from './Pages/Tenant/Report';
 import PaymentInstruction from './Pages/Payment/PaymentInstruction';
-import Trips from './Pages/Trips/Trips';
 import DashboardTenant from './Pages/Tenant/DashboardTenant';
 import ResendOTP from './Pages/ResendOTP';
+import TripsPage from './Pages/Trips/TripsPage';
 
 const router = createBrowserRouter([
   {
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
               },
               {
                 path: '/trips',
-                element: <Trips />,
+                element: <TripsPage />,
               },
             ],
           },
