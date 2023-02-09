@@ -141,17 +141,6 @@ export default function VerifyForm() {
                   className='file-selector-verify'
                   type={'file'}
                   accept='image/png, image/jpeg, image/jpg, image/webp'
-                  // sx={{
-                  //   '::file-selector-button': {
-                  //     height: 10,
-                  //     padding: 0,
-                  //     mr: 4,
-                  //     background: 'none',
-                  //     border: 'none',
-                  //     fontWeight: 'bold',
-                  //     cursor: 'pointer',
-                  //   },
-                  // }}
                   onChange={(e) => handleFileInput(e)}
                 ></Input>
                 <Text color={'red'}>{errorMessageForFile}</Text>
@@ -181,7 +170,7 @@ export default function VerifyForm() {
           w={'full'}
         >
           <Blob
-            w={'150%'}
+            w={'100%'}
             h={'150%'}
             position={'absolute'}
             top={'-20%'}
