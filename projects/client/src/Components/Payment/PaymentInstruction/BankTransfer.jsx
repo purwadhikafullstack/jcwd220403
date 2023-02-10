@@ -131,9 +131,9 @@ export default function BankTransfer({ data }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
-  function priceInCurrency() {
-    const price = data[0].price * totalDay();
+  const price = data[0].price * totalDay();
 
+  function priceInCurrency() {
     let priceInRupiah = Intl.NumberFormat('id-ID', {
       currency: `IDR`,
       style: 'currency',
@@ -200,7 +200,7 @@ export default function BankTransfer({ data }) {
             <Button
               size={'xs'}
               onClick={() => {
-                navigator.clipboard.writeText(priceInCurrency());
+                navigator.clipboard.writeText(price);
               }}
             >
               Copy
