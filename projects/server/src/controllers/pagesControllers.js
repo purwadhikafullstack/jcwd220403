@@ -49,16 +49,16 @@ module.exports = {
                                         {
                                             [Op.and]: [
                                                 {
-                                                    start_date: {[Op.lt]: state ? state[0].startDate : new Date()},
-                                                    end_date: {[Op.gt]: state ? state[0].endDate : new Date()},
+                                                    start_date: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].endDate : new Date()},
                                                 }
                                             ]
                                         },
                                         {
                                             [Op.and]: [
                                                 {
-                                                    start_date: {[Op.lt]: state ? state[0].endDate : new Date()},
-                                                    end_date: {[Op.gt]: state ? state[0].startDate : new Date()},
+                                                    start_date: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].startDate : new Date()},
                                                 }
                                             ]
                                         },
@@ -185,16 +185,16 @@ module.exports = {
                                         {
                                             [Op.and]: [
                                                 {
-                                                    start_date: {[Op.lt]: state ? state[0].startDate : new Date()},
-                                                    end_date: {[Op.gt]: state ? state[0].endDate : new Date()},
+                                                    start_date: {[Op.lte]: state ? state[0].startDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].endDate : new Date()},
                                                 }
                                             ]
                                         },
                                         {
                                             [Op.and]: [
                                                 {
-                                                    start_date: {[Op.lt]: state ? state[0].endDate : new Date()},
-                                                    end_date: {[Op.gt]: state ? state[0].startDate : new Date()},
+                                                    start_date: {[Op.lte]: state ? state[0].endDate : new Date()},
+                                                    end_date: {[Op.gte]: state ? state[0].startDate : new Date()},
                                                 }
                                             ]
                                         },
