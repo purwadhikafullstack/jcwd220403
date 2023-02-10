@@ -13,13 +13,13 @@ const RegisterAsTenant = async (req, res) => {
   });
 
   if (findTenant) {
-    res.status(500);
+    res.status(400);
     res.send({
       message: 'User is already a tenant',
     });
   } else {
     if (!req.files) {
-      res.status(500);
+      res.status(400);
       res.send({
         status: false,
         message: 'No file uploaded',
@@ -27,7 +27,7 @@ const RegisterAsTenant = async (req, res) => {
     }
 
     if (KTPNumber.length !== 16) {
-      res.status(500);
+      res.status(400);
       res.send({
         status: false,
         message: 'KTP Number must be 16 digits',
@@ -38,7 +38,7 @@ const RegisterAsTenant = async (req, res) => {
     const allowedExtension = ['.png', '.jpg', '.jpeg', '.webp'];
 
     if (!allowedExtension.includes(extensionName)) {
-      res.status(422);
+      res.status(415);
       res.send({
         status: false,
         message: 'Invalid image extension',
