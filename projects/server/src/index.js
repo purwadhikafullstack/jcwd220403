@@ -44,8 +44,8 @@ app.use(
 );
 
 // Schedule
-schedule.scheduleJob('00 00 07 * * *', emailReminder.before);
-schedule.scheduleJob('00 00 14 * * *', emailReminder.sameday);
+schedule.scheduleJob('00 00 02 * * *', emailReminder.before); //ngikut utc +7
+schedule.scheduleJob('00 00 07 * * *', emailReminder.sameday);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

@@ -511,7 +511,7 @@ const NavBar = () => {
                               color='orange'
                               fontSize='x-small'
                             >{`Holistay tersedia di ${alllokasi.length} kota`}</Text>
-                            <Flex>
+                            <Flex wrap="wrap">
                               {alllokasi.map((item, index) => {
                                 return (
                                   <UnorderedList key={index}>
