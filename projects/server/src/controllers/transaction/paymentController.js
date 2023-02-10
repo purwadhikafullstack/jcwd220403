@@ -120,8 +120,4 @@ const getPayment = async (req, res) => {
   }
 };
 
-const testPay = async (req, res) => {
-  res.status(200).send('test');
-};
-
-module.exports = { addPayment, uploadPaymentProof, getPayment, testPay };
+module.exports = { addPayment, uploadPaymentProof, getPayment };
