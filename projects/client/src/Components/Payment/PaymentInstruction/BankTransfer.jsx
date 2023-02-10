@@ -32,6 +32,8 @@ export default function BankTransfer({ data }) {
   const [errorMessageForFile, setErrorMessageForFile] = useState('');
   const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [copyTextValue, setCopyTextValue] = useState('copy');
+  const [copyTextValue2, setCopyTextValue2] = useState('copy');
   const { auth } = useAuth();
   const params = useParams();
   const navigate = useNavigate();
@@ -185,9 +187,13 @@ export default function BankTransfer({ data }) {
                 size={'xs'}
                 onClick={() => {
                   navigator.clipboard.writeText(bank.accountNumber);
+                  setCopyTextValue('copied');
+                  setInterval(() => {
+                    setCopyTextValue('copy');
+                  }, 2000);
                 }}
               >
-                Copy
+                {copyTextValue}
               </Button>
             </Flex>
             <Text>Account Holder Name: {bank.accountHolderName}</Text>
@@ -201,9 +207,13 @@ export default function BankTransfer({ data }) {
               size={'xs'}
               onClick={() => {
                 navigator.clipboard.writeText(price);
+                setCopyTextValue2('copied');
+                setInterval(() => {
+                  setCopyTextValue2('copy');
+                }, 2000);
               }}
             >
-              Copy
+              {copyTextValue2}
             </Button>
           </Flex>
         </Box>
