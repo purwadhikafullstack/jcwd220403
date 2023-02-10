@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useRefreshToken from '../hooks/useRefreshToken';
 import useAuth from '../hooks/useAuth';
-import { Skeleton, Stack } from '@chakra-ui/react';
+import { Flex, Skeleton, Spinner, Stack } from '@chakra-ui/react';
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,26 +24,24 @@ const PersistLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   console.log(`isLoading: ${isLoading}`);
-  //   // console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
-  //   console.log(auth);
-  // }, [isLoading]);
-
   return (
     <>
       {isLoading ? (
-        <Stack>
-          <Skeleton height='20px' />
-          <Skeleton height='20px' />
-          <Skeleton height='20px' />
-        </Stack>
+        <Flex justifyContent={'center'} alignItems={'center'}>
+          <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='teal'
+            size='xl'
+            marginTop={'30vh'}
+          />
+        </Flex>
       ) : (
         <Outlet />
       )}
     </>
   );
-  // add skeleton
 };
 
 export default PersistLogin;
