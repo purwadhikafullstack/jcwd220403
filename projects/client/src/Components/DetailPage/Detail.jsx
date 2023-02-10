@@ -249,6 +249,7 @@ function DetailPage() {
                         </Text>
                         <Divider />
                         <Text
+                          p="2"
                           mb='2'
                           h='15vh'
                           textAlign='justify'

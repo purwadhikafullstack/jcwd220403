@@ -34,7 +34,7 @@ const NavbarDashboard = () => {
             {isMobile ? (
                 <Flex>
                     <Flex alignItems="center" gap="20px">
-                        <Text fontWeight="bold" color="white" fontFamily="sans-serif">Holistay</Text>
+                        <Text fontWeight="bold" color="white" as={Link} to="/" fontFamily="sans-serif">Holistay</Text>
                         <InputGroup width="80%" variant="flushed">
                             <InputLeftElement
                                 pointerEvents='none'
@@ -95,7 +95,7 @@ const NavbarDashboard = () => {
             ) : (
                 <Flex>
                     <Flex width="40%" alignItems="center" gap="20px">
-                        <Text fontWeight="bold" color="white" fontFamily="sans-serif">Holistay</Text>
+                        <Text fontWeight="bold" as={Link} to="/" color="white" fontFamily="sans-serif">Holistay</Text>
                         <InputGroup>
                             <InputLeftElement
                                 pointerEvents='none'
