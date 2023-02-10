@@ -53,7 +53,6 @@ export default function BankTransfer({ data }) {
     try {
       const data = await axiosPrivate.get(`/payment/${params.paymentId}`);
       setPayment(data.data);
-      console.log(payment);
       if (payment.transaction?.userId !== auth.userId) {
         return navigate('/forbidden');
       }
