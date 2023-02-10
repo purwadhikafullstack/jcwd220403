@@ -21,8 +21,8 @@ function Unauth() {
         alignItems={'center'}
         textAlign={'center'}
       >
-        <Heading size={'4xl'}>401</Heading>
-        <Text fontWeight={'bold'}>Unathorized</Text>
+        <Heading size={'4xl'}>403</Heading>
+        <Text fontWeight={'bold'}>Forbidden</Text>
         <Text>Stop peeking at other people's business 🫣</Text>
         <Button mt={'10px'} colorScheme='orange' onClick={() => navigate('/')}>
           Back to Home

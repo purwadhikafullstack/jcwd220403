@@ -55,7 +55,7 @@ export default function BankTransfer({ data }) {
       setPayment(data.data);
       console.log(payment);
       if (payment.transaction?.userId !== auth.userId) {
-        return navigate('/error');
+        return navigate('/forbidden');
       }
       if (payment?.transaction?.transactionStatus !== 'Menunggu Pembayaran') {
         setDisableSubmitBtn(true);
