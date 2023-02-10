@@ -8,6 +8,7 @@ const {
   loginValidation,
   registerValidation,
   resetPasswordValidation,
+  forgetPasswordValidation,
 } = require('../../middlewares/validator');
 
 router.post(
@@ -27,6 +28,8 @@ router.post('/api/verification/', authControllers.verification);
 router.post('/api/resendOTP/', authControllers.resendOTP);
 router.post(
   '/api/forgotPassword/',
+  forgetPasswordValidation,
+  runValidation,
   middlewareDetect,
   authControllers.forgotPassword
 );

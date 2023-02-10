@@ -109,7 +109,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: '/error', element: <Unauth /> },
+  { path: '/forbidden', element: <Unauth /> },
   //tenant
   {
     element: <PersistLogin />,

@@ -95,3 +95,8 @@ exports.resetPasswordValidation = [
   //   }
   // }),
 ];
+
+exports.forgetPasswordValidation = [
+  check('email', 'Please input your email').notEmpty(),
+  check('email', 'Please input a valid email').isEmail(),
+];

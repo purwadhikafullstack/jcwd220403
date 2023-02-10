@@ -1,13 +1,11 @@
 import {
   Flex,
   Box,
-  Checkbox,
   Stack,
   Button,
   Heading,
   Divider,
   Text,
-  HStack,
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
@@ -83,9 +81,11 @@ export default function LoginCard() {
       initialValues={{ email: '', password: '' }}
       validationSchema={Yup.object({
         password: Yup.string()
-          .required('Password required')
+          .required('Password is required')
           .min(8, 'Password is too short'),
-        email: Yup.string().email('invalid email').required('email required'),
+        email: Yup.string()
+          .email('invalid email')
+          .required('email is required'),
       })}
       onSubmit={async (values, actions) => {
         handleSubmit(values);

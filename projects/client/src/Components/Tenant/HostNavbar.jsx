@@ -70,12 +70,8 @@ export default function WithSubnavigation() {
               display={{ base: 'none', md: 'inline-flex' }}
               fontSize={'sm'}
               fontWeight={600}
-              color={'white'}
-              bg={'pink.400'}
+              colorScheme={'orange'}
               href={'#'}
-              _hover={{
-                bg: 'pink.300',
-              }}
             >
               <Link to={'/'}>Switch to traveling</Link>
             </Button>
@@ -86,7 +82,5 @@ export default function WithSubnavigation() {
       </Box>
     );
   };
-  return <Box>
-    {ValidateComponent ? null : <Navbar />}
-  </Box>;
+  return <Box>{ValidateComponent ? null : <Navbar />}</Box>;
 }

@@ -41,7 +41,6 @@ function DetailPage() {
       key: 'selection',
     },
   ]);
-
   const getData = async () => {
     try {
       const res = await axios.post(
@@ -77,7 +76,7 @@ function DetailPage() {
           color: 'black',
           borderRadius: '100%',
           width: '20px',
-          display: "flex",
+          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -100,7 +99,7 @@ function DetailPage() {
           color: 'black',
           borderRadius: '100%',
           width: '20px',
-          display: "flex",
+          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           zIndex: 1,
@@ -217,7 +216,6 @@ function DetailPage() {
                     >
                       <Box m='2' p='2' w='80vw' borderRadius='2xl'>
                         <Slider
-                        
                           infinite={true}
                           speed={500}
                           slidesToShow={1}
@@ -227,13 +225,11 @@ function DetailPage() {
                         >
                           {item.images &&
                             item.images.map((image, i) => (
-                              <Box
-                                key={i}
-                              >
+                              <Box key={i}>
                                 <Image
-                                  width="295px"
+                                  width='295px'
                                   objectFit='cover'
-                                  height="200px"
+                                  height='200px'
                                   src={
                                     process.env.REACT_APP_URL_PUBLIC +
                                     'roomPicture/' +
@@ -257,11 +253,17 @@ function DetailPage() {
                           {item.description}
                         </Text>
                         <Divider />
-                        {item.highSeasons && item.highSeasons.map((season, i) => (
-                          <Box>
-                            {new Date(season.start_date) <= new Date() && new Date(season.end_date) >= new Date() ?
-                              (
-                                <Text mb='2' fontWeight='bold' color='orange' fontSize="sm">
+                        {item.highSeasons &&
+                          item.highSeasons.map((season, i) => (
+                            <Box>
+                              {new Date(season.start_date) <= new Date() &&
+                              new Date(season.end_date) >= new Date() ? (
+                                <Text
+                                  mb='2'
+                                  fontWeight='bold'
+                                  color='orange'
+                                  fontSize='sm'
+                                >
                                   Rp{' '}
                                   {new Intl.NumberFormat('en-DE').format(
                                     season.price
@@ -269,19 +271,22 @@ function DetailPage() {
                                   / malam
                                 </Text>
                               ) : null}
-                          </Box>
-                        ))}
+                            </Box>
+                          ))}
                         {item.highSeasons &&
-                          item.highSeasons.filter(
-                            (room) =>
-                              new Date(room.start_date) <= new Date() &&
-                              new Date(room.end_date) >= new Date()
-                          ).length === 0 ? (
-                          <Text mb='2' fontWeight='bold' color='orange' fontSize="sm">
+                        item.highSeasons.filter(
+                          (room) =>
+                            new Date(room.start_date) <= new Date() &&
+                            new Date(room.end_date) >= new Date()
+                        ).length === 0 ? (
+                          <Text
+                            mb='2'
+                            fontWeight='bold'
+                            color='orange'
+                            fontSize='sm'
+                          >
                             Rp{' '}
-                            {new Intl.NumberFormat('en-DE').format(
-                              item.price
-                            )}{' '}
+                            {new Intl.NumberFormat('en-DE').format(item.price)}{' '}
                             / malam
                           </Text>
                         ) : null}
@@ -468,11 +473,16 @@ function DetailPage() {
                             <Text mb='2' fontWeight='bold'>
                               {item.name}
                             </Text>
-                            {item.highSeasons && item.highSeasons.map((season, i) => (
-                              <Box>
-                                {new Date(season.start_date) <= new Date() && new Date(season.end_date) >= new Date() ?
-                                  (
-                                    <Text mb='2' fontWeight='bold' color='orange'>
+                            {item.highSeasons &&
+                              item.highSeasons.map((season, i) => (
+                                <Box>
+                                  {new Date(season.start_date) <= new Date() &&
+                                  new Date(season.end_date) >= new Date() ? (
+                                    <Text
+                                      mb='2'
+                                      fontWeight='bold'
+                                      color='orange'
+                                    >
                                       Rp{' '}
                                       {new Intl.NumberFormat('en-DE').format(
                                         season.price
@@ -480,14 +490,14 @@ function DetailPage() {
                                       / malam
                                     </Text>
                                   ) : null}
-                              </Box>
-                            ))}
+                                </Box>
+                              ))}
                             {item.highSeasons &&
-                              item.highSeasons.filter(
-                                (room) =>
-                                  new Date(room.start_date) <= new Date() &&
-                                  new Date(room.end_date) >= new Date()
-                              ).length === 0 ? (
+                            item.highSeasons.filter(
+                              (room) =>
+                                new Date(room.start_date) <= new Date() &&
+                                new Date(room.end_date) >= new Date()
+                            ).length === 0 ? (
                               <Text mb='2' fontWeight='bold' color='orange'>
                                 Rp{' '}
                                 {new Intl.NumberFormat('en-DE').format(

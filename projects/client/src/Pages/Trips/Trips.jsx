@@ -62,7 +62,13 @@ export default function Trips() {
         gap={4}
       >
         <GridItem colSpan={1}>
-          <Heading>Trips</Heading>
+          <Heading
+            bgGradient='linear(to-l, orange, teal)'
+            bgClip='text'
+            fontWeight='extrabold'
+          >
+            Trips
+          </Heading>
         </GridItem>
         <GridItem>
           <Text>
@@ -76,7 +82,7 @@ export default function Trips() {
       </Grid>
       <Divider mt={12} mb={5} />
       <chakra.h3 fontSize='xl' fontWeight='600' mb={5}>
-        Filter
+        Booked On:
       </chakra.h3>
       <Stack>
         <ButtonGroup colorScheme={'blue'}>
@@ -84,7 +90,12 @@ export default function Trips() {
             All Trips
           </Button>
           {ar.map((i, index) => (
-            <Button onClick={() => setMonth(index)}>{i}</Button>
+            <Button
+              onClick={() => setMonth(index)}
+              _focus={{ bgColor: 'teal' }}
+            >
+              {i}
+            </Button>
           ))}
         </ButtonGroup>
       </Stack>

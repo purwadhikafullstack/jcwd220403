@@ -82,7 +82,7 @@ export default function RegisterWelcome() {
           w={'full'}
         >
           <Blob
-            w={'150%'}
+            w={'100%'}
             h={'150%'}
             position={'absolute'}
             top={'-20%'}

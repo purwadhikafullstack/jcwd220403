@@ -26,7 +26,7 @@ const addTransaction = async (req, res) => {
       !childrenGuest ||
       !infantGuest
     ) {
-      return res.status(500).send('Please send a complete data');
+      return res.status(400).send('Please send a complete data');
     }
 
     const newTransaction = await transaction.create({
@@ -50,7 +50,7 @@ const addTransaction = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
 };
 
@@ -81,7 +81,7 @@ const getuserTransaction = async (req, res) => {
     res.status(201).send(transactions);
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
 };
 
